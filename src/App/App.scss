@@ -1,0 +1,11 @@
+@import "~@blueprintjs/core/lib/scss/variables";
+
+body {
+  background-color: #f2f2f2 // or use $light-gray4;
+}
+iframe {
+  border: 0;
+}
+.app {
+  margin: 5px;
+}
