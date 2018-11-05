@@ -1,8 +1,8 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import { withRouter } from 'react-router-dom';
-import { Button, Overlay, Spinner } from '@blueprintjs/core';
-import './Index.scss';
+import { Button } from '@blueprintjs/core';
+import { SpinnerOverlay } from '../../components';
 
 class Index extends React.Component {
   constructor() {
@@ -32,9 +32,7 @@ class Index extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Overlay className="overlay" isOpen={this.state.isRedirecting} canEscapeKeyClose={false} canOutsideClickClose={false} >
-          <Spinner intent="primary" size={Spinner.SIZE_LARGE} />
-        </Overlay>
+        <SpinnerOverlay display={this.state.isRedirecting} />
         <Button intent="primary" onClick={this.handleRedirect}>
           New Craft
         </Button>

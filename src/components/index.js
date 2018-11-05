@@ -1,4 +1,3 @@
-import Index from './Index/Index';
-import MainFrame from './MainFrame/MainFrame';
+import Craft from './Craft/Craft';
 
-export { Index, MainFrame };
+export { Craft };

@@ -54,7 +54,7 @@ class MainFrame extends React.Component {
         </div>
 
         <iframe
-          src={process.env.REACT_APP_CRAFT_FRAME_URL}
+          src={`${process.env.REACT_APP_CRAFT_FRAME_URL}/${match.params.craftId}`}
           width={500}
           height={600}
           title="Craft Frame"
