@@ -1,13 +1,21 @@
 @import "~@blueprintjs/core/lib/scss/variables";
 
+html {
+  height: 100%;
+}
 body {
+  height: 100%;
   background-color: #f2f2f2; // or use $light-gray4;
   font-family: 'Montserrat', sans-serif;
 }
 iframe {
   border: 0;
 }
+#root {
+  height: 100%;
+}
 .app {
+  height: 100%;
   margin: 5px;
 }
 .app-header {

@@ -1,6 +1,28 @@
 .mainframe {
   display: flex;
+  height: 100%;
+  overflow: hidden;
 }
 .config {
   flex: 1
+}
+.iframe-container {
+  margin-top: 20px;
+  min-width: 60%;
+  padding-right: 20px;
+}
+.iframe-browser-header {
+  height: 26px;
+  display: flex;
+  align-items: center;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  background-color: #E7E7E7;
+}
+.iframe-browser-button {
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: 8px;
+  background-color: #CBCBCB;
 }

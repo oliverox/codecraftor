@@ -45,7 +45,8 @@ class MainFrame extends React.Component {
     console.log('craft id =', match.params.craftId);
     return (
       <main className="mainframe">
-        {/* <div className="config">
+        <div className="config"></div>
+        {/* 
           <RadioGroup
             label="Pick UI Framework"
             onChange={() => {}}
@@ -100,17 +101,23 @@ class MainFrame extends React.Component {
             }
           >
             Add Button
-          </Button>
-        </div> */}
+          </Button>*/}
 
-        <iframe
-          src={`${process.env.REACT_APP_CRAFT_FRAME_URL}/${
-            match.params.craftId
-          }`}
-          width={500}
-          height={600}
-          title="Craft Frame"
-        />
+        <div className="iframe-container">
+          <div className="iframe-browser-header">
+            <div className="iframe-browser-button" />
+            <div className="iframe-browser-button" />
+            <div className="iframe-browser-button" />
+          </div>
+          <iframe
+            src={`${process.env.REACT_APP_CRAFT_FRAME_URL}/${
+              match.params.craftId
+            }`}
+            width="100%"
+            height="90%"
+            title="Craft Frame"
+          />
+        </div>
       </main>
     );
   }
