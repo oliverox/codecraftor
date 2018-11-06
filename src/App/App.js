@@ -16,7 +16,8 @@ import {
   NavbarHeading
   /* Radio, RadioGroup */
 } from '@blueprintjs/core';
-import { Index, MainFrame } from '../components';
+import Index from '../Index/Index';
+import MainFrame from '../MainFrame/MainFrame';
 
 /* MainFrame App */
 
