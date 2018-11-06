@@ -1,11 +1,21 @@
 @import "~@blueprintjs/core/lib/scss/variables";
 
 body {
-  background-color: #f2f2f2 // or use $light-gray4;
+  background-color: #f2f2f2; // or use $light-gray4;
+  font-family: 'Montserrat', sans-serif;
 }
 iframe {
   border: 0;
 }
 .app {
   margin: 5px;
+}
+.app-header {
+  margin: -5px;
+  margin-bottom: 0;
+}
+.navbar-heading {
+  color: #137CBD;
+  letter-spacing: 0.7px;
+  font-weight: bold;
 }

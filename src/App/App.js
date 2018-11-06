@@ -6,12 +6,21 @@ import '../../node_modules/normalize.css/normalize.css';
 import '../../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '../../node_modules/@blueprintjs/core/lib/css/blueprint.css';
 import './App.scss';
+import {
+  Alignment,
+  Button,
+  Classes,
+  Navbar,
+  NavbarDivider,
+  NavbarGroup,
+  NavbarHeading
+  /* Radio, RadioGroup */
+} from '@blueprintjs/core';
 import { Index, MainFrame } from '../components';
 
 /* MainFrame App */
 
 class App extends Component {
-
   componentWillMount() {
     firebase.initializeApp({
       apiKey: 'AIzaSyCZP85JmQhLbQG9GFoUFqbHApONOkoGZ5M',
@@ -29,7 +38,18 @@ class App extends Component {
       <Router>
         <div className="app">
           <header className="app-header">
-            <h1>Codecraftor</h1>
+            <Navbar>
+              <NavbarGroup align={Alignment.LEFT}>
+                <NavbarHeading className="navbar-heading">Codecraftor</NavbarHeading>
+                <NavbarDivider />
+                <Button className={Classes.MINIMAL} icon="home" text="Home" />
+                <Button
+                  className={Classes.MINIMAL}
+                  icon="document"
+                  text="Files"
+                />
+              </NavbarGroup>
+            </Navbar>
           </header>
           <Route path="/" exact component={Index} />
           <Route path="/new/:craftId" component={MainFrame} />
