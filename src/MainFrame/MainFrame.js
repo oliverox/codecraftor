@@ -43,6 +43,7 @@ class MainFrame extends React.Component {
     };
     this.handleAction = this.handleAction.bind(this);
     this.getNodeAtPath = this.getNodeAtPath.bind(this);
+    this.onAppSetupDone = this.onAppSetupDone.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
     this.handleNodeExpand = this.handleNodeExpand.bind(this);
     this.handleNodeCollapse = this.handleNodeCollapse.bind(this);
@@ -105,6 +106,13 @@ class MainFrame extends React.Component {
     console.log('getNodeAtPath returns:', this.getNodeAtPath(nodePath));
   }
 
+  onAppSetupDone(config) {
+    console.log('onAppSetupDone()', config);
+    this.setState({
+      appSetup: config
+    })
+  }
+
   render() {
     const { match } = this.props;
     const { pageName, appSetup } = this.state;
@@ -112,10 +120,10 @@ class MainFrame extends React.Component {
     console.log('appSetup=', appSetup);
     return (
       <main className="mainframe">
+        {/* App config and component tree */}
         <div className="config">
           <h3 className="page-name">
-            {pageName}{' '}
-            <Icon className="edit-icon" iconSize={10} icon="edit" />
+            {pageName} <Icon className="edit-icon" iconSize={10} icon="edit" />
           </h3>
           <div className="tree-container">
             <Tree
@@ -123,67 +131,11 @@ class MainFrame extends React.Component {
               onNodeClick={this.handleNodeClick}
               onNodeCollapse={this.handleNodeCollapse}
               onNodeExpand={this.handleNodeExpand}
-              // className={Classes.ELEVATION_0}
             />
           </div>
         </div>
-        {/* 
-          <RadioGroup
-            label="Pick UI Framework"
-            onChange={() => {}}
-            large={true}
-            selectedValue="blueprint"
-          >
-            <Radio value="blueprint" label="BlueprintJS" />
-            <Radio value="ant" label="Ant" />
-            <Radio value="material" label="Material UI" />
-            <Radio value="evergreen" label="Evergreen" />
-          </RadioGroup>
-          <hr />
-          <div
-            style={{
-              maxWidth: 200,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between'
-            }}
-          >
-            <Button
-              intent="primary"
-              onClick={() =>
-                this.handleAction('ADD', {
-                  type: 'h1',
-                  props: {},
-                  children: 'This is an h1 header'
-                })
-              }
-            >
-              Add
-            </Button>
-            <Button intent="danger" onClick={() => this.handleAction('remove')}>
-              Remove
-            </Button>
-            <Button
-              intent="success"
-              onClick={() => this.handleAction('update')}
-            >
-              Update
-            </Button>
-          </div>
-          <hr />
-          <h4>Components</h4>
-          <Button
-            intent="none"
-            onClick={() =>
-              this.handleAction('ADD', {
-                component: 'Button',
-                target: 'body'
-              })
-            }
-          >
-            Add Button
-          </Button>*/}
 
+        {/* Iframe */}
         <div className="iframe-container">
           <div className="iframe-browser-header">
             <div className="iframe-browser-button" />
@@ -199,7 +151,9 @@ class MainFrame extends React.Component {
             title="Craft Frame"
           />
         </div>
-        <AppSetupDialog isOpen={appSetup} />
+
+        {/* App setup */}
+        <AppSetupDialog isOpen={appSetup === true} onAppSetupDone={this.onAppSetupDone}/>
       </main>
     );
   }
