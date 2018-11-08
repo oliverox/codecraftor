@@ -1,12 +1,51 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import shortid from 'shortid';
+import {
+  // Classes,
+  Icon,
+  // ITreeNode,
+  // Position,
+  // Tooltip,
+  Tree
+} from '@blueprintjs/core';
+import AppSetupDialog from '../AppSetupDialog/AppSetupDialog';
 import './MainFrame.scss';
 
 class MainFrame extends React.Component {
   constructor() {
     super();
+    this.state = {
+      pageName: 'Home page',
+      appSetup: true,
+      nodes: [
+        {
+          id: 0,
+          hasCaret: true,
+          icon: 'slash',
+          label: 'Root',
+          isExpanded: true,
+          // secondaryLabel: <Icon icon="cog" />
+          childNodes: [
+            {
+              id: 1,
+              icon: 'code-block',
+              label: 'Navigation Bar 1'
+            },
+            {
+              id: 2,
+              icon: 'code-block',
+              label: 'Hero Slider 1'
+            }
+          ]
+        }
+      ]
+    };
     this.handleAction = this.handleAction.bind(this);
+    this.getNodeAtPath = this.getNodeAtPath.bind(this);
+    this.handleNodeClick = this.handleNodeClick.bind(this);
+    this.handleNodeExpand = this.handleNodeExpand.bind(this);
+    this.handleNodeCollapse = this.handleNodeCollapse.bind(this);
   }
 
   componentWillMount() {
@@ -40,12 +79,54 @@ class MainFrame extends React.Component {
     }
   }
 
+  getNodeAtPath(nodePath) {
+    // const nodesClone = this.state.nodes.slice();
+    // let pointer = nodesClone[nodePath[0]];
+    // console.log('pointer:', pointer);
+    // for (let n = 1; n < nodePath.length; n++) {
+    //   pointer = pointer[nodePath[n]];
+    //   console.log('pointer:', pointer);
+    // }
+    // return pointer;
+  }
+
+  handleNodeClick(node, nodePath, e) {
+    console.log('handleNodeClick', node, nodePath);
+    console.log('getNodeAtPath returns:', this.getNodeAtPath(nodePath));
+  }
+
+  handleNodeExpand(node, nodePath, e) {
+    console.log('handleNodeExpand', node, nodePath);
+    console.log('getNodeAtPath returns:', this.getNodeAtPath(nodePath));
+  }
+
+  handleNodeCollapse(node, nodePath, e) {
+    console.log('handleNodeCollapse', node, nodePath);
+    console.log('getNodeAtPath returns:', this.getNodeAtPath(nodePath));
+  }
+
   render() {
     const { match } = this.props;
+    const { pageName, appSetup } = this.state;
     console.log('craft id =', match.params.craftId);
+    console.log('appSetup=', appSetup);
     return (
       <main className="mainframe">
-        <div className="config"></div>
+        <div className="config">
+          <h3 className="page-name">
+            {pageName}{' '}
+            <Icon className="edit-icon" iconSize={10} icon="edit" />
+          </h3>
+          <div className="tree-container">
+            <Tree
+              contents={this.state.nodes}
+              onNodeClick={this.handleNodeClick}
+              onNodeCollapse={this.handleNodeCollapse}
+              onNodeExpand={this.handleNodeExpand}
+              // className={Classes.ELEVATION_0}
+            />
+          </div>
+        </div>
         {/* 
           <RadioGroup
             label="Pick UI Framework"
@@ -118,6 +199,7 @@ class MainFrame extends React.Component {
             title="Craft Frame"
           />
         </div>
+        <AppSetupDialog isOpen={appSetup} />
       </main>
     );
   }

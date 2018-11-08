@@ -47,7 +47,7 @@ class App extends Component {
                 <Button
                   className={Classes.MINIMAL}
                   icon="document"
-                  text="Files"
+                  text="Download"
                 />
               </NavbarGroup>
             </Navbar>

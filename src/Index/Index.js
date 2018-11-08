@@ -34,7 +34,7 @@ class Index extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <SpinnerOverlay display={this.state.isRedirecting} />
+        <SpinnerOverlay isOpen={this.state.isRedirecting} />
         <Button intent="primary" onClick={this.handleRedirect}>
           New Craft
         </Button>
