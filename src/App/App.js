@@ -6,16 +6,6 @@ import '../../node_modules/normalize.css/normalize.css';
 import '../../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '../../node_modules/@blueprintjs/core/lib/css/blueprint.css';
 import './App.scss';
-import {
-  Alignment,
-  Button,
-  Classes,
-  Navbar,
-  NavbarDivider,
-  NavbarGroup,
-  NavbarHeading
-  /* Radio, RadioGroup */
-} from '@blueprintjs/core';
 import Index from '../Index/Index';
 import MainFrame from '../MainFrame/MainFrame';
 
@@ -38,22 +28,11 @@ class App extends Component {
     return (
       <Router>
         <div className="app">
-          <header className="app-header">
-            <Navbar>
-              <NavbarGroup align={Alignment.LEFT}>
-                <NavbarHeading className="navbar-heading">Codecraftor</NavbarHeading>
-                <NavbarDivider />
-                <Button className={Classes.MINIMAL} icon="home" text="Home" />
-                <Button
-                  className={Classes.MINIMAL}
-                  icon="document"
-                  text="Download"
-                />
-              </NavbarGroup>
-            </Navbar>
-          </header>
           <Route path="/" exact component={Index} />
-          <Route path="/new/:craftId" component={MainFrame} />
+          <Route
+            path="/new/:craftId"
+            render={props => <MainFrame {...props} />}
+          />
         </div>
       </Router>
     );

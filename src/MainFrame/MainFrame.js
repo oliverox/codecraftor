@@ -2,14 +2,19 @@ import React from 'react';
 import firebase from 'firebase/app';
 import shortid from 'shortid';
 import {
-  // Classes,
+  Alignment,
+  Button,
+  Classes,
   Icon,
-  // ITreeNode,
-  // Position,
-  // Tooltip,
+  Navbar,
+  NavbarDivider,
+  NavbarGroup,
+  NavbarHeading,
   Tree
 } from '@blueprintjs/core';
+
 import AppSetupDialog from '../AppSetupDialog/AppSetupDialog';
+import ComponentDialog from '../ComponentDialog/ComponentDialog';
 import './MainFrame.scss';
 
 class MainFrame extends React.Component {
@@ -18,6 +23,7 @@ class MainFrame extends React.Component {
     this.state = {
       pageName: 'Home page',
       appSetup: true,
+      showComponentDialog: false,
       nodes: [
         {
           id: 0,
@@ -47,6 +53,8 @@ class MainFrame extends React.Component {
     this.handleNodeClick = this.handleNodeClick.bind(this);
     this.handleNodeExpand = this.handleNodeExpand.bind(this);
     this.handleNodeCollapse = this.handleNodeCollapse.bind(this);
+    this.handleAddComponentClick = this.handleAddComponentClick.bind(this);
+    this.handleComponentDialogClose = this.handleComponentDialogClose.bind(this);
   }
 
   componentWillMount() {
@@ -56,6 +64,18 @@ class MainFrame extends React.Component {
     this.docRef = db
       .collection(process.env.REACT_APP_CRAFTS_COLLECTION)
       .doc(match.params.craftId);
+  }
+
+  handleAddComponentClick() {
+    this.setState({
+      showComponentDialog: true
+    });
+  }
+
+  handleComponentDialogClose() {
+    this.setState({
+      showComponentDialog: false
+    });
   }
 
   handleAction(cmd, params) {
@@ -110,51 +130,88 @@ class MainFrame extends React.Component {
     console.log('onAppSetupDone()', config);
     this.setState({
       appSetup: config
-    })
+    });
   }
 
   render() {
     const { match } = this.props;
-    const { pageName, appSetup } = this.state;
+    const { pageName, appSetup, showComponentDialog } = this.state;
     console.log('craft id =', match.params.craftId);
     console.log('appSetup=', appSetup);
+    console.log('showComponentDialog:', showComponentDialog);
     return (
-      <main className="mainframe">
-        {/* App config and component tree */}
-        <div className="config">
-          <h3 className="page-name">
-            {pageName} <Icon className="edit-icon" iconSize={10} icon="edit" />
-          </h3>
-          <div className="tree-container">
-            <Tree
-              contents={this.state.nodes}
-              onNodeClick={this.handleNodeClick}
-              onNodeCollapse={this.handleNodeCollapse}
-              onNodeExpand={this.handleNodeExpand}
+      <React.Fragment>
+        <header className="app-header">
+          <Navbar>
+            <NavbarGroup align={Alignment.LEFT}>
+              <NavbarHeading className="navbar-heading">
+                Codecraftor
+              </NavbarHeading>
+              <NavbarDivider />
+              <Button
+                onClick={this.handleAddComponentClick}
+                className={Classes.MINIMAL}
+                icon="add"
+                text="Add Component"
+              />
+              <Button
+                disabled
+                className={Classes.MINIMAL}
+                icon="document"
+                text="Download"
+              />
+            </NavbarGroup>
+          </Navbar>
+        </header>
+
+        <main className="mainframe">
+          {/* App config and component tree */}
+          <div className="config">
+            <h3 className="page-name">
+              {pageName}{' '}
+              <Icon className="edit-icon" iconSize={10} icon="edit" />
+            </h3>
+            <div className="tree-container">
+              <Tree
+                contents={this.state.nodes}
+                onNodeClick={this.handleNodeClick}
+                onNodeCollapse={this.handleNodeCollapse}
+                onNodeExpand={this.handleNodeExpand}
+              />
+            </div>
+          </div>
+
+          {/* Iframe */}
+          <div className="iframe-container">
+            <div className="iframe-browser-header">
+              <div className="iframe-browser-button" />
+              <div className="iframe-browser-button" />
+              <div className="iframe-browser-button" />
+            </div>
+            <iframe
+              src={`${process.env.REACT_APP_CRAFT_FRAME_URL}/${
+                match.params.craftId
+              }`}
+              width="100%"
+              height="90%"
+              title="Craft Frame"
             />
           </div>
-        </div>
 
-        {/* Iframe */}
-        <div className="iframe-container">
-          <div className="iframe-browser-header">
-            <div className="iframe-browser-button" />
-            <div className="iframe-browser-button" />
-            <div className="iframe-browser-button" />
-          </div>
-          <iframe
-            src={`${process.env.REACT_APP_CRAFT_FRAME_URL}/${
-              match.params.craftId
-            }`}
-            width="100%"
-            height="90%"
-            title="Craft Frame"
+          {/* App setup */}
+          <AppSetupDialog
+            isOpen={appSetup === true}
+            onAppSetupDone={this.onAppSetupDone}
           />
-        </div>
 
-        {/* App setup */}
-        <AppSetupDialog isOpen={appSetup === true} onAppSetupDone={this.onAppSetupDone}/>
-      </main>
+          {/* Component Dialog */}
+          <ComponentDialog
+            isOpen={showComponentDialog}
+            appConfig={appSetup}
+            onClose={this.handleComponentDialogClose}
+          />
+        </main>
+      </React.Fragment>
     );
   }
 }
