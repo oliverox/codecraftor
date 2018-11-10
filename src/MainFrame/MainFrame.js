@@ -46,6 +46,30 @@ class MainFrame extends React.Component {
     this.docRef = db
       .collection(process.env.REACT_APP_CRAFTS_COLLECTION)
       .doc(match.params.craftId);
+    this.docRef.get().then(doc => {
+      if (doc.exists) {
+        const { actions } = doc.data();
+        if (actions.length > 0) {
+          const newRoot = this.state.root.slice();
+          const updatedChildNodes = [];
+          actions
+            .filter(act => act.action === 'ADD')
+            .forEach(act => {
+              updatedChildNodes.push({
+                id: act.id,
+                hasCaret: false,
+                icon: act.icon,
+                label: act.label,
+                isExpanded: false
+              });
+            });
+          newRoot[0].childNodes = updatedChildNodes;
+          this.setState({
+            root: newRoot
+          });
+        }
+      }
+    });
   }
 
   handleAddComponentBtnClick() {
@@ -60,15 +84,14 @@ class MainFrame extends React.Component {
     });
   }
 
-  addComponentToTree(c) {
-    console.log('addComponentToTree()', c);
+  addComponentToTree(componentMeta) {
+    console.log('addComponentToTree()', componentMeta);
     const root = this.state.root.slice();
     root.push({
-      index: c.index,
-      icon: c.icon,
-      label: c.name,
+      ...componentMeta,
       id: root.length
     });
+    this.handleAction('ADD', componentMeta);
     this.setState({
       root
     });

@@ -82,6 +82,12 @@ class ComponentDialog extends React.Component {
                   />
                 </div>
                 {components.map((c, index) => {
+                  const componentMeta = {
+                    index: index,
+                    icon: c.icon,
+                    label: c.label,
+                    description: c.description
+                  };
                   return (
                     <Card
                       key={index}
@@ -89,8 +95,7 @@ class ComponentDialog extends React.Component {
                       interactive={true}
                       onClick={() => {
                         this.props.addComponentToTree({
-                          ...this.state.components[index],
-                          index
+                          ...componentMeta
                         });
                       }}
                     >
