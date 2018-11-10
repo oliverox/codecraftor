@@ -86,14 +86,14 @@ class MainFrame extends React.Component {
 
   addComponentToTree(componentMeta) {
     console.log('addComponentToTree()', componentMeta);
-    const root = this.state.root.slice();
-    root.push({
+    const root = this.state.root.slice()[0];
+    root.childNodes.push({
       ...componentMeta,
-      id: root.length
+      id: root.childNodes.length
     });
     this.handleAction('ADD', componentMeta);
     this.setState({
-      root
+      root: [root]
     });
   }
 
