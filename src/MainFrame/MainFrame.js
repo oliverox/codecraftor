@@ -9,12 +9,13 @@ import {
   Navbar,
   NavbarDivider,
   NavbarGroup,
-  NavbarHeading,
-  Tree
+  NavbarHeading
 } from '@blueprintjs/core';
 
 import AppConfigDialog from '../AppConfigDialog/AppConfigDialog';
 import ComponentDialog from '../ComponentDialog/ComponentDialog';
+import ComponentTree from '../ComponentTree/ComponentTree';
+
 import './MainFrame.scss';
 
 class MainFrame extends React.Component {
@@ -33,28 +34,26 @@ class MainFrame extends React.Component {
           isExpanded: true,
           // secondaryLabel: <Icon icon="cog" />
           childNodes: [
-            {
-              id: 1,
-              icon: 'code-block',
-              label: 'Navigation Bar 1'
-            },
-            {
-              id: 2,
-              icon: 'code-block',
-              label: 'Hero Slider 1'
-            }
+            // {
+            //   id: 1,
+            //   icon: 'code-block',
+            //   label: 'Navigation Bar 1'
+            // },
+            // {
+            //   id: 2,
+            //   icon: 'code-block',
+            //   label: 'Hero Slider 1'
+            // }
           ]
         }
       ]
     };
     this.handleAction = this.handleAction.bind(this);
-    this.getNodeAtPath = this.getNodeAtPath.bind(this);
     this.onAppConfigDone = this.onAppConfigDone.bind(this);
-    this.handleNodeClick = this.handleNodeClick.bind(this);
-    this.handleNodeExpand = this.handleNodeExpand.bind(this);
-    this.handleNodeCollapse = this.handleNodeCollapse.bind(this);
     this.handleAddComponentClick = this.handleAddComponentClick.bind(this);
-    this.handleComponentDialogClose = this.handleComponentDialogClose.bind(this);
+    this.handleComponentDialogClose = this.handleComponentDialogClose.bind(
+      this
+    );
   }
 
   componentWillMount() {
@@ -98,32 +97,6 @@ class MainFrame extends React.Component {
       default:
         break;
     }
-  }
-
-  getNodeAtPath(nodePath) {
-    // const nodesClone = this.state.nodes.slice();
-    // let pointer = nodesClone[nodePath[0]];
-    // console.log('pointer:', pointer);
-    // for (let n = 1; n < nodePath.length; n++) {
-    //   pointer = pointer[nodePath[n]];
-    //   console.log('pointer:', pointer);
-    // }
-    // return pointer;
-  }
-
-  handleNodeClick(node, nodePath, e) {
-    console.log('handleNodeClick', node, nodePath);
-    console.log('getNodeAtPath returns:', this.getNodeAtPath(nodePath));
-  }
-
-  handleNodeExpand(node, nodePath, e) {
-    console.log('handleNodeExpand', node, nodePath);
-    console.log('getNodeAtPath returns:', this.getNodeAtPath(nodePath));
-  }
-
-  handleNodeCollapse(node, nodePath, e) {
-    console.log('handleNodeCollapse', node, nodePath);
-    console.log('getNodeAtPath returns:', this.getNodeAtPath(nodePath));
   }
 
   onAppConfigDone(appConfig) {
@@ -172,12 +145,7 @@ class MainFrame extends React.Component {
               <Icon className="edit-icon" iconSize={10} icon="edit" />
             </h3>
             <div className="tree-container">
-              <Tree
-                contents={this.state.nodes}
-                onNodeClick={this.handleNodeClick}
-                onNodeCollapse={this.handleNodeCollapse}
-                onNodeExpand={this.handleNodeExpand}
-              />
+              <ComponentTree nodes={this.state.nodes} />
             </div>
           </div>
 
