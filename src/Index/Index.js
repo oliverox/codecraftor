@@ -23,9 +23,9 @@ class Index extends React.Component {
       isRedirecting: true
     });
     window.gtag('event', 'click', {
-      'send_to': process.env.REACT_APP_GA_TRACKING_ID,
-      'event_category': 'Button',
-      'event_label': 'New Craft'
+      send_to: process.env.REACT_APP_GA_TRACKING_ID,
+      event_category: 'Button',
+      event_label: 'New Craft'
     });
     db.settings({ timestampsInSnapshots: true });
     db.collection(process.env.REACT_APP_CRAFTS_COLLECTION)
@@ -61,12 +61,12 @@ class Index extends React.Component {
               <h2>What is Codecraftor?</h2>
               <p>
                 Codecraftor is a web site creation tool in between WYSIWYG and
-                real code. With the advent of componentization of the web, we
-                can now look at a web site as a composition of simple and
-                complex components. Codecraftor aims to become a tool to allow
-                web developers (or anyone), to lay down web components on a page
-                and allow their complete customizations. Even though this idea
-                had been lingering in my head for the past three years,
+                coding from scratch. With the advent of componentization of the
+                web, we can now look at a web site as a composition of simple
+                and complex components. Codecraftor aims to become a tool to
+                allow web developers (or anyone), to lay down web components on
+                a page and allow their complete customizations. Even though this
+                idea had been lingering in my head for the past three years,
                 Codecraftor was only started as part of the{' '}
                 <a href="https://pioneer.app">
                   Pioneer October 2018 Tournament
@@ -81,13 +81,16 @@ class Index extends React.Component {
                 find myself browsing through various ready-made themes online to
                 eventually purchase one to use for the current project I'm
                 working on. These themes always have to be customized and
-                restructured to my needs and working style (directory structure,
-                code quality, web framework, etc). I end up having to copy a lot
-                of what I have built before in previous projects in order
-                customize the purchased theme. It made me think, what if there
-                was a tool that would let me choose the kind of configurations I
-                want and let me download the theme based on those settings.
-                Codecraftor is my attempt to do so.
+                restructured to meet my needs and working style (directory
+                structure, code quality, web framework, etc). I end up having to
+                copy a lot of what I have built before in previous projects in
+                order customize the purchased theme. So it made me think:{' '}
+                <strong>
+                  what if there was a tool that would let me choose the kind of
+                  configurations I want and allow me to download the theme based
+                  on those settings?
+                </strong>{' '}
+                Codecraftor is my attempt to solve this question.
               </p>
             </div>
             <div className="index-main-content-section">
@@ -107,8 +110,8 @@ class Index extends React.Component {
             </div>
             <div className="index-main-content-section">
               <h2>
-                What are some encouraging feedback received from
-                other Pioneer participants?
+                What are some encouraging feedback received from other Pioneer
+                participants?
               </h2>
               <Blockquote>
                 "could be useful for developers." - arstore
