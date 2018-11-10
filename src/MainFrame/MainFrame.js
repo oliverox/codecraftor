@@ -23,8 +23,8 @@ class MainFrame extends React.Component {
           icon: 'slash',
           label: 'Root',
           isExpanded: true,
-          // secondaryLabel: <Icon icon="cog" />
           childNodes: []
+          // secondaryLabel: <Icon icon="cog" />
         }
       ]
     };
@@ -39,7 +39,7 @@ class MainFrame extends React.Component {
     this.addComponentToTree = this.addComponentToTree.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { match } = this.props;
     const db = firebase.firestore();
     db.settings({ timestampsInSnapshots: true });
