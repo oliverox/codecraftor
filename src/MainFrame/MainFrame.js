@@ -1,17 +1,8 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import shortid from 'shortid';
-import {
-  Alignment,
-  Button,
-  Classes,
-  Icon,
-  Navbar,
-  NavbarDivider,
-  NavbarGroup,
-  NavbarHeading
-} from '@blueprintjs/core';
-
+import { Icon } from '@blueprintjs/core';
+import NavbarHeader from '../NavbarHeader/NavbarHeader';
 import AppConfigDialog from '../AppConfigDialog/AppConfigDialog';
 import ComponentDialog from '../ComponentDialog/ComponentDialog';
 import ComponentTree from '../ComponentTree/ComponentTree';
@@ -33,18 +24,7 @@ class MainFrame extends React.Component {
           label: 'Root',
           isExpanded: true,
           // secondaryLabel: <Icon icon="cog" />
-          childNodes: [
-            // {
-            //   id: 1,
-            //   icon: 'code-block',
-            //   label: 'Navigation Bar 1'
-            // },
-            // {
-            //   id: 2,
-            //   icon: 'code-block',
-            //   label: 'Hero Slider 1'
-            // }
-          ]
+          childNodes: []
         }
       ]
     };
@@ -131,29 +111,9 @@ class MainFrame extends React.Component {
     console.log('showComponentDialog:', showComponentDialog);
     return (
       <React.Fragment>
-        <header className="app-header">
-          <Navbar>
-            <NavbarGroup align={Alignment.LEFT}>
-              <NavbarHeading className="navbar-heading">
-                Codecraftor
-              </NavbarHeading>
-              <NavbarDivider />
-              <Button
-                onClick={this.handleAddComponentBtnClick}
-                className={Classes.MINIMAL}
-                icon="add"
-                text="Add Component"
-              />
-              <Button
-                disabled
-                className={Classes.MINIMAL}
-                icon="download"
-                text="Download"
-              />
-            </NavbarGroup>
-          </Navbar>
-        </header>
-
+        <NavbarHeader
+          handleAddComponentBtnClick={this.handleAddComponentBtnClick}
+        />
         <main className="mainframe">
           {/* App config and component tree */}
           <div className="config">
