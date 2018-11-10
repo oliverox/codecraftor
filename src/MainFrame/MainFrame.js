@@ -82,7 +82,7 @@ class MainFrame extends React.Component {
           .update({
             actions: firebase.firestore.FieldValue.arrayUnion({
               id: shortid.generate(),
-              action: 'ADD',
+              action: cmd,
               ...params
             })
           })
@@ -91,6 +91,15 @@ class MainFrame extends React.Component {
           });
         break;
 
+      case 'CONFIG':
+        this.docRef
+          .update({
+            config: { ...params }
+          })
+          .catch(err => {
+            console.log('Error updating document.', err);
+          });
+        break;
       default:
         break;
     }
@@ -100,6 +109,9 @@ class MainFrame extends React.Component {
     console.log('onAppConfigDone()', appConfig);
     this.setState({
       appConfig
+    });
+    this.handleAction('CONFIG', {
+      ...appConfig
     });
   }
 

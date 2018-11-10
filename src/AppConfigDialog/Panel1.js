@@ -36,8 +36,8 @@ class Panel1 extends React.Component {
             selectedValue={this.state.value}
           >
             <Radio label="React" value="react" />
-            <Radio label="Angular" value="angular" />
-            <Radio label="Vue" value="vue" />
+            <Radio disabled label="Angular" value="angular" />
+            <Radio disabled label="Vue" value="vue" />
           </RadioGroup>
         </div>
         <div className="action-button-container">
