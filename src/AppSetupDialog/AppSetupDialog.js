@@ -80,6 +80,7 @@ class SetupDialog extends React.Component {
 
   handleAppSetupDone() {
     console.log('handleAppSetupDone()');
+    window.scrollTo(0, 0);
     this.props.onAppSetupDone({
       ...this.state
     });

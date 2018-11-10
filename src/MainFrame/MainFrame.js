@@ -157,7 +157,7 @@ class MainFrame extends React.Component {
               <Button
                 disabled
                 className={Classes.MINIMAL}
-                icon="document"
+                icon="download"
                 text="Download"
               />
             </NavbarGroup>
