@@ -32,11 +32,11 @@ class ComponentTree extends React.Component {
   }
 
   render() {
-    const { nodes } = this.props;
+    const { root } = this.props;
     return (
       <div>
         <Tree
-          contents={nodes}
+          contents={root}
           onNodeClick={this.handleNodeClick}
           onNodeCollapse={this.handleNodeCollapse}
           onNodeExpand={this.handleNodeExpand}

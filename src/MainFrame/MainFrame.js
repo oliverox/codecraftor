@@ -25,7 +25,7 @@ class MainFrame extends React.Component {
       pageName: 'Home page',
       appConfig: true,
       showComponentDialog: false,
-      nodes: [
+      root: [
         {
           id: 0,
           hasCaret: true,
@@ -50,10 +50,13 @@ class MainFrame extends React.Component {
     };
     this.handleAction = this.handleAction.bind(this);
     this.onAppConfigDone = this.onAppConfigDone.bind(this);
-    this.handleAddComponentClick = this.handleAddComponentClick.bind(this);
+    this.handleAddComponentBtnClick = this.handleAddComponentBtnClick.bind(
+      this
+    );
     this.handleComponentDialogClose = this.handleComponentDialogClose.bind(
       this
     );
+    this.addComponentToTree = this.addComponentToTree.bind(this);
   }
 
   componentWillMount() {
@@ -65,7 +68,7 @@ class MainFrame extends React.Component {
       .doc(match.params.craftId);
   }
 
-  handleAddComponentClick() {
+  handleAddComponentBtnClick() {
     this.setState({
       showComponentDialog: true
     });
@@ -74,6 +77,20 @@ class MainFrame extends React.Component {
   handleComponentDialogClose() {
     this.setState({
       showComponentDialog: false
+    });
+  }
+
+  addComponentToTree(c) {
+    console.log('addComponentToTree()', c);
+    const root = this.state.root.slice();
+    root.push({
+      index: c.index,
+      icon: c.icon,
+      label: c.name,
+      id: root.length
+    });
+    this.setState({
+      root
     });
   }
 
@@ -122,7 +139,7 @@ class MainFrame extends React.Component {
               </NavbarHeading>
               <NavbarDivider />
               <Button
-                onClick={this.handleAddComponentClick}
+                onClick={this.handleAddComponentBtnClick}
                 className={Classes.MINIMAL}
                 icon="add"
                 text="Add Component"
@@ -145,7 +162,7 @@ class MainFrame extends React.Component {
               <Icon className="edit-icon" iconSize={10} icon="edit" />
             </h3>
             <div className="tree-container">
-              <ComponentTree nodes={this.state.nodes} />
+              <ComponentTree root={this.state.root} />
             </div>
           </div>
 
@@ -177,6 +194,7 @@ class MainFrame extends React.Component {
             isOpen={showComponentDialog}
             appConfig={appConfig}
             onClose={this.handleComponentDialogClose}
+            addComponentToTree={this.addComponentToTree}
           />
         </main>
       </React.Fragment>

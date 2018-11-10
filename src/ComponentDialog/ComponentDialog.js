@@ -21,8 +21,8 @@ class ComponentDialog extends React.Component {
     this.importReactBlueprintComponents = this.importReactBlueprintComponents.bind(
       this
     );
-    this.handleAddComponentToTree = this.handleAddComponentToTree.bind(this);
   }
+
   componentWillUpdate() {
     const { appConfig } = this.props;
     console.log('componentWillUpdate', appConfig);
@@ -49,17 +49,9 @@ class ComponentDialog extends React.Component {
     });
   }
 
-  handleAddComponentToTree(index) {
-    console.log(
-      'handleAddComponentToTree(). Adding component to tree:',
-      this.state.components[index].name
-    );
-  }
-
   render() {
     const { isOpen, onClose } = this.props;
     const { components } = this.state;
-    console.log('>>>>>>>>>>>>>>>>>>>>> components=', components);
     if (components.length === 0) {
       return <SpinnerOverlay isOpen={isOpen} size={Spinner.SIZE_STANDARD} />;
     } else {
@@ -96,7 +88,10 @@ class ComponentDialog extends React.Component {
                       className="component-card"
                       interactive={true}
                       onClick={() => {
-                        this.handleAddComponentToTree(index);
+                        this.props.addComponentToTree({
+                          ...this.state.components[index],
+                          index
+                        });
                       }}
                     >
                       <div>
@@ -106,9 +101,7 @@ class ComponentDialog extends React.Component {
                       <Button
                         minimal
                         intent={Intent.PRIMARY}
-                        onClick={() => {
-                          this.handleAddComponentToTree(index);
-                        }}
+                        onClick={() => {}}
                       >
                         Add
                       </Button>
