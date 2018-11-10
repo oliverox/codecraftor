@@ -6,9 +6,9 @@ import Panel1 from './Panel1';
 import Panel2 from './Panel2';
 import Panel3 from './Panel3';
 
-import './AppSetupDialog.scss';
+import './AppConfigDialog.scss';
 
-class SetupDialog extends React.Component {
+class AppConfigDialog extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -19,7 +19,7 @@ class SetupDialog extends React.Component {
     this.getPanel = this.getPanel.bind(this);
     this.getValue = this.getValue.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleAppSetupDone = this.handleAppSetupDone.bind(this);
+    this.handleAppConfigDone = this.handleAppConfigDone.bind(this);
   }
 
   getValue(config) {
@@ -63,7 +63,7 @@ class SetupDialog extends React.Component {
           props: {
             getValue: this.getValue,
             onChange: this.handleUpdate,
-            handleAppSetupDone: this.handleAppSetupDone
+            handleAppConfigDone: this.handleAppConfigDone
           }
         };
       default:
@@ -78,10 +78,10 @@ class SetupDialog extends React.Component {
     });
   }
 
-  handleAppSetupDone() {
-    console.log('handleAppSetupDone()');
+  handleAppConfigDone() {
+    console.log('handleAppConfigDone()');
     window.scrollTo(0, 0);
-    this.props.onAppSetupDone({
+    this.props.onAppConfigDone({
       ...this.state
     });
   }
@@ -106,4 +106,4 @@ class SetupDialog extends React.Component {
   }
 }
 
-export default SetupDialog;
+export default AppConfigDialog;

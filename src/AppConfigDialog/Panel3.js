@@ -43,7 +43,7 @@ class Panel3 extends React.Component {
           <Button
             large
             intent={Intent.SUCCESS}
-            onClick={this.props.handleAppSetupDone}
+            onClick={this.props.handleAppConfigDone}
           >
             Done
           </Button>

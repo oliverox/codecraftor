@@ -13,7 +13,7 @@ import {
   Tree
 } from '@blueprintjs/core';
 
-import AppSetupDialog from '../AppSetupDialog/AppSetupDialog';
+import AppConfigDialog from '../AppConfigDialog/AppConfigDialog';
 import ComponentDialog from '../ComponentDialog/ComponentDialog';
 import './MainFrame.scss';
 
@@ -22,7 +22,7 @@ class MainFrame extends React.Component {
     super();
     this.state = {
       pageName: 'Home page',
-      appSetup: true,
+      appConfig: true,
       showComponentDialog: false,
       nodes: [
         {
@@ -49,7 +49,7 @@ class MainFrame extends React.Component {
     };
     this.handleAction = this.handleAction.bind(this);
     this.getNodeAtPath = this.getNodeAtPath.bind(this);
-    this.onAppSetupDone = this.onAppSetupDone.bind(this);
+    this.onAppConfigDone = this.onAppConfigDone.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
     this.handleNodeExpand = this.handleNodeExpand.bind(this);
     this.handleNodeCollapse = this.handleNodeCollapse.bind(this);
@@ -126,18 +126,18 @@ class MainFrame extends React.Component {
     console.log('getNodeAtPath returns:', this.getNodeAtPath(nodePath));
   }
 
-  onAppSetupDone(config) {
-    console.log('onAppSetupDone()', config);
+  onAppConfigDone(appConfig) {
+    console.log('onAppConfigDone()', appConfig);
     this.setState({
-      appSetup: config
+      appConfig
     });
   }
 
   render() {
     const { match } = this.props;
-    const { pageName, appSetup, showComponentDialog } = this.state;
+    const { pageName, appConfig, showComponentDialog } = this.state;
     console.log('craft id =', match.params.craftId);
-    console.log('appSetup=', appSetup);
+    console.log('appConfig=', appConfig);
     console.log('showComponentDialog:', showComponentDialog);
     return (
       <React.Fragment>
@@ -198,16 +198,16 @@ class MainFrame extends React.Component {
             />
           </div>
 
-          {/* App setup */}
-          <AppSetupDialog
-            isOpen={appSetup === true}
-            onAppSetupDone={this.onAppSetupDone}
+          {/* App config */}
+          <AppConfigDialog
+            isOpen={appConfig === true}
+            onAppConfigDone={this.onAppConfigDone}
           />
 
           {/* Component Dialog */}
           <ComponentDialog
             isOpen={showComponentDialog}
-            appConfig={appSetup}
+            appConfig={appConfig}
             onClose={this.handleComponentDialogClose}
           />
         </main>
