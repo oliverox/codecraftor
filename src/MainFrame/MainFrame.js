@@ -48,7 +48,7 @@ class MainFrame extends React.Component {
       .doc(match.params.craftId);
     this.docRef.get().then(doc => {
       if (doc.exists) {
-        const { actions } = doc.data();
+        const { actions, config } = doc.data();
         if (actions.length > 0) {
           const newRoot = this.state.root.slice();
           const updatedChildNodes = [];
@@ -65,7 +65,8 @@ class MainFrame extends React.Component {
             });
           newRoot[0].childNodes = updatedChildNodes;
           this.setState({
-            root: newRoot
+            root: newRoot,
+            appConfig: config
           });
         }
       }
