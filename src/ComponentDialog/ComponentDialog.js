@@ -86,6 +86,8 @@ class ComponentDialog extends React.Component {
                     index: index,
                     icon: c.icon,
                     label: c.label,
+                    childText: c.childText,
+                    childNodes: c.childNodes,
                     description: c.description
                   };
                   return (
