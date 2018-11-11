@@ -171,7 +171,6 @@ class MainFrame extends React.Component {
     });
     this.setState({
       appConfig: newAppConfig,
-      showRootConfigDialog: false
     });
   }
 

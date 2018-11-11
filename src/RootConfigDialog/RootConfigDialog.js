@@ -1,5 +1,5 @@
 import React from 'react';
-import { H6, Overlay } from '@blueprintjs/core';
+import { H6, Overlay, Button } from '@blueprintjs/core';
 import { SketchPicker } from 'react-color';
 
 class RootConfigDialog extends React.Component {
@@ -18,7 +18,10 @@ class RootConfigDialog extends React.Component {
   }
   render() {
     const { globalCss = false, isOpen, onClose } = this.props;
-    const backgroundColor = (globalCss && globalCss.backgroundColor) ? globalCss.backgroundColor : '#fff';
+    const backgroundColor =
+      globalCss && globalCss.backgroundColor
+        ? globalCss.backgroundColor
+        : '#fff';
     return (
       <Overlay
         isOpen={isOpen}
@@ -27,7 +30,22 @@ class RootConfigDialog extends React.Component {
         canOutsideClickClose={true}
       >
         <div className="overlay-content root-config-dialog-content">
-          <H6>Choose a background color</H6>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingBottom: '5px'
+            }}
+          >
+            <H6>Choose a background color</H6>
+            <Button
+              className="dialog-close-button"
+              minimal
+              icon="cross"
+              onClick={onClose}
+            />
+          </div>
           <SketchPicker
             color={backgroundColor}
             onChangeComplete={this.handleBackgroundColorUpdate}

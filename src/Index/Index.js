@@ -49,8 +49,8 @@ class Index extends React.Component {
             <H6 className="app-subtitle">
               The future of web development.
               <br />
-              <span style={{ color: 'orange', fontSize: '9px' }}>
-                *a work in progress*
+              <span style={{ color: 'orange', fontSize: '10px' }}>
+                * a work in progress * <br/>* not mobile-friendly yet *
               </span>
             </H6>
           </div>
