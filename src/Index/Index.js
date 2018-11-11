@@ -50,7 +50,7 @@ class Index extends React.Component {
               The future of web development.
               <br />
               <span style={{ color: 'orange', fontSize: '10px' }}>
-                * a work in progress * <br/>* not mobile-friendly yet *
+                * a work in progress * <br />* not mobile-friendly yet *
               </span>
             </H6>
           </div>
@@ -60,14 +60,17 @@ class Index extends React.Component {
             <div className="index-main-content-section">
               <h2>What is Codecraftor?</h2>
               <p>
-                Codecraftor is a web site creation tool in between WYSIWYG and
-                coding from scratch. With the advent of componentization of the
-                web, we can now look at a web site as a composition of simple
-                and complex components. Codecraftor aims to become a tool to
-                allow web developers (or anyone), to lay down web components on
-                a page and allow their complete customizations. Even though this
-                idea had been lingering in my head for the past three years,
-                Codecraftor was only started as part of the{' '}
+                Codecraftor aims to simplify web development by composing fully
+                functional web apps visually with simple and complex reusable
+                components. What this means is that Codecraftor is a web site
+                creation tool in between WYSIWYG and coding from scratch. With
+                the advent of componentization of the web, we can now look at a
+                web site as a composition of simple and complex components.
+                Codecraftor aims to become a tool to allow web developers (or
+                anyone), to lay down web components on a page and allow their
+                complete customizations. Even though this idea had been
+                lingering in my head for the past three years, Codecraftor was
+                only started as part of the{' '}
                 <a href="https://pioneer.app">
                   Pioneer October 2018 Tournament
                 </a>{' '}
