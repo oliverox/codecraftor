@@ -6,10 +6,15 @@ import './ComponentTree.scss';
 class ComponentTree extends React.Component {
   constructor(props) {
     super();
+    this.handleNodeClick = this.handleNodeClick.bind(this);
   }
 
   handleNodeClick(node, nodePath) {
     console.log('handleNodeClick()', node, nodePath);
+    if (nodePath.length === 1 && nodePath[0] === 0) {
+      // Root component clicked, therefore configure global CSS
+      this.props.showRootConfigDialog();
+    }
   }
 
   handleNodeCollapse(node, nodePath) {

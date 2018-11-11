@@ -5,6 +5,7 @@ import { Icon } from '@blueprintjs/core';
 import NavbarHeader from '../NavbarHeader/NavbarHeader';
 import AppConfigDialog from '../AppConfigDialog/AppConfigDialog';
 import ComponentDialog from '../ComponentDialog/ComponentDialog';
+import RootConfigDialog from '../RootConfigDialog/RootConfigDialog';
 import ComponentTree from '../ComponentTree/ComponentTree';
 
 import './MainFrame.scss';
@@ -15,6 +16,7 @@ class MainFrame extends React.Component {
     this.state = {
       pageName: 'Home page',
       appConfig: true,
+      showRootConfigDialog: false,
       showComponentDialog: false,
       root: [
         {
@@ -37,6 +39,11 @@ class MainFrame extends React.Component {
       this
     );
     this.addComponentToTree = this.addComponentToTree.bind(this);
+    this.showRootConfigDialog = this.showRootConfigDialog.bind(this);
+    this.handleRootConfigDialogClose = this.handleRootConfigDialogClose.bind(
+      this
+    );
+    this.updateRootConfig = this.updateRootConfig.bind(this);
   }
 
   componentDidMount() {
@@ -118,6 +125,11 @@ class MainFrame extends React.Component {
       case 'CONFIG':
         this.docRef
           .update({
+            actions: firebase.firestore.FieldValue.arrayUnion({
+              id: shortid.generate(),
+              action: cmd,
+              ...params
+            }),
             config: { ...params }
           })
           .catch(err => {
@@ -139,9 +151,36 @@ class MainFrame extends React.Component {
     });
   }
 
+  showRootConfigDialog() {
+    this.setState({
+      showRootConfigDialog: true
+    });
+  }
+
+  handleRootConfigDialogClose() {
+    this.setState({
+      showRootConfigDialog: false
+    });
+  }
+
+  updateRootConfig(rootConfig) {
+    const newAppConfig = Object.assign(this.state.appConfig, rootConfig);
+    this.setState({
+      appConfig: newAppConfig
+    });
+    this.handleAction('CONFIG', {
+      ...newAppConfig
+    });
+  }
+
   render() {
     const { match } = this.props;
-    const { pageName, appConfig, showComponentDialog } = this.state;
+    const {
+      pageName,
+      appConfig,
+      showRootConfigDialog,
+      showComponentDialog
+    } = this.state;
     console.log('craft id =', match.params.craftId);
     console.log('appConfig=', appConfig);
     console.log('showComponentDialog:', showComponentDialog);
@@ -158,7 +197,10 @@ class MainFrame extends React.Component {
               <Icon className="edit-icon" iconSize={10} icon="edit" />
             </h3>
             <div className="tree-container">
-              <ComponentTree root={this.state.root} />
+              <ComponentTree
+                root={this.state.root}
+                showRootConfigDialog={this.showRootConfigDialog}
+              />
             </div>
           </div>
 
@@ -191,6 +233,14 @@ class MainFrame extends React.Component {
             appConfig={appConfig}
             onClose={this.handleComponentDialogClose}
             addComponentToTree={this.addComponentToTree}
+          />
+
+          {/* Root Config Dialog */}
+          <RootConfigDialog
+            globalCss={this.state.appConfig.globalCss}
+            isOpen={showRootConfigDialog}
+            onClose={this.handleRootConfigDialogClose}
+            updateRootConfig={this.updateRootConfig}
           />
         </main>
       </React.Fragment>
