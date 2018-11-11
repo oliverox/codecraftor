@@ -14,7 +14,8 @@ class AppConfigDialog extends React.Component {
     this.state = {
       webFramework: 'react',
       uiToolkit: 'blueprint',
-      pageLayout: 'fullWidth'
+      pageLayout: 'fullWidth',
+      globalCss: false
     };
     this.getPanel = this.getPanel.bind(this);
     this.getValue = this.getValue.bind(this);
