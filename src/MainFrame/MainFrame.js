@@ -101,7 +101,8 @@ class MainFrame extends React.Component {
     });
     this.handleAction('ADD', componentMeta);
     this.setState({
-      root: [root]
+      root: [root],
+      showComponentDialog: false
     });
   }
 
@@ -165,11 +166,12 @@ class MainFrame extends React.Component {
 
   updateRootConfig(rootConfig) {
     const newAppConfig = Object.assign(this.state.appConfig, rootConfig);
-    this.setState({
-      appConfig: newAppConfig
-    });
     this.handleAction('CONFIG', {
       ...newAppConfig
+    });
+    this.setState({
+      appConfig: newAppConfig,
+      showRootConfigDialog: false
     });
   }
 
