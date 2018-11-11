@@ -24,10 +24,15 @@
   color: #fff;
 }
 .index-main {
-  margin: 20px 100px 20px 100px;
+  display: flex;
+  justify-content: center;
+  margin: 20px 20px;
 }
 .index-main p {
   line-height: 24px;
+}
+.index-main-content {
+  max-width: 900px;
 }
 .index-main-content-section {
   padding-bottom: 18px;
