@@ -81,14 +81,10 @@ class ComponentDialog extends React.Component {
                     onClick={onClose}
                   />
                 </div>
-                {components.map((c, index) => {
+                {components.map((meta, index) => {
                   const componentMeta = {
                     index: index,
-                    icon: c.icon,
-                    label: c.label,
-                    childText: c.childText,
-                    childNodes: c.childNodes,
-                    description: c.description
+                    ...meta
                   };
                   return (
                     <Card
@@ -102,8 +98,8 @@ class ComponentDialog extends React.Component {
                       }}
                     >
                       <div>
-                        <H5 intent={Intent.PRIMARY}>{c.name}</H5>
-                        <p>{c.description}</p>
+                        <H5 intent={Intent.PRIMARY}>{componentMeta.name}</H5>
+                        <p>{componentMeta.description}</p>
                       </div>
                       <Button
                         minimal

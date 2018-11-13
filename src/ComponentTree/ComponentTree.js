@@ -11,9 +11,24 @@ class ComponentTree extends React.Component {
 
   handleNodeClick(node, nodePath) {
     console.log('handleNodeClick()', node, nodePath);
+    const { appConfig } = this.props;
     if (nodePath.length === 1 && nodePath[0] === 0) {
       // Root component clicked, therefore configure global CSS
       this.props.showRootConfigDialog();
+    } else {
+      import(`../components/${appConfig.webFramework}/${
+        appConfig.uiToolkit
+      }/components`).then(componentList => {
+        this.props.showComponentConfigDialog(
+          Object.assign(
+            {
+              index: node.index,
+              id: node.id
+            },
+            componentList.default[node.index]
+          )
+        );
+      });
     }
   }
 

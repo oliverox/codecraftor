@@ -7,6 +7,7 @@ import AppConfigDialog from '../AppConfigDialog/AppConfigDialog';
 import ComponentDialog from '../ComponentDialog/ComponentDialog';
 import RootConfigDialog from '../RootConfigDialog/RootConfigDialog';
 import ComponentTree from '../ComponentTree/ComponentTree';
+import ComponentConfigDialog from '../ComponentConfigDialog/ComponentConfigDialog';
 
 import './MainFrame.scss';
 
@@ -16,7 +17,9 @@ class MainFrame extends React.Component {
     this.state = {
       pageName: 'Home page',
       appConfig: true,
+      componentToConfigure: false,
       showRootConfigDialog: false,
+      showComponentConfigDialog: false,
       showComponentDialog: false,
       root: [
         {
@@ -26,7 +29,6 @@ class MainFrame extends React.Component {
           label: 'Root',
           isExpanded: true,
           childNodes: []
-          // secondaryLabel: <Icon icon="cog" />
         }
       ]
     };
@@ -44,6 +46,13 @@ class MainFrame extends React.Component {
       this
     );
     this.updateRootConfig = this.updateRootConfig.bind(this);
+    this.showComponentConfigDialog = this.showComponentConfigDialog.bind(this);
+    this.handleComponentConfigDialogClose = this.handleComponentConfigDialogClose.bind(
+      this
+    );
+    this.handleUpdateComponentConfig = this.handleUpdateComponentConfig.bind(
+      this
+    );
   }
 
   componentDidMount() {
@@ -62,13 +71,8 @@ class MainFrame extends React.Component {
           actions
             .filter(act => act.action === 'ADD')
             .forEach(act => {
-              updatedChildNodes.push({
-                id: act.id,
-                hasCaret: false,
-                icon: act.icon,
-                label: act.label,
-                isExpanded: false
-              });
+              const { action, ...others } = act;
+              updatedChildNodes.push({ ...others });
             });
           newRoot[0].childNodes = updatedChildNodes;
           this.setState({
@@ -94,12 +98,13 @@ class MainFrame extends React.Component {
 
   addComponentToTree(componentMeta) {
     console.log('addComponentToTree()', componentMeta);
+    const { component, ...meta } = componentMeta;
     const root = this.state.root.slice()[0];
+    meta.id = shortid.generate();
     root.childNodes.push({
-      ...componentMeta,
-      id: root.childNodes.length
+      ...meta
     });
-    this.handleAction('ADD', componentMeta);
+    this.handleAction('ADD', meta);
     this.setState({
       root: [root],
       showComponentDialog: false
@@ -113,7 +118,6 @@ class MainFrame extends React.Component {
         this.docRef
           .update({
             actions: firebase.firestore.FieldValue.arrayUnion({
-              id: shortid.generate(),
               action: cmd,
               ...params
             })
@@ -137,6 +141,36 @@ class MainFrame extends React.Component {
             console.log('Error updating document.', err);
           });
         break;
+
+      case 'UPDATE':
+        this.docRef.get().then(doc => {
+          const actions = doc.data().actions;
+          let actionIndex;
+          const act = actions.filter((entry, index) => {
+            actionIndex = index;
+            return (
+              entry.action === 'ADD' &&
+              entry.id === this.state.componentToConfigure.id
+            );
+          });
+          if (act.length > 0) {
+            let updatedAction = act[0];
+            updatedAction.props = { ...updatedAction.props, ...params.props };
+            actions[actionIndex] = updatedAction;
+            this.docRef
+              .update({
+                actions
+              })
+              .catch(err => {
+                console.log('Error updating document.', err);
+              });
+          }
+          this.setState({
+            componentToConfigure: false
+          });
+        });
+        break;
+
       default:
         break;
     }
@@ -149,6 +183,13 @@ class MainFrame extends React.Component {
     });
     this.handleAction('CONFIG', {
       ...appConfig
+    });
+  }
+
+  showComponentConfigDialog(c) {
+    this.setState({
+      componentToConfigure: c,
+      showComponentConfigDialog: true
     });
   }
 
@@ -170,7 +211,26 @@ class MainFrame extends React.Component {
       ...newAppConfig
     });
     this.setState({
-      appConfig: newAppConfig,
+      appConfig: newAppConfig
+    });
+  }
+
+  handleUpdateComponentConfig(componentConfig) {
+    console.log('MainFrame: handleUpdateComponentConfig()', componentConfig);
+    if (Object.keys(componentConfig).length > 0) {
+      this.handleAction('UPDATE', {
+        id: this.state.componentToConfigure.id,
+        props: {
+          ...componentConfig
+        }
+      });
+    }
+    this.handleComponentConfigDialogClose();
+  }
+
+  handleComponentConfigDialogClose() {
+    this.setState({
+      showComponentConfigDialog: false
     });
   }
 
@@ -179,6 +239,8 @@ class MainFrame extends React.Component {
     const {
       pageName,
       appConfig,
+      componentToConfigure,
+      showComponentConfigDialog,
       showRootConfigDialog,
       showComponentDialog
     } = this.state;
@@ -197,10 +259,14 @@ class MainFrame extends React.Component {
               {pageName}{' '}
               <Icon className="edit-icon" iconSize={10} icon="edit" />
             </h3>
+
+            {/* Component Tree */}
             <div className="tree-container">
               <ComponentTree
                 root={this.state.root}
+                appConfig={this.state.appConfig}
                 showRootConfigDialog={this.showRootConfigDialog}
+                showComponentConfigDialog={this.showComponentConfigDialog}
               />
             </div>
           </div>
@@ -234,6 +300,14 @@ class MainFrame extends React.Component {
             appConfig={appConfig}
             onClose={this.handleComponentDialogClose}
             addComponentToTree={this.addComponentToTree}
+          />
+
+          {/* Component config dialog */}
+          <ComponentConfigDialog
+            isOpen={showComponentConfigDialog}
+            componentToConfigure={componentToConfigure}
+            handleUpdateComponentConfig={this.handleUpdateComponentConfig}
+            onClose={this.handleComponentConfigDialogClose}
           />
 
           {/* Root Config Dialog */}
