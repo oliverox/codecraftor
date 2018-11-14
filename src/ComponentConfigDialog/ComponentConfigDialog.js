@@ -12,13 +12,10 @@ class ComponentConfigDialog extends React.Component {
   }
 
   handlePropUpdate(e) {
-    console.log(
-      'handlePropUpdate()',
-      e.target.getAttribute('propname'),
-      e.target.value
-    );
     this.setState({
-      [e.target.getAttribute('propname')]: e.target.value
+      [e.target.getAttribute('propname')]: {
+        value: e.target.value
+      }
     });
   }
 
@@ -48,7 +45,7 @@ class ComponentConfigDialog extends React.Component {
             <InputGroup
               large
               propname={key}
-              placeholder={props[key].default}
+              placeholder={props[key].value || props[key].default}
               onChange={this.handlePropUpdate}
             />
           </Label>

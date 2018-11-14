@@ -147,16 +147,23 @@ class MainFrame extends React.Component {
           const actions = doc.data().actions;
           let actionIndex;
           const act = actions.filter((entry, index) => {
-            actionIndex = index;
-            return (
-              entry.action === 'ADD' &&
-              entry.id === this.state.componentToConfigure.id
-            );
+            if (entry.action === 'ADD' && entry.id === this.state.componentToConfigure.id) {
+              actionIndex = index;
+              return true;
+            } else {
+              return false;
+            }
           });
           if (act.length > 0) {
             let updatedAction = act[0];
-            updatedAction.props = { ...updatedAction.props, ...params.props };
+            if (params.props.children) {
+              updatedAction.props.children.value = params.props.children.value;
+            }
             actions[actionIndex] = updatedAction;
+            actions.push({
+              action: 'UPDATE',
+              ...params
+            });
             this.docRef
               .update({
                 actions
