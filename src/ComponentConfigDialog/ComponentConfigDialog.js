@@ -44,10 +44,28 @@ class ComponentConfigDialog extends React.Component {
             {key === 'children' ? 'Value' : key}
             <InputGroup
               large
+              value={props[key].value || props[key].default}
               propname={key}
               placeholder={props[key].value || props[key].default}
               onChange={this.handlePropUpdate}
             />
+          </Label>
+        );
+      } else if (Array.isArray(props[key].type)) {
+        propsArr.push(
+          <Label key={propsArr.length} className="comp-config-prop-label">
+            {key}
+            <div className="bp3-select">
+              <select propname={key} onChange={this.handlePropUpdate}>
+                {props[key].type.map((item, index) => {
+                  return (
+                    <option key={index} value={item}>
+                      {item}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
           </Label>
         );
       }

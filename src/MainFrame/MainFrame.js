@@ -156,9 +156,9 @@ class MainFrame extends React.Component {
           });
           if (act.length > 0) {
             let updatedAction = act[0];
-            if (params.props.children) {
-              updatedAction.props.children.value = params.props.children.value;
-            }
+            Object.keys(params.props).forEach(p => {
+              updatedAction.props[p].value = params.props[p].value;
+            })
             actions[actionIndex] = updatedAction;
             actions.push({
               action: 'UPDATE',

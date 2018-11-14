@@ -40,17 +40,6 @@ class ComponentTree extends React.Component {
     console.log('handleNodeExpand()', node, nodePath);
   }
 
-  getNodeAtPath(nodePath) {
-    // const nodesClone = this.state.nodes.slice();
-    // let pointer = nodesClone[nodePath[0]];
-    // console.log('pointer:', pointer);
-    // for (let n = 1; n < nodePath.length; n++) {
-    //   pointer = pointer[nodePath[n]];
-    //   console.log('pointer:', pointer);
-    // }
-    // return pointer;
-  }
-
   render() {
     const { root } = this.props;
     return (
