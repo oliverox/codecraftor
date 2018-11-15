@@ -21,11 +21,12 @@ class ComponentTree extends React.Component {
       }/components`).then(componentList => {
         this.props.showComponentConfigDialog(
           Object.assign(
+            componentList.default[node.index],
             {
               index: node.index,
-              id: node.id
-            },
-            componentList.default[node.index]
+              id: node.id,
+              props: node.props
+            }
           )
         );
       });

@@ -147,7 +147,10 @@ class MainFrame extends React.Component {
           const actions = doc.data().actions;
           let actionIndex;
           const act = actions.filter((entry, index) => {
-            if (entry.action === 'ADD' && entry.id === this.state.componentToConfigure.id) {
+            if (
+              entry.action === 'ADD' &&
+              entry.id === params.id
+            ) {
               actionIndex = index;
               return true;
             } else {
@@ -158,7 +161,7 @@ class MainFrame extends React.Component {
             let updatedAction = act[0];
             Object.keys(params.props).forEach(p => {
               updatedAction.props[p].value = params.props[p].value;
-            })
+            });
             actions[actionIndex] = updatedAction;
             actions.push({
               action: 'UPDATE',
@@ -237,6 +240,7 @@ class MainFrame extends React.Component {
 
   handleComponentConfigDialogClose() {
     this.setState({
+      componentToConfigure: false,
       showComponentConfigDialog: false
     });
   }
@@ -310,12 +314,14 @@ class MainFrame extends React.Component {
           />
 
           {/* Component config dialog */}
-          <ComponentConfigDialog
-            isOpen={showComponentConfigDialog}
-            componentToConfigure={componentToConfigure}
-            handleUpdateComponentConfig={this.handleUpdateComponentConfig}
-            onClose={this.handleComponentConfigDialogClose}
-          />
+          {componentToConfigure && (
+            <ComponentConfigDialog
+              isOpen={showComponentConfigDialog}
+              componentToConfigure={componentToConfigure}
+              handleUpdateComponentConfig={this.handleUpdateComponentConfig}
+              onClose={this.handleComponentConfigDialogClose}
+            />
+          )}
 
           {/* Root Config Dialog */}
           <RootConfigDialog

@@ -22,6 +22,25 @@ class ComponentConfigDialog extends React.Component {
     this.handlePropUpdate = this.handlePropUpdate.bind(this);
   }
 
+  componentWillMount() {
+    const newState = {};
+    const { componentToConfigure } = this.props;
+    if (!componentToConfigure) {
+      return;
+    }
+    Object.keys(componentToConfigure.props).forEach(key => {
+      const value = componentToConfigure.props[key].value;
+      if (value) {
+        newState[key] = {
+          value
+        };
+      }
+    });
+    if (Object.keys(newState).length > 0) {
+      this.setState(newState);
+    }
+  }
+
   handlePropUpdate(e) {
     this.setState({
       [e.target.getAttribute('propname')]: {
@@ -31,8 +50,6 @@ class ComponentConfigDialog extends React.Component {
   }
 
   handleUpdateConfig() {
-    const { componentToConfigure } = this.props;
-    console.log(componentToConfigure);
     this.props.handleUpdateComponentConfig(this.state);
   }
 
@@ -55,9 +72,10 @@ class ComponentConfigDialog extends React.Component {
             {key === 'children' ? 'Value' : key}
             <InputGroup
               large
-              // value={props[key].value || props[key].default}
+              value={
+                this.state[key] ? this.state[key].value : props[key].default
+              }
               propname={key}
-              placeholder={props[key].value || props[key].default}
               onChange={this.handlePropUpdate}
             />
           </Label>
@@ -67,7 +85,13 @@ class ComponentConfigDialog extends React.Component {
           <Label key={propsArr.length} className="comp-config-prop-label">
             {key}
             <div className="bp3-select">
-              <select propname={key} onChange={this.handlePropUpdate}>
+              <select
+                propname={key}
+                onChange={this.handlePropUpdate}
+                value={
+                  this.state[key] ? this.state[key].value : props[key].default
+                }
+              >
                 {props[key].type.map((item, index) => {
                   return (
                     <option key={index} value={item}>
