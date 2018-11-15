@@ -1,7 +1,18 @@
 import React from 'react';
-import { Button, Overlay, InputGroup, Label, Intent } from '@blueprintjs/core';
+import {
+  Button,
+  Overlay,
+  InputGroup,
+  Label,
+  Intent,
+  Switch
+} from '@blueprintjs/core';
 
 import './ComponentConfigDialog.scss';
+
+const capitalize = str => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 
 class ComponentConfigDialog extends React.Component {
   constructor(props) {
@@ -44,7 +55,7 @@ class ComponentConfigDialog extends React.Component {
             {key === 'children' ? 'Value' : key}
             <InputGroup
               large
-              value={props[key].value || props[key].default}
+              // value={props[key].value || props[key].default}
               propname={key}
               placeholder={props[key].value || props[key].default}
               onChange={this.handlePropUpdate}
@@ -67,6 +78,16 @@ class ComponentConfigDialog extends React.Component {
               </select>
             </div>
           </Label>
+        );
+      } else if (props[key].type === 'boolean') {
+        propsArr.push(
+          <Switch
+            propname={key}
+            key={propsArr.length}
+            // checked={false}
+            label={capitalize(key)}
+            onChange={this.handlePropUpdate}
+          />
         );
       }
       // Add more props update here...
