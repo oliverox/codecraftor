@@ -53,6 +53,7 @@ class MainFrame extends React.Component {
     this.handleUpdateComponentConfig = this.handleUpdateComponentConfig.bind(
       this
     );
+    this.updateNodeAtPath = this.updateNodeAtPath.bind(this);
   }
 
   componentDidMount() {
@@ -76,7 +77,6 @@ class MainFrame extends React.Component {
             });
           newRoot[0].childNodes = updatedChildNodes;
           this.setState({
-            root: newRoot,
             appConfig: config
           });
         }
@@ -96,17 +96,40 @@ class MainFrame extends React.Component {
     });
   }
 
+  getNodeAtPath(nodePath) {
+    let node = this.state.root[0];
+    for (let i = 1; i < nodePath.length; i++) {
+      node = node.childNodes[nodePath[i]];
+    }
+    return node;
+  }
+
+  updateNodeAtPath(nodePath, newNode) {
+    let tree = this.state.root[0];
+    let nodeIndex = nodePath[0];
+    return tree.childNodes.map((node, index) => {
+      if (nodeIndex === index && nodePath.length > 1) {
+        return this.updateNodeAtPath(nodePath.slice(1), newNode);
+      } else if (nodeIndex === index && nodePath.length === 1) {
+        Object.keys(newNode.props).forEach(p => {
+          node.props[p].value = newNode.props[p].value;
+        })
+        return node;
+      } else {
+        return node;
+      }
+    });
+  }
+
   addComponentToTree(componentMeta) {
     console.log('addComponentToTree()', componentMeta);
     const { component, ...meta } = componentMeta;
-    const root = this.state.root.slice()[0];
     meta.id = shortid.generate();
-    root.childNodes.push({
+    this.state.root[0].childNodes.push({
       ...meta
     });
     this.handleAction('ADD', meta);
     this.setState({
-      root: [root],
       showComponentDialog: false
     });
   }
@@ -115,6 +138,9 @@ class MainFrame extends React.Component {
     console.log('MainFrame - handleAction', cmd, params);
     switch (cmd) {
       case 'ADD':
+        const { getLabel } = params;
+        params.label = getLabel(params);
+        delete params.getLabel;
         this.docRef
           .update({
             actions: firebase.firestore.FieldValue.arrayUnion({
@@ -147,10 +173,7 @@ class MainFrame extends React.Component {
           const actions = doc.data().actions;
           let actionIndex;
           const act = actions.filter((entry, index) => {
-            if (
-              entry.action === 'ADD' &&
-              entry.id === params.id
-            ) {
+            if (entry.action === 'ADD' && entry.id === params.id) {
               actionIndex = index;
               return true;
             } else {
@@ -159,9 +182,11 @@ class MainFrame extends React.Component {
           });
           if (act.length > 0) {
             let updatedAction = act[0];
+            const { componentToConfigure } = this.state;
             Object.keys(params.props).forEach(p => {
               updatedAction.props[p].value = params.props[p].value;
             });
+            updatedAction.label = componentToConfigure.getLabel(updatedAction);
             actions[actionIndex] = updatedAction;
             actions.push({
               action: 'UPDATE',
@@ -174,10 +199,27 @@ class MainFrame extends React.Component {
               .catch(err => {
                 console.log('Error updating document.', err);
               });
+            // update component Tree with updated node
+            console.log('Updated node is at:', componentToConfigure.nodePath);
+            console.log(
+              'And node is:',
+              this.getNodeAtPath(componentToConfigure.nodePath)
+            );
+            let newTree = this.updateNodeAtPath(
+              componentToConfigure.nodePath,
+              params
+            );
+            console.log('this.state.root=', this.state.root);
+            console.log('[newTree]=', [newTree]);
+            this.setState({
+              // root: newTree,
+              componentToConfigure: false
+            });
+          } else {
+            this.setState({
+              componentToConfigure: false
+            });
           }
-          this.setState({
-            componentToConfigure: false
-          });
         });
         break;
 
@@ -240,7 +282,7 @@ class MainFrame extends React.Component {
 
   handleComponentConfigDialogClose() {
     this.setState({
-      componentToConfigure: false,
+      // componentToConfigure: false,
       showComponentConfigDialog: false
     });
   }

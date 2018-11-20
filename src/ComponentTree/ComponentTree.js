@@ -4,7 +4,7 @@ import { Tree } from '@blueprintjs/core';
 import './ComponentTree.scss';
 
 class ComponentTree extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
     this.handleNodeClick = this.handleNodeClick.bind(this);
   }
@@ -12,24 +12,23 @@ class ComponentTree extends React.Component {
   handleNodeClick(node, nodePath) {
     console.log('handleNodeClick()', node, nodePath);
     const { appConfig } = this.props;
+    const { webFramework, uiToolkit } = appConfig;
     if (nodePath.length === 1 && nodePath[0] === 0) {
       // Root component clicked, therefore configure global CSS
       this.props.showRootConfigDialog();
     } else {
-      import(`../components/${appConfig.webFramework}/${
-        appConfig.uiToolkit
-      }/components`).then(componentList => {
-        this.props.showComponentConfigDialog(
-          Object.assign(
-            componentList.default[node.index],
-            {
+      import(`../components/${webFramework}/${uiToolkit}/components`).then(
+        componentList => {
+          this.props.showComponentConfigDialog(
+            Object.assign(componentList.default[node.index], {
               index: node.index,
               id: node.id,
-              props: node.props
-            }
-          )
-        );
-      });
+              props: node.props,
+              nodePath
+            })
+          );
+        }
+      );
     }
   }
 
