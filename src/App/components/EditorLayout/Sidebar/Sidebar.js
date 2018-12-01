@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tab, Tabs } from '@blueprintjs/core';
-import { HomePanel, PagesPanel, ThemesPanel, ComponentsPanel } from './Panels';
+import { HomeTab, PagesTab, ThemesTab, ComponentsTab } from './Tabs';
 
 import styles from './Sidebar.module.css';
 
@@ -26,12 +26,11 @@ class SideBar extends React.Component {
         >
           <Tab
             id="home"
-            title=""
-            panel={<HomePanel sendPageMetaToFrame={sendPageMetaToFrame} />}
+            panel={<HomeTab sendPageMetaToFrame={sendPageMetaToFrame} />}
           />
-          <Tab id="pages" title="" panel={<PagesPanel />} />
-          <Tab id="components" title="" panel={<ComponentsPanel />} />
-          <Tab id="themes" title="" panel={<ThemesPanel />} />
+          <Tab id="pages" panel={<PagesTab />} />
+          <Tab id="components" panel={<ComponentsTab />} />
+          <Tab id="themes" panel={<ThemesTab />} />
         </Tabs>
       </div>
     );
