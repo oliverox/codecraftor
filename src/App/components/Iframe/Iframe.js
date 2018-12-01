@@ -18,13 +18,16 @@ class Iframe extends React.Component {
   }
 
   render() {
-    const { craftId } = this.props;
+    const { craftId, currentPageTitle } = this.props;
     return (
       <div className={styles.iframeContainer} ref={this.iframeContainerRef}>
         <div className={styles.iframeBrowserHeader}>
-          <div className={styles.iframeBrowserButton} />
-          <div className={styles.iframeBrowserButton} />
-          <div className={styles.iframeBrowserButton} />
+          <div className={styles.iframeBrowserButtonContainer}>
+            <div className={styles.iframeBrowserButton} />
+            <div className={styles.iframeBrowserButton} />
+            <div className={styles.iframeBrowserButton} />
+          </div>
+          <div className={styles.iframePageTitle}>{currentPageTitle}</div>
         </div>
         <iframe
           ref={this.iframeRef}

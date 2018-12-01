@@ -11,7 +11,8 @@ class MainFrame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTab: 'home'
+      currentTab: 'home',
+      currentPageTitle: 'Index'
     };
     this.iframeRef = false;
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
@@ -97,6 +98,7 @@ class MainFrame extends React.Component {
           <Iframe
             craftId={match.params.craftId}
             setIframeRef={this.setIframeRef}
+            currentPageTitle={this.state.currentPageTitle}
           />
         </main>
       </>

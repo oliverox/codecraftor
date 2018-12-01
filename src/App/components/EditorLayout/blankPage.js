@@ -28,7 +28,7 @@ export default {
           id: 'container001',
           componentName: 'Container',
           props:
-            '{"style":{"width":500,"height":500,"backgroundColor":"blue"}}',
+            '{"style":{"width":500,"height":500,"backgroundColor":"hotpink"}}',
           children: ['span001']
         },
         {
