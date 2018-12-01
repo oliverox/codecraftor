@@ -5,11 +5,10 @@ import 'firebase/firestore';
 import 'normalize.css/normalize.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
-import './App.scss';
 import Index from '../Index/Index';
-import MainFrame from '../MainFrame/MainFrame';
+import EditorLayout from './components/EditorLayout/EditorLayout';
 
-/* MainFrame App */
+import styles from './App.module.css';
 
 class App extends Component {
   componentWillMount() {
@@ -27,11 +26,11 @@ class App extends Component {
     console.log('rendering App');
     return (
       <Router>
-        <div className="app">
+        <div className={styles.app}>
           <Route path="/" exact component={Index} />
           <Route
-            path="/new/:craftId"
-            render={props => <MainFrame {...props} />}
+            path="/craft/:craftId"
+            render={props => <EditorLayout {...props} />}
           />
         </div>
       </Router>

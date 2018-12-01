@@ -1,0 +1,10 @@
+.navbarHeading {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #fff;
+}
+.navbarButton > span {
+  color: #fff;
+  font-size: 13px;
+}
