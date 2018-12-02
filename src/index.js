@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import { FocusStyleManager } from '@blueprintjs/core';
+import 'typeface-montserrat';
 import App from './App';
 
 FocusStyleManager.onlyShowFocusOnTabs();

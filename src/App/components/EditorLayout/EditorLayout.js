@@ -3,9 +3,9 @@ import firebase from 'firebase/app';
 import NavbarHeader from './NavbarHeader/NavbarHeader';
 import Sidebar from './Sidebar/Sidebar';
 import Iframe from '../Iframe/Iframe';
+import { BlankPage } from './templates';
 
 import styles from './EditorLayout.module.css';
-import blankPage from './blankPage';
 
 class MainFrame extends React.Component {
   constructor(props) {
@@ -30,13 +30,13 @@ class MainFrame extends React.Component {
       .doc(match.params.craftId);
     this.docRef.get().then(doc => {
       if (doc.exists) {
-        const { siteMeta = blankPage } = doc.data();
+        const { siteMeta = BlankPage } = doc.data();
         this.setState({
           siteMeta
         });
       } else {
         this.setState({
-          siteMeta: blankPage
+          siteMeta: BlankPage
         });
       }
     });
