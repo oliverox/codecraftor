@@ -1,0 +1,14 @@
+.dropContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  margin: 50px;
+  color: #696c71;
+  border: 2px dashed #888;
+  font-family: 'Montserrat', sans-serif;
+}
+.isDragOver {
+  border-color: #364699;
+  color: #364699;
+}

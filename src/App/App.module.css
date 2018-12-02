@@ -1,16 +1,5 @@
-html {
-  height: 100%;
-}
-body {
-  height: 100%;
-  background-color: #f2f2f2;
-  font-family: 'Montserrat', sans-serif;
-}
-.root {
-  height: 100%;
-}
-.app {
+.mainframe {
   display: flex;
-  flex-direction: column;
-  height: 100%;
+  flex: 1;
+  overflow: hidden;
 }

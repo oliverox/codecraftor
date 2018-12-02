@@ -1,0 +1,11 @@
+.componentContainer {
+  margin-bottom: 10px;
+  color: #505050;
+}
+.componentItem {
+  display: flex;
+  align-items: center;
+}
+.componentItemIcon {
+  padding-right:10px;
+}

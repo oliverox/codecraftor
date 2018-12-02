@@ -8,7 +8,7 @@ export default {
       imports: ['Container', 'Span'],
       root: {
         componentName: 'Container',
-        props: '{"style":{"color":"darkgrey"}}',
+        props: '{"style":{"color":"black"}}',
         children: ['container001']
       },
       components: [
@@ -16,7 +16,7 @@ export default {
           id: 'container001',
           componentName: 'Container',
           props:
-            '{"style":{"backgroundColor":"lightblue"}}',
+            '{"style":{"backgroundColor":"lightblue", "display":"flex","justifyContent":"center","alignItems":"center"}}',
           children: ['span001']
         },
         {

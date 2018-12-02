@@ -1,11 +1,19 @@
 import React from 'react';
 import firebase from 'firebase/app';
-import NavbarHeader from './NavbarHeader/NavbarHeader';
-import Sidebar from './Sidebar/Sidebar';
-import Iframe from '../Iframe/Iframe';
-import { BlankPage } from './templates';
+import 'firebase/firestore';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+import '@blueprintjs/core/lib/css/blueprint.css';
+import { FocusStyleManager } from '@blueprintjs/core';
 
-import styles from './EditorLayout.module.css';
+import NavbarHeader from '../appComponents/NavbarHeader/NavbarHeader';
+import Sidebar from '../appComponents/Sidebar/Sidebar';
+import Iframe from '../appComponents/Iframe/Iframe';
+import { BlankPage } from '../templates';
+
+import 'typeface-montserrat';
+import styles from './App.module.css';
+
+FocusStyleManager.onlyShowFocusOnTabs();
 
 class MainFrame extends React.Component {
   constructor(props) {
@@ -21,6 +29,17 @@ class MainFrame extends React.Component {
     this.handleTabChange = this.handleTabChange.bind(this);
     this.setIframeRef = this.setIframeRef.bind(this);
     this.sendPageMetaToFrame = this.sendPageMetaToFrame.bind(this);
+  }
+
+  componentWillMount() {
+    firebase.initializeApp({
+      apiKey: 'AIzaSyCZP85JmQhLbQG9GFoUFqbHApONOkoGZ5M',
+      authDomain: 'codecraftor-e8efe.firebaseapp.com',
+      databaseURL: 'https://codecraftor-e8efe.firebaseio.com',
+      projectId: 'codecraftor-e8efe',
+      storageBucket: 'codecraftor-e8efe.appspot.com',
+      messagingSenderId: '495590234980'
+    });
   }
 
   componentDidMount() {
@@ -72,7 +91,7 @@ class MainFrame extends React.Component {
           page: 'index',
           siteMeta: this.state.siteMeta
         },
-        process.env.REACT_APP_CRAFT_FRAME_URL
+        // process.env.REACT_APP_CRAFT_FRAME_URL
       );
     }
   }

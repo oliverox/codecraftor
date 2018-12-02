@@ -18,7 +18,7 @@ class Iframe extends React.Component {
   }
 
   render() {
-    const { craftId, currentPageTitle } = this.props;
+    const { currentPageTitle } = this.props;
     return (
       <div className={styles.iframeContainer} ref={this.iframeContainerRef}>
         <div className={styles.iframeBrowserHeader}>
@@ -31,7 +31,7 @@ class Iframe extends React.Component {
         </div>
         <iframe
           ref={this.iframeRef}
-          src={`${process.env.REACT_APP_CRAFT_FRAME_URL}/${craftId}`}
+          src="/editor"
           width="100%"
           height="100%"
           title="Codecraftor"

@@ -2,8 +2,8 @@ import React from 'react';
 import firebase from 'firebase/app';
 import { withRouter } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
-import { SpinnerOverlay } from '../components';
 import { H1, H6, Blockquote } from '@blueprintjs/core';
+import SpinnerOverlay from '../components/SpinnerOverlay/SpinnerOverlay';
 
 import './Index.scss';
 

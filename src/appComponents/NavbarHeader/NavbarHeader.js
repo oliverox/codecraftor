@@ -11,7 +11,7 @@ import {
 } from '@blueprintjs/core';
 
 import styles from './NavbarHeader.module.css';
-import logo from '../../../../images/logo.png';
+import logo from '../../images/logo.png';
 
 class NavbarHeader extends React.Component {
   render() {
