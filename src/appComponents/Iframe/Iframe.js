@@ -12,15 +12,17 @@ class Iframe extends React.Component {
   componentDidMount() {
     this.props.setIframeRef(this.iframeRef); // gives the iframe reference to the main frame
     setTimeout(() => {
-      console.log('will now position iframe...');
-      this.iframeContainerRef.current.classList.add(styles.iframePosition);
+      this.iframeContainerRef.current.classList.remove(styles.iframeOffset);
     }, 500);
   }
 
   render() {
     const { currentPageTitle } = this.props;
     return (
-      <div className={styles.iframeContainer} ref={this.iframeContainerRef}>
+      <div
+        className={`${styles.iframeContainer} ${styles.iframeOffset}`}
+        ref={this.iframeContainerRef}
+      >
         <div className={styles.iframeBrowserHeader}>
           <div className={styles.iframeBrowserButtonContainer}>
             <div className={styles.iframeBrowserButton} />

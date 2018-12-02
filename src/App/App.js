@@ -86,13 +86,10 @@ class MainFrame extends React.Component {
   sendPageMetaToFrame() {
     console.log('sendPageMetaToFrame...');
     if (this.iframeRef) {
-      this.iframeRef.contentWindow.postMessage(
-        {
-          page: 'index',
-          siteMeta: this.state.siteMeta
-        },
-        // process.env.REACT_APP_CRAFT_FRAME_URL
-      );
+      this.iframeRef.contentWindow.postMessage({
+        page: 'index',
+        siteMeta: this.state.siteMeta
+      });
     }
   }
 
@@ -104,7 +101,9 @@ class MainFrame extends React.Component {
   render() {
     const { match } = this.props;
     const { currentTab, siteMeta, currentPage } = this.state;
-    const currentPageTitle = siteMeta? siteMeta.pages[currentPage].pageTitle : '';
+    const currentPageTitle = siteMeta
+      ? siteMeta.pages[currentPage].pageTitle
+      : '';
     if (siteMeta && this.initialRender) {
       this.initialRender = false;
       this.sendPageMetaToFrame();
