@@ -15,7 +15,12 @@ class SideBar extends React.Component {
   }
 
   render() {
-    const { currentTab = 'home', sendPageMetaToFrame } = this.props;
+    const {
+      currentTab = 'home',
+      siteMeta,
+      sendPageMetaToFrame,
+      currentPage
+    } = this.props;
     return (
       <div className={styles.sidebarContainer}>
         <Tabs
@@ -28,7 +33,10 @@ class SideBar extends React.Component {
             id="home"
             panel={<HomeTab sendPageMetaToFrame={sendPageMetaToFrame} />}
           />
-          <Tab id="pages" panel={<PagesTab />} />
+          <Tab
+            id="pages"
+            panel={<PagesTab siteMeta={siteMeta} currentPage={currentPage} />}
+          />
           <Tab id="components" panel={<ComponentsTab />} />
           <Tab id="themes" panel={<ThemesTab />} />
         </Tabs>

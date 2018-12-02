@@ -1,0 +1,15 @@
+.pageOutlineContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pageOutline {
+  width: 140px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.selected {
+  box-shadow: 0 0 3pt 3pt lightblue;
+}

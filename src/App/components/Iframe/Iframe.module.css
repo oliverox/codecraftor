@@ -1,20 +1,19 @@
 .iframeContainer {
   flex: 1;
   z-index: 10;
-  transform: translate(90%, 0);
-  transition: 0.6s cubic-bezier(0.42, 0, 0.58, 1);
   will-change: transform;
+  transform: translate(90%, 0);
   box-shadow: -5px 0px 40px -10px #555;
-  border-left: 1px solid #e8eaed;
+  transition: 0.6s cubic-bezier(0.42, 0, 0.58, 1);
 }
 .iframePosition {
   transform: translate(0, 0);
 }
 iframe {
-  border-left: 1px solid #ddd;
-  box-sizing: border-box;
   border: 0;
+  box-sizing: border-box;
   background-color: #fff;
+  border-left: 2px solid #e8eaed;
 }
 .iframeBrowserHeader {
   height: 40px;

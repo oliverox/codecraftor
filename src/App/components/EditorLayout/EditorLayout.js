@@ -12,7 +12,7 @@ class MainFrame extends React.Component {
     super(props);
     this.state = {
       currentTab: 'home',
-      currentPageTitle: 'Index'
+      currentPage: 'index'
     };
     this.iframeRef = false;
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
@@ -35,12 +35,12 @@ class MainFrame extends React.Component {
           siteMeta
         });
       } else {
-        console.log('siteMeta=', blankPage);
         this.setState({
           siteMeta: blankPage
         });
       }
     });
+
     window.addEventListener('message', this.handleMsgRcvd);
   }
 
@@ -82,7 +82,8 @@ class MainFrame extends React.Component {
 
   render() {
     const { match } = this.props;
-    const { currentTab } = this.state;
+    const { currentTab, siteMeta, currentPage } = this.state;
+    const currentPageTitle = siteMeta? siteMeta.pages[currentPage].pageTitle : '';
     console.log('craft id =', match.params.craftId);
     return (
       <>
@@ -93,12 +94,14 @@ class MainFrame extends React.Component {
         <main className={styles.mainframe}>
           <Sidebar
             currentTab={currentTab}
+            siteMeta={siteMeta}
+            currentPage={currentPage}
             sendPageMetaToFrame={this.sendPageMetaToFrame}
           />
           <Iframe
             craftId={match.params.craftId}
             setIframeRef={this.setIframeRef}
-            currentPageTitle={this.state.currentPageTitle}
+            currentPageTitle={currentPageTitle}
           />
         </main>
       </>
