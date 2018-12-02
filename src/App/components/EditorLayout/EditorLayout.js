@@ -11,10 +11,12 @@ class MainFrame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      siteMeta: false,
       currentTab: 'home',
       currentPage: 'index'
     };
     this.iframeRef = false;
+    this.initialRender = true;
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.setIframeRef = this.setIframeRef.bind(this);
@@ -84,6 +86,10 @@ class MainFrame extends React.Component {
     const { match } = this.props;
     const { currentTab, siteMeta, currentPage } = this.state;
     const currentPageTitle = siteMeta? siteMeta.pages[currentPage].pageTitle : '';
+    if (siteMeta && this.initialRender) {
+      this.initialRender = false;
+      this.sendPageMetaToFrame();
+    }
     console.log('craft id =', match.params.craftId);
     return (
       <>
