@@ -15,4 +15,5 @@
 
 .dropIcon {
   fill: #007fa9;
+  pointer-events: none;
 }

@@ -112,7 +112,7 @@ class Editor extends Component {
   }
 
   handleMsgRcvd(msg) {
-    if (msg.origin !== process.env.REACT_APP_MAIN_FRAME_URL) {
+    if (msg.origin !== process.env.REACT_APP_URL) {
       return;
     }
     console.log('Craft msg rcvd:', msg.data);
