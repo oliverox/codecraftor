@@ -6,16 +6,19 @@ import styles from './Components.module.css';
 
 const ComponentsPanel = () => {
   const onDragStart = e => {
-    console.log('onDragStart()');
-    e.dataTransfer.setData('component', e.target.getAttribute('data-component'))
-  }
+    e.dataTransfer.setData(
+      'componentModule',
+      e.target.getAttribute('data-componentmodule')
+    );
+  };
   return (
     <div>
-      {Object.values(componentList).map((component, key) => {
+      {Object.keys(componentList).map((component, key) => {
+        const componentMeta = componentList[component];
         return (
           <Card
             key={key}
-            data-component={component}
+            data-componentmodule={component}
             interactive={true}
             elevation={Elevation.ONE}
             className={styles.componentContainer}
@@ -23,8 +26,11 @@ const ComponentsPanel = () => {
             onDragStart={onDragStart}
           >
             <span className={styles.componentItem}>
-              <Icon className={styles.componentItemIcon} icon={component.icon} />
-              {component.name}
+              <Icon
+                className={styles.componentItemIcon}
+                icon={componentMeta.icon}
+              />
+              {componentMeta.name}
             </span>
           </Card>
         );

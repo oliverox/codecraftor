@@ -7,21 +7,21 @@ export default {
       pageTitle: 'Page One',
       imports: ['Container', 'Span'],
       root: {
-        componentName: 'Container',
+        componentModule: 'Container',
         props: '{"style":{"color":"black"}}',
         children: ['container001']
       },
       components: [
         {
           id: 'container001',
-          componentName: 'Container',
+          componentModule: 'Container',
           props:
             '{"style":{"backgroundColor":"lightblue", "display":"flex","justifyContent":"center","alignItems":"center"}}',
           children: ['span001']
         },
         {
           id: 'span001',
-          componentName: 'Span',
+          componentModule: 'Span',
           props: '{"text":"I am a span inside a Container"}'
         }
       ]

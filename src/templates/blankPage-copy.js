@@ -7,33 +7,33 @@ export default {
       pageTitle: 'Page One',
       imports: ['Heading', 'Container', 'Span'],
       root: {
-        componentName: 'Container',
+        componentModule: 'Container',
         props: '{"style":{"color":"darkgrey"}}',
         children: ['heading001', 'heading002', 'container001']
       },
       components: [
         {
           id: 'heading001',
-          componentName: 'Heading',
+          componentModule: 'Heading',
           props:
             '{"text":"Hello World","type":"h1","style":{"color":"hotpink"}}'
         },
         {
           id: 'heading002',
-          componentName: 'Heading',
+          componentModule: 'Heading',
           props:
             '{"text":"This is my subtitle","type":"h3","style":{"color":"blue"}}'
         },
         {
           id: 'container001',
-          componentName: 'Container',
+          componentModule: 'Container',
           props:
             '{"style":{"width":500,"height":500,"backgroundColor":"hotpink"}}',
           children: ['span001']
         },
         {
           id: 'span001',
-          componentName: 'Span',
+          componentModule: 'Span',
           props: '{"text":"I am a span inside a red container"}'
         }
       ]

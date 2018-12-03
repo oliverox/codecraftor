@@ -12,11 +12,13 @@ class Editor extends Component {
     this.key = 0;
     this.siteMeta = {};
     this.components = {};
+    this.editorRef = React.createRef();
     this.refreshPage = this.refreshPage.bind(this);
     this.buildDomTree = this.buildDomTree.bind(this);
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
     this.importComponents = this.importComponents.bind(this);
     this.getComponentIndex = this.getComponentIndex.bind(this);
+    this.handlePostMessage = this.handlePostMessage.bind(this);
     this.getComponentAndChildren = this.getComponentAndChildren.bind(this);
   }
   componentDidMount() {
@@ -24,8 +26,8 @@ class Editor extends Component {
       import('typeface-montserrat').then(() => {
         console.log('Montserrat typeface loaded');
       });
+      window.addEventListener('message', this.handleMsgRcvd);
     }
-    window.addEventListener('message', this.handleMsgRcvd);
     this.refreshPage();
   }
 
@@ -45,9 +47,9 @@ class Editor extends Component {
     });
   }
 
-  getComponentIndex(componentName) {
+  getComponentIndex(componentModule) {
     const { page } = this.state;
-    return this.siteMeta.pages[page].imports.indexOf(componentName);
+    return this.siteMeta.pages[page].imports.indexOf(componentModule);
   }
 
   importComponents() {
@@ -55,14 +57,14 @@ class Editor extends Component {
     this.siteMeta = this.state.siteMeta;
     const { page } = this.state;
     const componentImportArray = this.siteMeta.pages[page].imports.map(
-      componentName => {
-        console.log(`>> importing ${componentName}...`);
-        return import(`../components/${componentName}/${componentName}`);
+      componentModule => {
+        console.log(`>> importing ${componentModule}...`);
+        return import(`../components/${componentModule}/${componentModule}`);
       }
     );
     return Promise.all(componentImportArray).then(importedComponents => {
       let index = this.getComponentIndex(
-        this.siteMeta.pages[page].root.componentName
+        this.siteMeta.pages[page].root.componentModule
       );
       this.components.root = {
         Module: importedComponents[index].default,
@@ -72,13 +74,13 @@ class Editor extends Component {
       for (let i = 0; i < this.siteMeta.pages[page].components.length; i++) {
         console.log(
           'updating component:',
-          this.siteMeta.pages[page].components[i].componentName
+          this.siteMeta.pages[page].components[i].componentModule
         );
-        const { id, props = '', children = [] } = this.siteMeta.pages[
+        const { id, props = null, children = [] } = this.siteMeta.pages[
           page
         ].components[i];
         const componentIndex = this.getComponentIndex(
-          this.siteMeta.pages[page].components[i].componentName
+          this.siteMeta.pages[page].components[i].componentModule
         );
         this.components[id] = {
           Module: importedComponents[componentIndex].default,
@@ -124,21 +126,28 @@ class Editor extends Component {
     }
   }
 
+  handlePostMessage(data) {
+    window.parent.postMessage(data);
+  }
+
   render() {
     console.log('Rendering Craft...');
     return (
-      <>
+      <div ref={this.editorRef}>
         {this.state.loading ? (
-          <ComponentDrop page={this.siteMeta.name} />
+          'Loading...'
         ) : (
           <div>
             {this.rootComponent}
             {process.env.NODE_ENV === 'development' ? (
-              <ComponentDrop page={this.siteMeta.name} />
+              <ComponentDrop
+                page={this.siteMeta.name}
+                postMessage={this.handlePostMessage}
+              />
             ) : null}
           </div>
         )}
-      </>
+      </div>
     );
   }
 }

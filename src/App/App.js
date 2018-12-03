@@ -1,4 +1,5 @@
 import React from 'react';
+import shortid from 'shortid';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
@@ -25,9 +26,10 @@ class MainFrame extends React.Component {
     };
     this.iframeRef = false;
     this.initialRender = true;
-    this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
-    this.handleTabChange = this.handleTabChange.bind(this);
     this.setIframeRef = this.setIframeRef.bind(this);
+    this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
+    this.updateSiteMeta = this.updateSiteMeta.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
     this.sendPageMetaToFrame = this.sendPageMetaToFrame.bind(this);
   }
 
@@ -69,6 +71,10 @@ class MainFrame extends React.Component {
     window.removeEventListener('message', this.handleMsgRcvd);
   }
 
+  componentDidUpdate() {
+    this.sendPageMetaToFrame();
+  }
+
   handleTabChange(nextTab) {
     console.log('changing tab to:', nextTab);
     this.setState({
@@ -76,11 +82,33 @@ class MainFrame extends React.Component {
     });
   }
 
-  handleMsgRcvd(msg) {
-    if (msg.origin !== process.env.REACT_APP_CRAFT_FRAME_URL) {
-      return;
+  handleMsgRcvd({ origin, data }) {
+    // if (msg.origin !== process.env.REACT_APP_CRAFT_FRAME_URL) {
+    //   return;
+    // }
+    console.log('Mainframe msg rcvd from:', origin, data);
+    if (data && data.componentModule && data.target && data.page) {
+      this.updateSiteMeta(data);
     }
-    console.log('Mainframe msg rcvd:', msg.data);
+  }
+
+  updateSiteMeta(params) {
+    const { page, target, componentModule } = params;
+    const { siteMeta } = this.state;
+    const id = shortid.generate();
+    const newComponent = { id, componentModule };
+    siteMeta.updated = Date.now();
+    if (target === 'root') {
+      if (siteMeta.pages[page].imports.indexOf(componentModule) < 0) {
+        siteMeta.pages[page].imports.push(componentModule);
+      }
+      siteMeta.pages[page].root.children.push(id);
+      siteMeta.pages[page].components.push(newComponent);
+    }
+    console.log('updated siteMeta=', siteMeta);
+    this.setState({
+      siteMeta
+    });
   }
 
   sendPageMetaToFrame() {

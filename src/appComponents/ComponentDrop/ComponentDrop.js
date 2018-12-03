@@ -18,15 +18,16 @@ class ComponentDrop extends React.Component {
   componentDidMount() {}
 
   handleDrop(e) {
-    console.log('handleDrop()', e);
-    // const { target, page } = this.props
-    // const componentName = e.dataTransfer.getData('component')
-    // // const queryString = `componentName=${componentName}&target=${target}&page=${page}`
-    // // // fetch(`/_cc/add?${queryString}`).then(() => {
-    // // //   this.setState({
-    // // //     isDragOver: false,
-    // // //   })
-    // // // })
+    const { target, page, postMessage } = this.props;
+    const componentModule = e.dataTransfer.getData('componentModule');
+    postMessage({
+      componentModule,
+      target,
+      page
+    });
+    this.setState({
+      isDragOver: false
+    });
   }
 
   handleOnDragOver(e) {
@@ -35,7 +36,6 @@ class ComponentDrop extends React.Component {
   }
 
   handleOnDragEnter() {
-    console.log('handleOnDragEnter()');
     this.setState({
       isDragOver: true
     });
