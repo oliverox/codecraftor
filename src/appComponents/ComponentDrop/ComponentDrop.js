@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from '@blueprintjs/core';
 
 import styles from './ComponentDrop.module.css';
 
@@ -14,9 +15,7 @@ class ComponentDrop extends React.Component {
     this.handleOnDragLeave = this.handleOnDragLeave.bind(this);
   }
 
-  componentDidMount() {
-    
-  }
+  componentDidMount() {}
 
   handleDrop(e) {
     console.log('handleDrop()', e);
@@ -31,7 +30,7 @@ class ComponentDrop extends React.Component {
   }
 
   handleOnDragOver(e) {
-    e.stopPropagation()
+    e.stopPropagation();
     e.preventDefault();
   }
 
@@ -49,15 +48,14 @@ class ComponentDrop extends React.Component {
   }
 
   render() {
-    console.log('rendering ComponentDrop...');
     const { dropText } = this.props;
+    const { isDragOver } = this.state;
     let cn = styles.dropContainer;
     if (this.state.isDragOver) {
       cn = `${cn} ${styles.isDragOver}`;
     }
     return (
       <div>
-
         <div
           ref={this.componentDropRef}
           className={cn}
@@ -66,7 +64,11 @@ class ComponentDrop extends React.Component {
           onDragEnter={this.handleOnDragEnter}
           onDragLeave={this.handleOnDragLeave}
         >
-          {dropText}
+          {isDragOver ? (
+            <Icon iconSize={25} className={styles.dropIcon} icon="import" />
+          ) : (
+            dropText
+          )}
         </div>
       </div>
     );

@@ -2,13 +2,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 30px;
   margin: 50px;
-  color: #696c71;
-  border: 2px dashed #888;
+  min-height: 102px;
+  color: #007fa9;
+  border: 1px dashed lightblue;
   font-family: 'Montserrat', sans-serif;
 }
 .isDragOver {
-  border-color: #364699;
-  color: #364699;
+  border: 1px dashed #007fa9;
+  font-weight: 500;
+}
+
+.dropIcon {
+  fill: #007fa9;
 }
