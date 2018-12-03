@@ -117,7 +117,7 @@ class MainFrame extends React.Component {
       this.iframeRef.contentWindow.postMessage({
         page: 'index',
         siteMeta: this.state.siteMeta
-      });
+      }, '*');
     }
   }
 

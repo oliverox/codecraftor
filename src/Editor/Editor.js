@@ -127,7 +127,7 @@ class Editor extends Component {
   }
 
   handlePostMessage(data) {
-    window.parent.postMessage(data);
+    window.parent.postMessage(data, '*');
   }
 
   render() {
