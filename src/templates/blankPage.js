@@ -5,16 +5,16 @@ export default {
   pages: {
     index: {
       pageTitle: 'Page One',
-      imports: ['Container', 'Span'],
+      imports: ['RootContainer', 'GenericContainer', 'Span'],
       root: {
-        componentModule: 'Container',
-        props: '{"style":{"color":"black"}}',
-        children: ['container001']
+        componentModule: 'RootContainer',
+        props: '{}',
+        children: ['generic-container001']
       },
       components: [
         {
-          id: 'container001',
-          componentModule: 'Container',
+          id: 'generic-container001',
+          componentModule: 'GenericContainer',
           props:
             '{"style":{"backgroundColor":"lightblue", "display":"flex","justifyContent":"center","alignItems":"center"}}',
           children: ['span001']

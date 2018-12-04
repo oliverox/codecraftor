@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ComponentDrop from '../appComponents/ComponentDrop/ComponentDrop';
 
+const getComponent = (componentModule) => import(`../components/${componentModule}`);
+
 class Editor extends Component {
   constructor() {
     super();
@@ -59,7 +61,7 @@ class Editor extends Component {
     const componentImportArray = this.siteMeta.pages[page].imports.map(
       componentModule => {
         console.log(`>> importing ${componentModule}...`);
-        return import(`../components/${componentModule}/${componentModule}`);
+        return getComponent(componentModule);
       }
     );
     return Promise.all(componentImportArray).then(importedComponents => {
@@ -96,11 +98,12 @@ class Editor extends Component {
     let childrenComponents = [];
     if (children && children.length > 0) {
       childrenComponents = children.map(childId => {
+        console.log('childId============>>>>>>>>>>>>>>>>>>>>>>>', childId);
         return this.getComponentAndChildren(childId);
       });
     }
     return (
-      <Module key={this.key++} {...JSON.parse(props)}>
+      <Module key={this.key++} {...JSON.parse(props)} devMode={true}>
         {childrenComponents.length > 0 ? childrenComponents : null}
       </Module>
     );
