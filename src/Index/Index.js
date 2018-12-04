@@ -1,11 +1,16 @@
 import React from 'react';
 import firebase from 'firebase/app';
+import 'firebase/firestore';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+import '@blueprintjs/core/lib/css/blueprint.css';
+
 import { withRouter } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
-import { H1, H6, Blockquote } from '@blueprintjs/core';
-import SpinnerOverlay from '../components/SpinnerOverlay/SpinnerOverlay';
+import { H1, H6 } from '@blueprintjs/core';
+import SpinnerOverlay from '../appComponents/SpinnerOverlay/SpinnerOverlay';
 
 import './Index.scss';
+import logo from '../images/logo.png';
 
 class Index extends React.Component {
   constructor() {
@@ -45,14 +50,15 @@ class Index extends React.Component {
         <SpinnerOverlay isOpen={this.state.isRedirecting} />
         <div className="index-header">
           <div className="index-header-content">
+            <div className="index-header-logo">
+              <img src={logo} alt="codecraftor" width={55} />
+            </div>
+            <div>
             <H1 className="app-title">Codecraftor</H1>
             <H6 className="app-subtitle">
-              The future of web development.
-              <br />
-              <span style={{ color: 'orange', fontSize: '10px' }}>
-                * a work in progress * <br />* not mobile-friendly yet *
-              </span>
+              Rethinking web development
             </H6>
+            </div>
           </div>
         </div>
         <div className="index-main">
@@ -60,43 +66,26 @@ class Index extends React.Component {
             <div className="index-main-content-section">
               <h2>What is Codecraftor?</h2>
               <p>
-                Codecraftor aims to simplify web development by composing fully
-                functional web apps visually with simple and complex reusable
-                components. What this means is that Codecraftor is a web site
-                creation tool in between WYSIWYG and coding from scratch. With
-                the advent of componentization of the web, we can now look at a
-                web site as a composition of simple and complex components.
-                Codecraftor aims to become a tool to allow web developers (or
-                anyone), to lay down web components on a page and allow their
-                complete customizations. Even though this idea had been
-                lingering in my head for the past three years, Codecraftor was
-                only started as part of the{' '}
-                <a href="https://pioneer.app">
-                  Pioneer October 2018 Tournament
-                </a>{' '}
-                for fun.
+                Codecraftor is a visual web builder platform with a component
+                marketplace and the ability to easily download and deploy your
+                website. Codecraftor aims to simplify web development by
+                composing fully functional websites visually with simple and
+                complex reusable components. What this means is that Codecraftor
+                is a web site creation tool in between WYSIWYG and coding from
+                scratch.
               </p>
             </div>
             <div className="index-main-content-section">
               <h2>Why Codecraftor?</h2>
               <p>
-                As a freelance web developer who does not do much UX, I often
-                find myself browsing through various ready-made themes online to
-                eventually purchase one to use for the current project I'm
-                working on. These themes always have to be customized and
-                restructured to meet my needs and working style (directory
-                structure, code quality, web framework, etc). I end up having to
-                copy a lot of what I have built before in previous projects in
-                order customize the purchased theme. So it made me think:{' '}
-                <strong>
-                  what if there was a tool that would let me choose the kind of
-                  configurations I want and allow me to download the theme based
-                  on those settings?
-                </strong>{' '}
-                Codecraftor is my attempt to solve this question.
+                Unlike Wix, Squarespace and other big players, there are no
+                lock-ins with Codecraftor. You can download your website,
+                customize and deploy it wherever you want. On top of that, you
+                get to use community-built components in your apps which
+                developers can publish on the platform.
               </p>
             </div>
-            <div className="index-main-content-section">
+            {/* <div className="index-main-content-section">
               <h2>
                 How is it different from other web site builders out there?
               </h2>
@@ -144,12 +133,12 @@ class Index extends React.Component {
                 "Now this is great. It will go a long way to help even Young
                 Minds in achieving an easy way of coding. Weldone " - MidasTORCH
               </Blockquote>
-            </div>
+            </div> */}
             <div className="index-main-content-section">
               <h2>How do I get started?</h2>
               <p>
-                The work is still really a work in progress. I tried to build a
-                very basic prototype to convey the idea behind Codecraftor. Bear
+                Codecraftor is still a work in progress. I tried to build a
+                very basic prototype to convey the idea. Bear
                 in mind that for Codecraftor to really be successful, this
                 prototype will need evolve greatly. But stay tuned as I am
                 working hard on it and listening to all the feedback I'm getting
@@ -159,10 +148,11 @@ class Index extends React.Component {
             <div className="index-main-content-section cta">
               <Button
                 large
-                intent={Intent.SUCCESS}
+                disabled
+                intent={Intent.PRIMARY}
                 onClick={this.handleRedirect}
               >
-                Enought talk, I want to start a New Craft now!
+                Start a new Craft
               </Button>
             </div>
           </div>
