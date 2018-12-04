@@ -17,6 +17,7 @@
 }
 .index-header-content {
   display: flex;
+  flex: 1;
   align-items: center;
   max-width: 1024px;
 }
@@ -32,6 +33,17 @@
   color: #fcd303;
   font-weight: 500;
   margin-top: -5px;
+}
+.app-made {
+  color: white;
+  font-size: 11px;
+}
+.app-made a {
+  color: white;
+}
+.app-made-heart {
+  color: #fcd303;
+  font-size: 12px;
 }
 .index-main {
   display: flex;

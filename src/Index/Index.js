@@ -54,12 +54,20 @@ class Index extends React.Component {
               <img src={logo} alt="codecraftor" width={55} />
             </div>
             <div>
-            <H1 className="app-title">Codecraftor</H1>
-            <H6 className="app-subtitle">
-              Rethinking web development
-            </H6>
+              <H1 className="app-title">Codecraftor</H1>
+              <H6 className="app-subtitle">Rethinking web development</H6>
             </div>
           </div>
+          <p className="app-made">
+            Made with <span className="app-made-heart">❤</span> in{' '}
+            <a
+              href="https://goo.gl/fvEda5"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Mauritius
+            </a>
+          </p>
         </div>
         <div className="index-main">
           <div className="index-main-content">
@@ -137,12 +145,12 @@ class Index extends React.Component {
             <div className="index-main-content-section">
               <h2>How do I get started?</h2>
               <p>
-                Codecraftor is still a work in progress. I tried to build a
-                very basic prototype to convey the idea. Bear
-                in mind that for Codecraftor to really be successful, this
-                prototype will need evolve greatly. But stay tuned as I am
-                working hard on it and listening to all the feedback I'm getting
-                from other Pioneer participants!
+                Codecraftor is still a work in progress. I tried to build a very
+                basic prototype to convey the idea. Bear in mind that for
+                Codecraftor to really be successful, this prototype will need
+                evolve greatly. But stay tuned as I am working hard on it and
+                listening to all the feedback I'm getting from other Pioneer
+                participants!
               </p>
             </div>
             <div className="index-main-content-section cta">
