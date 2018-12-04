@@ -142,12 +142,10 @@ class Editor extends Component {
         ) : (
           <div>
             {this.rootComponent}
-            {process.env.NODE_ENV === 'development' ? (
-              <ComponentDrop
-                page={this.siteMeta.name}
-                postMessage={this.handlePostMessage}
-              />
-            ) : null}
+            <ComponentDrop
+              page={this.siteMeta.name}
+              postMessage={this.handlePostMessage}
+            />
           </div>
         )}
       </div>

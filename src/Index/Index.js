@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
 import { H1, H6 } from '@blueprintjs/core';
 import SpinnerOverlay from '../appComponents/SpinnerOverlay/SpinnerOverlay';
+import { BlankPage } from '../templates';
 
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -34,8 +35,7 @@ class Index extends React.Component {
     db.collection(process.env.REACT_APP_CRAFTS_COLLECTION)
       .add({
         created: Date.now(),
-        actions: [],
-        config: {}
+        siteMeta: BlankPage
       })
       .then(docRef => {
         history.push(`/craft/${docRef.id}`);

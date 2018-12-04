@@ -71,9 +71,9 @@ class MainFrame extends React.Component {
   }
 
   handleMsgRcvd({ origin, data }) {
-    // if (msg.origin !== process.env.REACT_APP_CRAFT_FRAME_URL) {
-    //   return;
-    // }
+    if (origin !== window.location.origin) {
+      return;
+    }
     console.log('Mainframe msg rcvd from:', origin, data);
     if (data && data.componentModule && data.target && data.page) {
       this.updateSiteMeta(data);
@@ -97,15 +97,21 @@ class MainFrame extends React.Component {
     this.setState({
       siteMeta
     });
+    this.docRef.set({
+      siteMeta
+    });
   }
 
   sendPageMetaToFrame() {
     console.log('sendPageMetaToFrame...');
     if (this.iframeRef) {
-      this.iframeRef.contentWindow.postMessage({
-        page: 'index',
-        siteMeta: this.state.siteMeta
-      }, '*');
+      this.iframeRef.contentWindow.postMessage(
+        {
+          page: 'index',
+          siteMeta: this.state.siteMeta
+        },
+        '*'
+      );
     }
   }
 
