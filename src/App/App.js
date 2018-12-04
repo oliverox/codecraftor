@@ -1,9 +1,6 @@
 import React from 'react';
 import shortid from 'shortid';
 import firebase from 'firebase/app';
-import 'firebase/firestore';
-import '@blueprintjs/icons/lib/css/blueprint-icons.css';
-import '@blueprintjs/core/lib/css/blueprint.css';
 import { FocusStyleManager } from '@blueprintjs/core';
 
 import NavbarHeader from '../appComponents/NavbarHeader/NavbarHeader';
@@ -12,6 +9,8 @@ import Iframe from '../appComponents/Iframe/Iframe';
 import { BlankPage } from '../templates';
 
 import 'typeface-montserrat';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+import '@blueprintjs/core/lib/css/blueprint.css';
 import styles from './App.module.css';
 
 FocusStyleManager.onlyShowFocusOnTabs();
@@ -31,17 +30,6 @@ class MainFrame extends React.Component {
     this.updateSiteMeta = this.updateSiteMeta.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.sendPageMetaToFrame = this.sendPageMetaToFrame.bind(this);
-  }
-
-  componentWillMount() {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyCZP85JmQhLbQG9GFoUFqbHApONOkoGZ5M',
-      authDomain: 'codecraftor-e8efe.firebaseapp.com',
-      databaseURL: 'https://codecraftor-e8efe.firebaseio.com',
-      projectId: 'codecraftor-e8efe',
-      storageBucket: 'codecraftor-e8efe.appspot.com',
-      messagingSenderId: '495590234980'
-    });
   }
 
   componentDidMount() {

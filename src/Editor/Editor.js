@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ComponentDrop from '../appComponents/ComponentDrop/ComponentDrop';
 
-const getComponent = (componentModule) => import(`../components/${componentModule}`);
+const getComponent = componentModule =>
+  import(`../components/${componentModule}`);
 
 class Editor extends Component {
   constructor() {
@@ -97,10 +98,9 @@ class Editor extends Component {
     const { Module, props = '{}', children = [] } = this.components[id];
     let childrenComponents = [];
     if (children && children.length > 0) {
-      childrenComponents = children.map(childId => {
-        console.log('childId============>>>>>>>>>>>>>>>>>>>>>>>', childId);
-        return this.getComponentAndChildren(childId);
-      });
+      childrenComponents = children.map(childId =>
+        this.getComponentAndChildren(childId)
+      );
     }
     return (
       <Module key={this.key++} {...JSON.parse(props)} devMode={true}>

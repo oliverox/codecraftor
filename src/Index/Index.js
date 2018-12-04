@@ -1,14 +1,12 @@
 import React from 'react';
 import firebase from 'firebase/app';
-import 'firebase/firestore';
-import '@blueprintjs/icons/lib/css/blueprint-icons.css';
-import '@blueprintjs/core/lib/css/blueprint.css';
-
 import { withRouter } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
 import { H1, H6 } from '@blueprintjs/core';
 import SpinnerOverlay from '../appComponents/SpinnerOverlay/SpinnerOverlay';
 
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+import '@blueprintjs/core/lib/css/blueprint.css';
 import './Index.scss';
 import logo from '../images/logo.png';
 
@@ -40,7 +38,7 @@ class Index extends React.Component {
         config: {}
       })
       .then(docRef => {
-        history.push(`/new/${docRef.id}`);
+        history.push(`/craft/${docRef.id}`);
       });
   }
 
@@ -156,7 +154,7 @@ class Index extends React.Component {
             <div className="index-main-content-section cta">
               <Button
                 large
-                disabled
+                disabled={process.env.NODE_ENV === 'production'}
                 intent={Intent.PRIMARY}
                 onClick={this.handleRedirect}
               >
