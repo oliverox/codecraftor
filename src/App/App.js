@@ -91,8 +91,8 @@ class MainFrame extends React.Component {
       if (siteMeta.pages[page].imports.indexOf(componentModule) < 0) {
         siteMeta.pages[page].imports.push(componentModule);
       }
-      siteMeta.pages[page].root.children.push(id);
-      siteMeta.pages[page].components.push(newComponent);
+      siteMeta.pages[page].root.childrenComponents.push(id);
+      siteMeta.pages[page].nonRootComponents.push(newComponent);
     }
     console.log('updated siteMeta=', siteMeta);
     this.setState({

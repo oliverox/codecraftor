@@ -9,16 +9,16 @@ export default {
       root: {
         componentModule: 'RootContainer',
         props: '{}',
-        children: ['generic-container001'],
-        editable: false
+        editable: false,
+        childrenComponents: ['generic-container001'],
       },
-      components: [
+      nonRootComponents: [
         {
           id: 'generic-container001',
           componentModule: 'GenericContainer',
           props:
             '{"style":{"backgroundColor":"lightblue", "display":"flex","justifyContent":"center","alignItems":"center"}}',
-          children: ['span001']
+          childrenComponents: ['span001']
         },
         {
           id: 'span001',

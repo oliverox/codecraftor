@@ -67,31 +67,38 @@ class Editor extends Component {
       }
     );
     return Promise.all(componentImportArray).then(importedComponents => {
-      let index = this.getComponentIndex(
-        this.siteMeta.pages[page].root.componentModule
-      );
+      const root = this.siteMeta.pages[page].root;
+      const rootModuleName = root.componentModule;
+      const rootIndex = this.getComponentIndex(rootModuleName);
+      const { module, defaultProps } = importedComponents[rootIndex].default;
+      const { children, ...props } = defaultProps;
+      const newProps = Object.assign(props, JSON.parse(root.props));
+      const childrenComponents = root.childrenComponents;
       this.components.root = {
-        Module: importedComponents[index].default,
-        props: this.siteMeta.pages[page].root.props,
-        children: this.siteMeta.pages[page].root.children,
-        editable: this.siteMeta.pages[page].root.editable,
+        Module: module,
+        props: newProps,
+        editable: false, // root component is not editable
+        childrenComponents
       };
-      for (let i = 0; i < this.siteMeta.pages[page].components.length; i++) {
-        console.log(
-          'updating component:',
-          this.siteMeta.pages[page].components[i].componentModule
-        );
-        const { id, editable = true, props = null, children = [] } = this.siteMeta.pages[
-          page
-        ].components[i];
-        const componentIndex = this.getComponentIndex(
-          this.siteMeta.pages[page].components[i].componentModule
-        );
-        this.components[id] = {
-          Module: importedComponents[componentIndex].default,
-          props,
-          children,
-          editable
+      const nonRootComponents = this.siteMeta.pages[page].nonRootComponents;
+      for (let i = 0; i < nonRootComponents.length; i++) {
+        let nonRootComponent = nonRootComponents[i];
+        let componentModuleName = nonRootComponent.componentModule;
+        console.log('updating component:', componentModuleName);
+        let componentIndex = this.getComponentIndex(componentModuleName);
+        const importedComponent = importedComponents[componentIndex];
+        const { module, defaultProps } = importedComponent.default;
+        const { children, ...props } = defaultProps;
+        const currentProps =
+          typeof nonRootComponent.props === 'string'
+            ? JSON.parse(nonRootComponent.props)
+            : nonRootComponent.props;
+        const newProps = Object.assign(props, currentProps);
+        this.components[nonRootComponent.id] = {
+          Module: module,
+          props: newProps,
+          editable: true,
+          childrenComponents: nonRootComponent.childrenComponents
         };
       }
     });
@@ -102,22 +109,25 @@ class Editor extends Component {
       Module,
       editable = true,
       props = '{}',
-      children = []
+      childrenComponents = []
     } = this.components[id];
-    let childrenComponents = [];
-    if (children && children.length > 0) {
-      childrenComponents = children.map(childId =>
+    let newChildrenComponents = [];
+    if (childrenComponents && childrenComponents.length > 0) {
+      newChildrenComponents = childrenComponents.map(childId =>
         this.getComponentAndChildren(childId)
       );
     }
-    console.log('id, editable=', id, editable);
     const componentToRender = (
-      <Module {...JSON.parse(props)} devMode={true}>
-        {childrenComponents.length > 0 ? childrenComponents : null}
+      <Module {...props} devMode={true}>
+        {newChildrenComponents.length > 0 ? newChildrenComponents : null}
       </Module>
     );
     if (editable) {
-      return <Configurator key={this.key++}>{componentToRender}</Configurator>;
+      return (
+        <Configurator key={this.key++} componentId={id}>
+          {componentToRender}
+        </Configurator>
+      );
     } else {
       return componentToRender;
     }

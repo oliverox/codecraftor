@@ -10,9 +10,17 @@ class Configurator extends React.Component {
       isMouseOver: false
     };
     this.moduleRef = React.createRef();
+    this.handleClick = this.handleClick.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.getEditButtonPosition = this.getEditButtonPosition.bind(this);
+  }
+
+  handleClick(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    console.log('You clicked on component id:', this.props.componentId);
+
   }
 
   handleMouseOver(event) {
@@ -38,7 +46,7 @@ class Configurator extends React.Component {
     }
     const moduleWidth = this.moduleRef.current.offsetWidth;
     const moduleHeight = this.moduleRef.current.offsetHeight;
-    console.log('moduleWidth, moduleHeight=', moduleWidth, moduleHeight);
+    // console.log('moduleWidth, moduleHeight=', moduleWidth, moduleHeight);
     return {
       width: moduleWidth,
       height: moduleHeight,
@@ -52,9 +60,9 @@ class Configurator extends React.Component {
     const { isMouseOver } = this.state;
     const cn = `${styles.editContainer} ${isMouseOver ? styles.show : ''}`;
     const editButtonOffset = this.getEditButtonPosition();
-    console.log('editButtonOffset', editButtonOffset);
     return (
       <div
+        onClick={this.handleClick}
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.handleMouseOut}
         className={styles.configurator}
