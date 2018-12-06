@@ -9,11 +9,11 @@
   font-family: 'Montserrat', sans-serif;
 }
 .isDragOver {
-  border: 1px dashed #007fa9;
+  border: 1px dashed #33449e;
   font-weight: 500;
 }
 
 .dropIcon {
-  fill: #007fa9;
+  fill: #33449e;
   pointer-events: none;
 }
