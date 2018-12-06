@@ -9,7 +9,8 @@ export default {
       root: {
         componentModule: 'RootContainer',
         props: '{}',
-        children: ['generic-container001']
+        children: ['generic-container001'],
+        editable: false
       },
       components: [
         {

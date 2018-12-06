@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ComponentDrop from '../appComponents/ComponentDrop/ComponentDrop';
+import Configurator from '../appComponents/Configurator/Configurator';
 
-const getComponent = componentModule =>
+const importComponent = componentModule =>
   import(`../components/${componentModule}`);
 
 class Editor extends Component {
@@ -62,7 +63,7 @@ class Editor extends Component {
     const componentImportArray = this.siteMeta.pages[page].imports.map(
       componentModule => {
         console.log(`>> importing ${componentModule}...`);
-        return getComponent(componentModule);
+        return importComponent(componentModule);
       }
     );
     return Promise.all(componentImportArray).then(importedComponents => {
@@ -72,14 +73,15 @@ class Editor extends Component {
       this.components.root = {
         Module: importedComponents[index].default,
         props: this.siteMeta.pages[page].root.props,
-        children: this.siteMeta.pages[page].root.children
+        children: this.siteMeta.pages[page].root.children,
+        editable: this.siteMeta.pages[page].root.editable,
       };
       for (let i = 0; i < this.siteMeta.pages[page].components.length; i++) {
         console.log(
           'updating component:',
           this.siteMeta.pages[page].components[i].componentModule
         );
-        const { id, props = null, children = [] } = this.siteMeta.pages[
+        const { id, editable = true, props = null, children = [] } = this.siteMeta.pages[
           page
         ].components[i];
         const componentIndex = this.getComponentIndex(
@@ -88,25 +90,37 @@ class Editor extends Component {
         this.components[id] = {
           Module: importedComponents[componentIndex].default,
           props,
-          children
+          children,
+          editable
         };
       }
     });
   }
 
   getComponentAndChildren(id) {
-    const { Module, props = '{}', children = [] } = this.components[id];
+    const {
+      Module,
+      editable = true,
+      props = '{}',
+      children = []
+    } = this.components[id];
     let childrenComponents = [];
     if (children && children.length > 0) {
       childrenComponents = children.map(childId =>
         this.getComponentAndChildren(childId)
       );
     }
-    return (
-      <Module key={this.key++} {...JSON.parse(props)} devMode={true}>
+    console.log('id, editable=', id, editable);
+    const componentToRender = (
+      <Module {...JSON.parse(props)} devMode={true}>
         {childrenComponents.length > 0 ? childrenComponents : null}
       </Module>
     );
+    if (editable) {
+      return <Configurator key={this.key++}>{componentToRender}</Configurator>;
+    } else {
+      return componentToRender;
+    }
   }
 
   buildDomTree() {

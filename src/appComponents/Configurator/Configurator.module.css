@@ -1,0 +1,32 @@
+.configurator:hover {
+  outline: 1px dashed #33449e;
+  outline-offset: 5px;
+}
+.editContainer {
+  position: absolute;
+  opacity: 0;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1)
+}
+.editIcon {
+  position: absolute;
+  margin-left: -6px;
+  margin-top: -27px;
+  padding: 2px;
+  fill: #33449e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fbe591;
+  border: 1px dashed #33449e;
+  border-bottom: none;
+
+}
+.show {
+  opacity: 1;
+}
+
+  /* yellow: fbe591 */
+  /* blue: 33449e */

@@ -60,6 +60,7 @@ class MainFrame extends React.Component {
   }
 
   componentDidUpdate() {
+    // TODO: Should we do this at every update or check when to sendPageMetaToFrame() ?
     this.sendPageMetaToFrame();
   }
 
