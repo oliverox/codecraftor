@@ -29,7 +29,7 @@ export default {
           componentModule: 'Container',
           props:
             '{"style":{"width":500,"height":500,"backgroundColor":"hotpink"}}',
-          children: ['span001']
+          children: ['text001']
         },
         {
           id: 'text001',

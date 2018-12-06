@@ -18,7 +18,7 @@ export default {
           componentModule: 'GenericContainer',
           props:
             '{"style":{"backgroundColor":"lightblue", "display":"flex","justifyContent":"center","alignItems":"center"}}',
-          childrenComponents: ['span001']
+          childrenComponents: ['text001']
         },
         {
           id: 'text001',
