@@ -5,7 +5,7 @@ export default {
   pages: {
     index: {
       pageTitle: 'Page One',
-      imports: ['Heading', 'Container', 'Span'],
+      imports: ['Heading', 'Container', 'Text'],
       root: {
         componentModule: 'Container',
         props: '{"style":{"color":"darkgrey"}}',
@@ -32,8 +32,8 @@ export default {
           children: ['span001']
         },
         {
-          id: 'span001',
-          componentModule: 'Span',
+          id: 'text001',
+          componentModule: 'Text',
           props: '{"text":"I am a span inside a red container"}'
         }
       ]

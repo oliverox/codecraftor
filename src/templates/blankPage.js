@@ -5,7 +5,7 @@ export default {
   pages: {
     index: {
       pageTitle: 'Page One',
-      imports: ['RootContainer', 'GenericContainer', 'Span'],
+      imports: ['RootContainer', 'GenericContainer', 'Text'],
       root: {
         componentModule: 'RootContainer',
         props: '{}',
@@ -21,9 +21,9 @@ export default {
           childrenComponents: ['span001']
         },
         {
-          id: 'span001',
-          componentModule: 'Span',
-          props: '{"text":"I am a span inside a Container"}'
+          id: 'text001',
+          componentModule: 'Text',
+          props: '{"text":"I am a text inside a Container"}'
         }
       ]
     }
