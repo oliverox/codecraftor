@@ -21,7 +21,8 @@ class MainFrame extends React.Component {
     this.state = {
       siteMeta: false,
       currentTab: 'home',
-      currentPage: 'index'
+      currentPage: 'index',
+      currentComponentId: false
     };
     this.iframeRef = false;
     this.initialRender = true;
@@ -76,20 +77,29 @@ class MainFrame extends React.Component {
       return;
     }
     console.log('Mainframe msg rcvd from:', origin, data);
-    if (data && data.componentModule && data.target && data.page) {
+    if (data && data.componentType && data.target && data.page) {
+      // New component added to page
       this.updateSiteMeta(data);
+    } else if (data && data.componentId && data.page) {
+      // Component was selected on page
+      // therefore switch to Configurator tab
+      this.setState({
+        currentComponentId: data.componentId,
+        currentPage: data.page,
+        currentTab: 'configurator'
+      });
     }
   }
 
   updateSiteMeta(params) {
-    const { page, target, componentModule } = params;
+    const { page, target, componentType } = params;
     const { siteMeta } = this.state;
     const id = shortid.generate();
-    const newComponent = { id, componentModule };
+    const newComponent = { id, componentType };
     siteMeta.updated = Date.now();
     if (target === 'root') {
-      if (siteMeta.pages[page].imports.indexOf(componentModule) < 0) {
-        siteMeta.pages[page].imports.push(componentModule);
+      if (siteMeta.pages[page].imports.indexOf(componentType) < 0) {
+        siteMeta.pages[page].imports.push(componentType);
       }
       siteMeta.pages[page].root.childrenComponents.push(id);
       siteMeta.pages[page].nonRootComponents.push(newComponent);
@@ -123,7 +133,12 @@ class MainFrame extends React.Component {
 
   render() {
     const { match } = this.props;
-    const { currentTab, siteMeta, currentPage } = this.state;
+    const {
+      currentTab,
+      siteMeta,
+      currentPage,
+      currentComponentId
+    } = this.state;
     const currentPageTitle = siteMeta
       ? siteMeta.pages[currentPage].pageTitle
       : '';
@@ -143,6 +158,7 @@ class MainFrame extends React.Component {
             currentTab={currentTab}
             siteMeta={siteMeta}
             currentPage={currentPage}
+            currentComponentId={currentComponentId}
             sendPageMetaToFrame={this.sendPageMetaToFrame}
           />
           <Iframe

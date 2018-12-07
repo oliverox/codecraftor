@@ -7,7 +7,7 @@ import styles from './Components.module.css';
 const ComponentsPanel = () => {
   const onDragStart = e => {
     e.dataTransfer.setData(
-      'componentModule',
+      'componentType',
       e.target.getAttribute('data-componentmodule')
     );
   };

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Icon } from '@blueprintjs/core';
 
-import styles from './Configurator.module.css';
+import styles from './ComponentWrapper.module.css';
 
-class Configurator extends React.Component {
+class ComponentWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,7 +19,9 @@ class Configurator extends React.Component {
   handleClick(event) {
     event.stopPropagation();
     event.preventDefault();
-    console.log('You clicked on component id:', this.props.componentId);
+    const { page, componentId, onComponentClick } = this.props;
+    console.log('You clicked on component id:', componentId, page);
+    onComponentClick({componentId, page});
 
   }
 
@@ -77,4 +79,4 @@ class Configurator extends React.Component {
   }
 }
 
-export default Configurator;
+export default ComponentWrapper;

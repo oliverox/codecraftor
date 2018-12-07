@@ -7,7 +7,7 @@ export default {
       pageTitle: 'Page One',
       imports: ['RootContainer', 'GenericContainer', 'Text'],
       root: {
-        componentModule: 'RootContainer',
+        componentType: 'RootContainer',
         props: '{}',
         editable: false,
         childrenComponents: ['generic-container001'],
@@ -15,14 +15,14 @@ export default {
       nonRootComponents: [
         {
           id: 'generic-container001',
-          componentModule: 'GenericContainer',
+          componentType: 'GenericContainer',
           props:
             '{"style":{"backgroundColor":"lightblue", "display":"flex","justifyContent":"center","alignItems":"center"}}',
           childrenComponents: ['text001']
         },
         {
           id: 'text001',
-          componentModule: 'Text',
+          componentType: 'Text',
           props: '{"text":"I am a text inside a Container"}'
         }
       ]

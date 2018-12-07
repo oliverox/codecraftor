@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ComponentDrop from '../appComponents/ComponentDrop/ComponentDrop';
-import Configurator from '../appComponents/Configurator/Configurator';
+import ComponentWrapper from '../appComponents/ComponentWrapper/ComponentWrapper';
 
-const importComponent = componentModule =>
-  import(`../components/${componentModule}`);
+const importComponent = componentType =>
+  import(`../components/${componentType}`);
 
 class Editor extends Component {
   constructor() {
@@ -23,6 +23,7 @@ class Editor extends Component {
     this.importComponents = this.importComponents.bind(this);
     this.getComponentIndex = this.getComponentIndex.bind(this);
     this.handlePostMessage = this.handlePostMessage.bind(this);
+    this.handleComponentClick = this.handleComponentClick.bind(this);
     this.getComponentAndChildren = this.getComponentAndChildren.bind(this);
   }
   componentDidMount() {
@@ -51,9 +52,9 @@ class Editor extends Component {
     });
   }
 
-  getComponentIndex(componentModule) {
+  getComponentIndex(componentType) {
     const { page } = this.state;
-    return this.siteMeta.pages[page].imports.indexOf(componentModule);
+    return this.siteMeta.pages[page].imports.indexOf(componentType);
   }
 
   importComponents() {
@@ -61,14 +62,14 @@ class Editor extends Component {
     this.siteMeta = this.state.siteMeta;
     const { page } = this.state;
     const componentImportArray = this.siteMeta.pages[page].imports.map(
-      componentModule => {
-        console.log(`>> importing ${componentModule}...`);
-        return importComponent(componentModule);
+      componentType => {
+        console.log(`>> importing ${componentType}...`);
+        return importComponent(componentType);
       }
     );
     return Promise.all(componentImportArray).then(importedComponents => {
       const root = this.siteMeta.pages[page].root;
-      const rootModuleName = root.componentModule;
+      const rootModuleName = root.componentType;
       const rootIndex = this.getComponentIndex(rootModuleName);
       const { module, defaultProps } = importedComponents[rootIndex].default;
       const { children, ...props } = defaultProps;
@@ -83,9 +84,9 @@ class Editor extends Component {
       const nonRootComponents = this.siteMeta.pages[page].nonRootComponents;
       for (let i = 0; i < nonRootComponents.length; i++) {
         let nonRootComponent = nonRootComponents[i];
-        let componentModuleName = nonRootComponent.componentModule;
-        console.log('updating component:', componentModuleName);
-        let componentIndex = this.getComponentIndex(componentModuleName);
+        let componentTypeName = nonRootComponent.componentType;
+        console.log('updating component:', componentTypeName);
+        let componentIndex = this.getComponentIndex(componentTypeName);
         const importedComponent = importedComponents[componentIndex];
         const { module, defaultProps } = importedComponent.default;
         const { children, ...props } = defaultProps;
@@ -124,9 +125,14 @@ class Editor extends Component {
     );
     if (editable) {
       return (
-        <Configurator key={this.key++} componentId={id}>
+        <ComponentWrapper
+          key={this.key++}
+          componentId={id}
+          page={this.state.page}
+          onComponentClick={this.handleComponentClick}
+        >
           {componentToRender}
-        </Configurator>
+        </ComponentWrapper>
       );
     } else {
       return componentToRender;
@@ -155,6 +161,14 @@ class Editor extends Component {
 
   handlePostMessage(data) {
     window.parent.postMessage(data, '*');
+  }
+
+  handleComponentClick({ componentId, page}) {
+    this.handlePostMessage({
+      action: 'click',
+      componentId,
+      page
+    });
   }
 
   render() {

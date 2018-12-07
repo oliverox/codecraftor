@@ -19,9 +19,9 @@ class ComponentDrop extends React.Component {
 
   handleDrop(e) {
     const { target, page, postMessage } = this.props;
-    const componentModule = e.dataTransfer.getData('componentModule');
+    const componentType = e.dataTransfer.getData('componentType');
     postMessage({
-      componentModule,
+      componentType,
       target,
       page
     });
