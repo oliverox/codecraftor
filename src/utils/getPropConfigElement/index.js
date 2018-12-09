@@ -1,5 +1,10 @@
 import React from 'react';
-import { Alignment, EditableText, Label, Switch } from '@blueprintjs/core';
+import {
+  Alignment,
+  EditableText,
+  Label,
+  Switch,
+} from '@blueprintjs/core';
 
 import styles from './styles.module.css';
 
@@ -54,6 +59,32 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
       );
       break;
 
+    case 'list':
+      propConfigElement = (
+        <Label key={key}>
+          <div className={styles.label}>{propObj.label}</div>
+          <div className="bp3-select bp3-minimal">
+            <select
+              className={styles.value}
+              defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
+              onChange={event => {
+                onPropUpdate({
+                  prop,
+                  value: event.target.value
+                });
+              }}
+            >
+              {propObj.list.map((item, i) => (
+                <option key={`${key}-${i}`} value={propObj.list[i].value}>
+                  {propObj.list[i].name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </Label>
+      );
+      break;
+
     default:
       break;
   }
@@ -74,7 +105,7 @@ config = [{
     prop: 'intent',
     label: 'Intent',
     type: 'list',
-    value: 'None',
+    value: 'none',
     list: [{
       name: 'none',
       value: 'None'
