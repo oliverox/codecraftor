@@ -7,20 +7,9 @@ import {
   ComponentsTab,
   ConfiguratorTab
 } from './Tabs';
+import getComponentObj from '../../utils/getComponentObj';
 
 import styles from './Sidebar.module.css';
-
-const getComponentObj = (siteMeta, page, componentId) => {
-  const { nonRootComponents } = siteMeta.pages[page];
-  let componentObj = false;
-  for (let i = 0; i < nonRootComponents.length; i++) {
-    if (nonRootComponents[i].id === componentId) {
-      componentObj = nonRootComponents[i];
-      break;
-    }
-  }
-  return componentObj;
-};
 
 class SideBar extends React.Component {
   constructor(props) {
@@ -34,15 +23,23 @@ class SideBar extends React.Component {
 
   render() {
     const {
-      currentTab = 'home',
       siteMeta,
-      sendPageMetaToFrame,
       currentPage,
-      currentComponentId
+      currentComponentId,
+      currentTab = 'home',
+      sendPageMetaToFrame,
+      updateComponentOnPage
     } = this.props;
     let componentObj = false;
+    let index = -1;
     if (siteMeta) {
-      componentObj = getComponentObj(siteMeta, currentPage, currentComponentId);
+      const data = getComponentObj(
+        siteMeta,
+        currentPage,
+        currentComponentId
+      );
+      componentObj = data.componentObj;
+      index = data.index;
     }
     return (
       <div className={styles.sidebarContainer}>
@@ -51,6 +48,7 @@ class SideBar extends React.Component {
           animate={false}
           onChange={this.handleTabChange}
           selectedTabId={currentTab}
+          renderActiveTabPanelOnly={true}
         >
           <Tab
             id="home"
@@ -64,7 +62,13 @@ class SideBar extends React.Component {
           <Tab id="themes" panel={<ThemesTab />} />
           <Tab
             id="configurator"
-            panel={<ConfiguratorTab componentObj={componentObj} />}
+            panel={
+              <ConfiguratorTab
+                index={index}
+                componentObj={componentObj}
+                updateComponentOnPage={updateComponentOnPage}
+              />
+            }
           />
         </Tabs>
       </div>

@@ -7,6 +7,7 @@ import NavbarHeader from '../appComponents/NavbarHeader/NavbarHeader';
 import Sidebar from '../appComponents/Sidebar/Sidebar';
 import Iframe from '../appComponents/Iframe/Iframe';
 import { BlankPage } from '../templates';
+import getComponentObj from '../utils/getComponentObj';
 
 import 'typeface-montserrat';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
@@ -26,11 +27,13 @@ class MainFrame extends React.Component {
     };
     this.iframeRef = false;
     this.initialRender = true;
+    this.updateSite = this.updateSite.bind(this);
     this.setIframeRef = this.setIframeRef.bind(this);
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
-    this.updateSiteMeta = this.updateSiteMeta.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.sendPageMetaToFrame = this.sendPageMetaToFrame.bind(this);
+    this.appendComponentToPage = this.appendComponentToPage.bind(this);
+    this.updateComponentOnPage = this.updateComponentOnPage.bind(this);
   }
 
   componentDidMount() {
@@ -79,7 +82,7 @@ class MainFrame extends React.Component {
     console.log('Mainframe msg rcvd from:', origin, data);
     if (data && data.componentType && data.target && data.page) {
       // New component added to page
-      this.updateSiteMeta(data);
+      this.updateSite('APPEND', data);
     } else if (data && data.componentId && data.page) {
       // Component was selected on page
       // therefore switch to Configurator tab
@@ -91,7 +94,18 @@ class MainFrame extends React.Component {
     }
   }
 
-  updateSiteMeta(params) {
+  updateSite(action, params) {
+    switch (action) {
+      case 'APPEND':
+        this.appendComponentToPage(params);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  appendComponentToPage(params) {
     const { page, target, componentType } = params;
     const { siteMeta } = this.state;
     const id = shortid.generate();
@@ -111,6 +125,23 @@ class MainFrame extends React.Component {
     this.docRef.set({
       siteMeta
     });
+  }
+
+  updateComponentOnPage(params) {
+    const componentId = params.id;
+    const componentProps = params.props;
+    const { siteMeta, currentPage } = this.state;
+    siteMeta.updated = Date.now();
+    if (componentId === 'root') {
+    } else {
+      const { index } = getComponentObj(siteMeta, currentPage, componentId);
+      siteMeta.pages[currentPage].nonRootComponents[
+        index
+      ].props = componentProps;
+      this.setState({
+        siteMeta
+      });
+    }
   }
 
   sendPageMetaToFrame() {
@@ -160,6 +191,7 @@ class MainFrame extends React.Component {
             currentPage={currentPage}
             currentComponentId={currentComponentId}
             sendPageMetaToFrame={this.sendPageMetaToFrame}
+            updateComponentOnPage={this.updateComponentOnPage}
           />
           <Iframe
             craftId={match.params.craftId}
