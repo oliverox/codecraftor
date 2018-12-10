@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Alignment,
   EditableText,
-  Label,
   Switch,
   Classes
 } from '@blueprintjs/core';
