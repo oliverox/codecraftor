@@ -1,4 +1,5 @@
 import React from 'react';
+import { H6, Divider } from '@blueprintjs/core';
 import getPropConfigElement from '../../../../utils/getPropConfigElement';
 import componentList from '../../../../components';
 
@@ -25,6 +26,8 @@ const ConfiguratorTab = ({ componentObj, index, updateComponentOnPage }) => {
   };
   return (
     <div>
+      <H6>Component properties</H6>
+      <Divider />
       {componentConfig &&
         componentConfig.map((propObj, key) => {
           return getPropConfigElement(

@@ -4,6 +4,7 @@ import {
   EditableText,
   Label,
   Switch,
+  Classes
 } from '@blueprintjs/core';
 
 import styles from './styles.module.css';
@@ -22,66 +23,78 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
   switch (type) {
     case 'string':
       propConfigElement = (
-        <Label key={key}>
-          <div className={styles.label}>{propObj.label}</div>
-          <EditableText
-            className={styles.value}
-            multiline={false}
-            placeholder={propObj.placeholder}
-            selectAllOnFocus={true}
-            confirmOnEnterKey={true}
-            defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
-            onConfirm={value => {
-              onPropUpdate({
-                prop,
-                value
-              });
-            }}
-          />
-        </Label>
+        <div key={key} className={styles.container}>
+          <div className={Classes.INLINE}>
+            <div className={styles.label}>{propObj.label}</div>
+            <EditableText
+              className={styles.value}
+              multiline={false}
+              placeholder={propObj.placeholder}
+              selectAllOnFocus={true}
+              confirmOnEnterKey={true}
+              defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
+              onConfirm={value => {
+                onPropUpdate({
+                  prop,
+                  value
+                });
+              }}
+            />
+          </div>
+        </div>
       );
       break;
 
     case 'yesno':
       propConfigElement = (
-        <Switch
+        <div
           key={key}
-          alignIndicator={Alignment.RIGHT}
-          defaultChecked={allProps[prop] ? allProps[prop] : defaultValue}
-          labelElement={<span className={styles.label}>{propObj.label}</span>}
-          onChange={event => {
-            onPropUpdate({
-              prop,
-              value: event.target.checked
-            });
-          }}
-        />
+          className={`${styles.container} ${styles.switchContainer}`}
+        >
+          <Switch
+            alignIndicator={Alignment.RIGHT}
+            defaultChecked={allProps[prop] ? allProps[prop] : defaultValue}
+            labelElement={<span className={styles.label}>{propObj.label}</span>}
+            onChange={event => {
+              onPropUpdate({
+                prop,
+                value: event.target.checked
+              });
+            }}
+          />
+        </div>
       );
       break;
 
     case 'list':
       propConfigElement = (
-        <Label key={key}>
-          <div className={styles.label}>{propObj.label}</div>
-          <div className="bp3-select bp3-minimal">
-            <select
-              className={styles.value}
-              defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
-              onChange={event => {
-                onPropUpdate({
-                  prop,
-                  value: event.target.value
-                });
-              }}
+        <div key={key} className={styles.container}>
+          <div className={Classes.INLINE}>
+            <span className={styles.label}>{propObj.label}</span>
+            <div
+              className={`${Classes.SELECT} ${Classes.MINIMAL} ${
+                Classes.INLINE
+              }`}
             >
-              {propObj.list.map((item, i) => (
-                <option key={`${key}-${i}`} value={propObj.list[i].value}>
-                  {propObj.list[i].name}
-                </option>
-              ))}
-            </select>
+              <select
+                className={styles.value}
+                defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
+                onChange={event => {
+                  onPropUpdate({
+                    prop,
+                    value: event.target.value
+                  });
+                }}
+              >
+                {propObj.list.map((item, i) => (
+                  <option key={`${key}-${i}`} value={propObj.list[i].value}>
+                    {propObj.list[i].name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </Label>
+        </div>
       );
       break;
 
