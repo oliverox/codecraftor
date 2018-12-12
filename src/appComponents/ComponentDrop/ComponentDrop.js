@@ -48,28 +48,29 @@ class ComponentDrop extends React.Component {
   }
 
   render() {
-    const { dropText } = this.props;
+    const { dropText, inline } = this.props;
     const { isDragOver } = this.state;
     let cn = styles.dropContainer;
     if (this.state.isDragOver) {
       cn = `${cn} ${styles.isDragOver}`;
     }
+    if (inline) {
+      cn = `${cn} ${styles.inline}`;
+    }
     return (
-      <div>
-        <div
-          ref={this.componentDropRef}
-          className={cn}
-          onDrop={this.handleDrop}
-          onDragOver={this.handleOnDragOver}
-          onDragEnter={this.handleOnDragEnter}
-          onDragLeave={this.handleOnDragLeave}
-        >
-          {isDragOver ? (
-            <Icon iconSize={25} className={styles.dropIcon} icon="import" />
-          ) : (
-            dropText
-          )}
-        </div>
+      <div
+        ref={this.componentDropRef}
+        className={cn}
+        onDrop={this.handleDrop}
+        onDragOver={this.handleOnDragOver}
+        onDragEnter={this.handleOnDragEnter}
+        onDragLeave={this.handleOnDragLeave}
+      >
+        {isDragOver ? (
+          <Icon iconSize={25} className={styles.dropIcon} icon="import" />
+        ) : (
+          dropText
+        )}
       </div>
     );
   }
@@ -78,6 +79,7 @@ class ComponentDrop extends React.Component {
 export default ComponentDrop;
 
 ComponentDrop.defaultProps = {
+  inline: false,
   target: 'root',
   page: 'index',
   dropText: 'Drag & Drop Component Here'

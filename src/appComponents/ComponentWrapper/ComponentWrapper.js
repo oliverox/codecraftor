@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon } from '@blueprintjs/core';
+import ComponentDrop from '../ComponentDrop/ComponentDrop';
 
 import styles from './ComponentWrapper.module.css';
 
@@ -7,12 +8,15 @@ class ComponentWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isMouseOver: false
+      isMouseOver: false,
+      scoot: false
     };
     this.moduleRef = React.createRef();
     this.handleClick = this.handleClick.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.showDropComponent = this.showDropComponent.bind(this);
+    this.hideDropComponent = this.hideDropComponent.bind(this);
     this.getEditButtonPosition = this.getEditButtonPosition.bind(this);
   }
 
@@ -21,8 +25,7 @@ class ComponentWrapper extends React.Component {
     event.preventDefault();
     const { page, componentId, onComponentClick } = this.props;
     console.log('You clicked on component id:', componentId, page);
-    onComponentClick({componentId, page});
-
+    onComponentClick({ componentId, page });
   }
 
   handleMouseOver(event) {
@@ -57,23 +60,67 @@ class ComponentWrapper extends React.Component {
     };
   }
 
+  showDropComponent(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState({
+      scoot: true
+    });
+  }
+
+  hideDropComponent(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState({
+      scoot: false
+    });
+  }
+
   render() {
     const { children } = this.props;
-    const { isMouseOver } = this.state;
-    const cn = `${styles.editContainer} ${isMouseOver ? styles.show : ''}`;
+    const { isMouseOver, scoot } = this.state;
+    const elementCn = `${styles.actionsContainer} ${
+      isMouseOver ? styles.show : ''
+    }`;
+    const wrapperCn = `${scoot ? styles.scoot : ''}`;
     const editButtonOffset = this.getEditButtonPosition();
     return (
-      <div
-        onClick={this.handleClick}
-        onMouseOver={this.handleMouseOver}
-        onMouseOut={this.handleMouseOut}
-        className={styles.configurator}
-        ref={this.moduleRef}
-      >
-        <div className={cn} style={editButtonOffset}>
-          <Icon className={styles.editIcon} icon="edit" />
+      <div>
+        <div
+          className={`${styles.componentDrop} ${!scoot ? styles.hidden : ''}`}
+        >
+          <ComponentDrop inline={true} dropText="Insert a new component here" />
         </div>
-        {children}
+        <div
+          onClick={this.handleClick}
+          onMouseOver={this.handleMouseOver}
+          onMouseOut={this.handleMouseOut}
+          className={`${styles.configurator} ${wrapperCn}`}
+          ref={this.moduleRef}
+        >
+          <div className={elementCn} style={editButtonOffset}>
+            <div className={styles.iconContainer}>
+              <Icon
+                className={`${styles.icon} ${styles.editIcon}`}
+                icon="edit"
+              />
+              {scoot ? (
+                <Icon
+                  onClick={this.hideDropComponent}
+                  className={`${styles.icon} ${styles.insertIcon}`}
+                  icon="minus"
+                />
+              ) : (
+                <Icon
+                  onClick={this.showDropComponent}
+                  className={`${styles.icon} ${styles.insertIcon}`}
+                  icon="plus"
+                />
+              )}
+            </div>
+          </div>
+          {children}
+        </div>
       </div>
     );
   }

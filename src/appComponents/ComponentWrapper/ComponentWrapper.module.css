@@ -1,28 +1,64 @@
-.configurator:hover {
-  outline: 1px dashed #33449e;
-  outline-offset: 5px;
-}
-.editContainer {
-  position: absolute;
-  opacity: 0;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.1)
-}
-.editIcon {
-  position: absolute;
-  margin-left: -6px;
-  margin-top: -27px;
-  padding: 2px;
-  fill: #33449e;
+.componentDrop {
   display: flex;
+  z-index: 0;
   justify-content: center;
   align-items: center;
-  background-color: #fbe591;
-  border: 1px dashed #33449e;
-  border-bottom: none;
-
+  height: 120px;
+  opacity: 1;
+  transition: height 0.5s ease-out;
+}
+.hidden {
+  height: 0px;
+  opacity: 0;
+  pointer-events: none;
+}
+.configurator {
+  box-sizing: border-box;
+  padding: 1px;
+}
+.configurator:hover {
+  outline: 1px solid darkgoldenrod;
+  outline-offset: 2px;
+}
+.actionsContainer {
+  position: absolute;
+  opacity: 0;
+  width: 200px;
+  height: 30px;
+  cursor: pointer;
+  /* pointer-events: none; */
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.iconContainer {
+  width: 100%;
+  height: 40px;
+  top: -20px;
+  display: flex;
+  position: absolute;
+  flex-direction: row;
+  justify-content: center;
+}
+.icon {
+  padding: 0px 10px;
+  fill: darkgoldenrod;
+  display: flex;
+  margin-top: 0px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  background-color: #fbe691ec;
+  border: 1px solid darkgoldenrod;
+}
+.icon:hover {
+  fill: #33449e;;
+}
+.editIcon {
+  margin-left: 0px;
+  border-right: 0;
+}
+.insertIcon {
+  margin-left: 0px;
+  border-left: 0;
 }
 .show {
   opacity: 1;
