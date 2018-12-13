@@ -15,6 +15,7 @@ class ComponentWrapper extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.removeComponent = this.removeComponent.bind(this);
     this.showDropComponent = this.showDropComponent.bind(this);
     this.hideDropComponent = this.hideDropComponent.bind(this);
     this.getEditButtonPosition = this.getEditButtonPosition.bind(this);
@@ -76,8 +77,19 @@ class ComponentWrapper extends React.Component {
     });
   }
 
+  removeComponent(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const { page, componentId, postMessage } = this.props;
+    postMessage({
+      page,
+      componentId,
+      action: 'DELETE'
+    });
+  }
+
   render() {
-    const { children } = this.props;
+    const { children, postMessage } = this.props;
     const { isMouseOver, scoot } = this.state;
     const elementCn = `${styles.actionsContainer} ${
       isMouseOver ? styles.show : ''
@@ -89,7 +101,11 @@ class ComponentWrapper extends React.Component {
         <div
           className={`${styles.componentDrop} ${!scoot ? styles.hidden : ''}`}
         >
-          <ComponentDrop inline={true} dropText="Insert a new component here" />
+          <ComponentDrop
+            inline={true}
+            postMessage={postMessage}
+            dropText="Drop a component here"
+          />
         </div>
         <div
           onClick={this.handleClick}
@@ -117,6 +133,11 @@ class ComponentWrapper extends React.Component {
                   icon="plus"
                 />
               )}
+              <Icon
+                onClick={this.removeComponent}
+                className={`${styles.icon} ${styles.trashIcon}`}
+                icon="trash"
+              />
             </div>
           </div>
           {children}

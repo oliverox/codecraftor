@@ -5,8 +5,16 @@ body {
   height: 100%;
   background-color: #fff;
 }
+:global(.root) {
+  height: 100%;
+}
 .app {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+.editor {
+  background-color: #fff;
+  border: 5px solid #e8eaed;
+  border-top: 20px solid #e8eaed;
 }

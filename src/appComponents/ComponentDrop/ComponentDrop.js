@@ -18,10 +18,11 @@ class ComponentDrop extends React.Component {
   componentDidMount() {}
 
   handleDrop(e) {
-    const { target, page, postMessage } = this.props;
+    const { target, page, postMessage, action = 'APPEND' } = this.props;
     const componentType = e.dataTransfer.getData('componentType');
     postMessage({
       componentType,
+      action,
       target,
       page
     });

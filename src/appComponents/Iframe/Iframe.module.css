@@ -14,11 +14,11 @@ iframe {
   border: 0;
   box-sizing: border-box;
   background-color: #fff;
-  border-left: 2px solid #e8eaed;
-  border-right: 2px solid #e8eaed;
+  /* border-left: 2px solid #e8eaed;
+  border-right: 2px solid #e8eaed; */
 }
 .iframeBrowserHeader {
-  height: 40px;
+  height: 17px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -29,8 +29,10 @@ iframe {
   background-color: #e8eaed;
 }
 .iframeBrowserButtonContainer {
+  position: absolute;
   display: flex;
   width: 70px;
+  top: 14px;
 }
 .iframeBrowserButton {
   border-radius: 50%;
@@ -40,6 +42,9 @@ iframe {
   background-color: #fff;
 }
 .iframePageTitle {
-  font-size: 13px;
+  position: absolute;
   color: #696c71;
+  font-size: 13px;
+  left: 70px;
+  top: 11px;
 }

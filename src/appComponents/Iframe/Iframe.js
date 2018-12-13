@@ -33,7 +33,7 @@ class Iframe extends React.Component {
         </div>
         <iframe
           ref={this.iframeRef}
-          src="/editor"
+          src="/editor?_frame=true"
           width="100%"
           height="100%"
           title="Codecraftor"

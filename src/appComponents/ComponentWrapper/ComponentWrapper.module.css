@@ -17,7 +17,7 @@
   padding: 1px;
 }
 .configurator:hover {
-  outline: 1px solid darkgoldenrod;
+  outline: 2px solid darkgoldenrod;
   outline-offset: 2px;
 }
 .actionsContainer {
@@ -25,8 +25,6 @@
   opacity: 0;
   width: 200px;
   height: 30px;
-  cursor: pointer;
-  /* pointer-events: none; */
   background-color: rgba(0, 0, 0, 0.1);
 }
 .iconContainer {
@@ -39,14 +37,15 @@
   justify-content: center;
 }
 .icon {
-  padding: 0px 10px;
+  cursor: pointer;
+  padding: 0px 7px;
   fill: darkgoldenrod;
   display: flex;
   margin-top: 0px;
   height: 30px;
   justify-content: center;
   align-items: center;
-  background-color: #fbe691ec;
+  background-color: #fbe591;
   border: 1px solid darkgoldenrod;
 }
 .icon:hover {
@@ -59,6 +58,14 @@
 .insertIcon {
   margin-left: 0px;
   border-left: 0;
+  border-right: 0;
+}
+.trashIcon {
+  margin-left: 0px;
+  border-left: 0;
+}
+.trashIcon:hover {
+  fill: #ca0000;
 }
 .show {
   opacity: 1;

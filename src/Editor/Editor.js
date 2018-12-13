@@ -44,6 +44,7 @@ class Editor extends Component {
     if (this.state.siteMeta.updated === -1) {
       return;
     }
+    this.components = {};
     this.importComponents().then(() => {
       this.buildDomTree();
       this.setState({
@@ -106,6 +107,9 @@ class Editor extends Component {
   }
 
   getComponentAndChildren(id) {
+    if (typeof(this.components[id]) === 'undefined') {
+      return null;
+    }
     const {
       Module,
       editable = true,
@@ -129,6 +133,7 @@ class Editor extends Component {
           key={this.key++}
           componentId={id}
           page={this.state.page}
+          postMessage={this.handlePostMessage}
           onComponentClick={this.handleComponentClick}
         >
           {componentToRender}
@@ -142,6 +147,7 @@ class Editor extends Component {
   buildDomTree() {
     console.log('buildDomTree()...');
     this.rootComponent = this.getComponentAndChildren('root', 0);
+    console.log('rootComponent=', this.rootComponent);
   }
 
   handleMsgRcvd(msg) {
@@ -165,7 +171,7 @@ class Editor extends Component {
 
   handleComponentClick({ componentId, page}) {
     this.handlePostMessage({
-      action: 'click',
+      action: 'SELECT',
       componentId,
       page
     });

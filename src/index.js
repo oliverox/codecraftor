@@ -24,10 +24,16 @@ firebase.initializeApp({
 
 
 const CodecraftorApp = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isEditor = urlParams.get('_frame');
+  let cn = styles.app;
+  if (isEditor === 'true') {
+    cn = `${styles.app} ${styles.editor}`;
+  }
   return (
     <Router>
       <React.Suspense fallback={<div>Loading...</div>}>
-        <div className={styles.app}>
+        <div className={cn}>
           <Switch>
             <Route path="/" exact render={props => <Index {...props} />} />
             <Route

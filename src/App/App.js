@@ -31,9 +31,12 @@ class MainFrame extends React.Component {
     this.setIframeRef = this.setIframeRef.bind(this);
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
+    this.getImportsForPage = this.getImportsForPage.bind(this);
     this.sendPageMetaToFrame = this.sendPageMetaToFrame.bind(this);
     this.appendComponentToPage = this.appendComponentToPage.bind(this);
     this.updateComponentOnPage = this.updateComponentOnPage.bind(this);
+    this.deleteComponentOnPage = this.deleteComponentOnPage.bind(this);
+    this.sanitizeChildrenComponents = this.sanitizeChildrenComponents.bind(this);
   }
 
   componentDidMount() {
@@ -80,10 +83,11 @@ class MainFrame extends React.Component {
       return;
     }
     console.log('Mainframe msg rcvd from:', origin, data);
-    if (data && data.componentType && data.target && data.page) {
+
+    if (data && data.action === 'APPEND') {
       // New component added to page
       this.updateSite('APPEND', data);
-    } else if (data && data.componentId && data.page) {
+    } else if (data && data.action === 'SELECT') {
       // Component was selected on page
       // therefore switch to Configurator tab
       this.setState({
@@ -91,6 +95,9 @@ class MainFrame extends React.Component {
         currentPage: data.page,
         currentTab: 'configurator'
       });
+    } else if (data && data.action === 'DELETE') {
+      console.log('Delete component:', data.componentId);
+      this.deleteComponentOnPage(data);
     }
   }
 
@@ -127,12 +134,85 @@ class MainFrame extends React.Component {
     });
   }
 
+  deleteComponentOnPage(params) {
+    const { page, componentId } = params;
+    const { siteMeta } = this.state;
+    const nonRootComponents = siteMeta.pages[page].nonRootComponents.slice();
+    let componentIndexToRemove = -1;
+    for (let i=0; i<nonRootComponents.length; i++) {
+      if (nonRootComponents[i].id === componentId) {
+        componentIndexToRemove = i;
+        break;
+      }
+    }
+    if (componentIndexToRemove >= 0) {
+      nonRootComponents.splice(componentIndexToRemove, 1);
+    }
+    siteMeta.updated = Date.now();
+    siteMeta.pages[page].nonRootComponents = nonRootComponents;
+    console.log('updated siteMeta=', siteMeta);
+    siteMeta.pages[page].imports = this.getImportsForPage(page);
+    const newSiteMeta = this.sanitizeChildrenComponents(page);
+    this.setState({
+      siteMeta: newSiteMeta
+    });
+    this.docRef.set({
+      siteMeta: newSiteMeta
+    });
+  }
+
+  getImportsForPage(page) {
+    const updatedImports = ['RootContainer'];
+    const { siteMeta } = this.state;
+    const { nonRootComponents } = siteMeta.pages[page];
+    let currentComponent;
+    for (let i=0; i<nonRootComponents.length; i++) {
+      currentComponent = nonRootComponents[i];
+      if (updatedImports.indexOf(currentComponent.componentType) < 0) {
+        updatedImports.push(currentComponent.componentType);
+      }
+    }
+    console.log('new imports for page:', updatedImports);
+    return updatedImports;
+  }
+
+  sanitizeChildrenComponents(page) {
+    const { siteMeta } = this.state;
+    const rootChildrenComponents = siteMeta.pages[page].root.childrenComponents;
+    const nonRootComponents = {};
+    const newRootChildrenComponents = [];
+    for (let i=0; i<siteMeta.pages[page].nonRootComponents.length; i++) {
+      nonRootComponents[siteMeta.pages[page].nonRootComponents[i].id] = true;
+    }
+    if (rootChildrenComponents && rootChildrenComponents.length > 0) {
+      for (let i=0; i<rootChildrenComponents.length; i++) {
+        if (nonRootComponents[rootChildrenComponents[i]]) {
+          newRootChildrenComponents.push(rootChildrenComponents[i]);
+        }
+      }
+    }
+    for (let i=0; i<siteMeta.pages[page].nonRootComponents.length; i++) {
+      if (siteMeta.pages[page].nonRootComponents[i].childrenComponents) {
+        let newCC = [];
+        for (let j=0; j<siteMeta.pages[page].nonRootComponents[i].childrenComponents.length; j++) {
+          if (nonRootComponents[siteMeta.pages[page].nonRootComponents[i].childrenComponents[j]]) {
+            newCC.push(siteMeta.pages[page].nonRootComponents[i].childrenComponents[j]);
+          }
+        }
+        siteMeta.pages[page].nonRootComponents[i].childrenComponents = newCC;
+      }
+    }
+    console.log('new site meta after sanitization:', siteMeta);
+    return siteMeta;
+  }
+
   updateComponentOnPage(params) {
     const componentId = params.id;
     const componentProps = params.props;
     const { siteMeta, currentPage } = this.state;
     siteMeta.updated = Date.now();
     if (componentId === 'root') {
+      // Update root
     } else {
       const { index } = getComponentObj(siteMeta, currentPage, componentId);
       siteMeta.pages[currentPage].nonRootComponents[
@@ -141,6 +221,9 @@ class MainFrame extends React.Component {
       this.setState({
         siteMeta
       });
+      this.docRef.set({
+        siteMeta
+      });  
     }
   }
 
