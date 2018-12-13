@@ -6,15 +6,22 @@ body {
   background-color: #fff;
 }
 :global(.root) {
-  height: 100%;
+  background-color: #e8eaed;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 162px;
+  min-height: 100%;
 }
 .app {
   display: flex;
+  min-height: 100%;
   flex-direction: column;
-  height: 100%;
+  justify-content: space-between;
 }
 .editor {
   background-color: #fff;
   border: 5px solid #e8eaed;
   border-top: 20px solid #e8eaed;
+  min-height: 96%;
 }

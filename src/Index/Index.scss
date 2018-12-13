@@ -1,7 +1,11 @@
 .index-container {
+  flex: 1;
   height: 100%;
+  display: flex;
   margin: -5px;
   font-size: 16px;
+  flex-direction: column;
+  background-color: #f7f7f7;
   font-family: 'Montserrat', sans-serif;
 }
 .index-header {

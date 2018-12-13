@@ -16,7 +16,6 @@ class Editor extends Component {
     this.key = 0;
     this.siteMeta = {};
     this.components = {};
-    this.editorRef = React.createRef();
     this.refreshPage = this.refreshPage.bind(this);
     this.buildDomTree = this.buildDomTree.bind(this);
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
@@ -76,6 +75,9 @@ class Editor extends Component {
       const { children, ...props } = defaultProps;
       const newProps = Object.assign(props, JSON.parse(root.props));
       const childrenComponents = root.childrenComponents;
+      // if (!newProps.style.backgroundColor && this.siteMeta.globalCss.backgroundColor) {
+      //   newProps.style.backgroundColor = this.siteMeta.globalCss.backgroundColor;
+      // }
       this.components.root = {
         Module: module,
         props: newProps,
@@ -112,8 +114,8 @@ class Editor extends Component {
     }
     const {
       Module,
+      props = {},
       editable = true,
-      props = '{}',
       childrenComponents = []
     } = this.components[id];
     let newChildrenComponents = [];
@@ -123,7 +125,7 @@ class Editor extends Component {
       );
     }
     const componentToRender = (
-      <Module {...props} devMode={true}>
+      <Module {...props}>
         {newChildrenComponents.length > 0 ? newChildrenComponents : null}
       </Module>
     );
@@ -180,19 +182,19 @@ class Editor extends Component {
   render() {
     console.log('Rendering Craft...');
     return (
-      <div ref={this.editorRef}>
+      <>
         {this.state.loading ? (
           'Loading...'
         ) : (
-          <div>
+          <>
             {this.rootComponent}
             <ComponentDrop
               page={this.siteMeta.name}
               postMessage={this.handlePostMessage}
             />
-          </div>
+          </>
         )}
-      </div>
+      </>
     );
   }
 }
