@@ -59,7 +59,7 @@ class SideBar extends React.Component {
             panel={<PagesTab siteMeta={siteMeta} currentPage={currentPage} />}
           />
           <Tab id="components" panel={<ComponentsTab />} />
-          <Tab id="themes" panel={<ThemesTab />} />
+          <Tab id="themes" panel={<ThemesTab theme={siteMeta.theme} />} />
           <Tab
             id="configurator"
             panel={

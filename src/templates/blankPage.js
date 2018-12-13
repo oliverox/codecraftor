@@ -1,6 +1,15 @@
 export default {
   updated: 0,
   ui: 'default',
+  theme: {
+    colors: {
+      background: '#E2DBBE',
+      primary: '#188FA7',
+      secondary: '#283D3B',
+      tertiary: '#197278',
+      quaternary: '#C44536'
+    }
+  },
   globalCss: {},
   pages: {
     index: {

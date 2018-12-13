@@ -52,9 +52,8 @@ class ComponentWrapper extends React.Component {
     }
     const moduleWidth = this.moduleRef.current.offsetWidth;
     const moduleHeight = this.moduleRef.current.offsetHeight;
-    // console.log('moduleWidth, moduleHeight=', moduleWidth, moduleHeight);
     return {
-      width: moduleWidth,
+      width: moduleWidth - 2,
       height: moduleHeight,
       marginLeft: 0,
       marginTop: 0

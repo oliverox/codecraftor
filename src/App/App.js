@@ -292,6 +292,7 @@ class MainFrame extends React.Component {
       this.initialRender = false;
       this.sendPageMetaToFrame();
     }
+    console.log('original siteMeta=', this.props.siteMeta);
     console.log('craft id =', match.params.craftId);
     return (
       <>
