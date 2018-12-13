@@ -89,7 +89,7 @@ class ComponentWrapper extends React.Component {
   }
 
   render() {
-    const { children, postMessage } = this.props;
+    const { children, postMessage, page, componentId } = this.props;
     const { isMouseOver, scoot } = this.state;
     const elementCn = `${styles.actionsContainer} ${
       isMouseOver ? styles.show : ''
@@ -102,8 +102,10 @@ class ComponentWrapper extends React.Component {
           className={`${styles.componentDrop} ${!scoot ? styles.hidden : ''}`}
         >
           <ComponentDrop
+            page={page}
             inline={true}
             postMessage={postMessage}
+            insertBeforeId={componentId}
             dropText="Drop a component here"
           />
         </div>

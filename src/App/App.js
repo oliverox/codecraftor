@@ -30,12 +30,14 @@ class MainFrame extends React.Component {
     this.updateSite = this.updateSite.bind(this);
     this.setIframeRef = this.setIframeRef.bind(this);
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
+    this.updateSiteMeta = this.updateSiteMeta.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.getImportsForPage = this.getImportsForPage.bind(this);
     this.sendPageMetaToFrame = this.sendPageMetaToFrame.bind(this);
     this.appendComponentToPage = this.appendComponentToPage.bind(this);
     this.updateComponentOnPage = this.updateComponentOnPage.bind(this);
     this.deleteComponentOnPage = this.deleteComponentOnPage.bind(this);
+    this.insertComponentInPage = this.insertComponentInPage.bind(this);
     this.sanitizeChildrenComponents = this.sanitizeChildrenComponents.bind(this);
   }
 
@@ -98,6 +100,8 @@ class MainFrame extends React.Component {
     } else if (data && data.action === 'DELETE') {
       console.log('Delete component:', data.componentId);
       this.deleteComponentOnPage(data);
+    } else if (data && data.action === 'INSERT') {
+      this.updateSite('INSERT', data);
     }
   }
 
@@ -107,9 +111,22 @@ class MainFrame extends React.Component {
         this.appendComponentToPage(params);
         break;
 
+      case 'INSERT': 
+        this.insertComponentInPage(params);
+        break;
+
       default:
         break;
     }
+  }
+
+  updateSiteMeta(siteMeta) {
+    this.setState({
+      siteMeta
+    });
+    this.docRef.set({
+      siteMeta
+    });
   }
 
   appendComponentToPage(params) {
@@ -126,12 +143,32 @@ class MainFrame extends React.Component {
       siteMeta.pages[page].nonRootComponents.push(newComponent);
     }
     console.log('updated siteMeta=', siteMeta);
-    this.setState({
-      siteMeta
-    });
-    this.docRef.set({
-      siteMeta
-    });
+    this.updateSiteMeta(siteMeta);
+  }
+
+  insertComponentInPage(params) {
+    const { page, target, componentType, insertBeforeId } = params;
+    const { siteMeta } = this.state;
+    const id = shortid.generate();
+    const newComponent = { id, componentType };
+    siteMeta.updated = Date.now();
+    if (target === 'root') {
+      if (siteMeta.pages[page].imports.indexOf(componentType) < 0) {
+        siteMeta.pages[page].imports.push(componentType);
+      }
+      const newCC = [];
+      for (let i=0; i<siteMeta.pages[page].root.childrenComponents.length; i++) {
+        if (siteMeta.pages[page].root.childrenComponents[i] === insertBeforeId) {
+          newCC.push(id, insertBeforeId);
+        } else {
+          newCC.push(siteMeta.pages[page].root.childrenComponents[i]);
+        }
+      }      
+      siteMeta.pages[page].root.childrenComponents = newCC;
+      siteMeta.pages[page].nonRootComponents.push(newComponent);
+    }
+    console.log('updated siteMeta=', siteMeta);
+    this.updateSiteMeta(siteMeta);
   }
 
   deleteComponentOnPage(params) {
@@ -153,12 +190,7 @@ class MainFrame extends React.Component {
     console.log('updated siteMeta=', siteMeta);
     siteMeta.pages[page].imports = this.getImportsForPage(page);
     const newSiteMeta = this.sanitizeChildrenComponents(page);
-    this.setState({
-      siteMeta: newSiteMeta
-    });
-    this.docRef.set({
-      siteMeta: newSiteMeta
-    });
+    this.updateSiteMeta(newSiteMeta);
   }
 
   getImportsForPage(page) {

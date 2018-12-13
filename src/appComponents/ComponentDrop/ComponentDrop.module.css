@@ -10,7 +10,7 @@
   font-family: 'Montserrat', sans-serif;
 }
 .inline {
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
 .isDragOver {
   border: 1px dashed #33449e;
