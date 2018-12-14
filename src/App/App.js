@@ -28,6 +28,7 @@ class MainFrame extends React.Component {
     this.iframeRef = false;
     this.initialRender = true;
     this.updateSite = this.updateSite.bind(this);
+    this.updateTheme = this.updateTheme.bind(this);
     this.setIframeRef = this.setIframeRef.bind(this);
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
     this.updateSiteMeta = this.updateSiteMeta.bind(this);
@@ -250,12 +251,7 @@ class MainFrame extends React.Component {
       siteMeta.pages[currentPage].nonRootComponents[
         index
       ].props = componentProps;
-      this.setState({
-        siteMeta
-      });
-      this.docRef.set({
-        siteMeta
-      });  
+      this.updateSiteMeta(siteMeta);
     }
   }
 
@@ -275,6 +271,13 @@ class MainFrame extends React.Component {
   setIframeRef(ref) {
     console.log('setting iframe ref in mainframe:', ref);
     this.iframeRef = ref.current;
+  }
+
+  updateTheme(theme) {
+    const { siteMeta } = this.state;
+    siteMeta.updated = Date.now();
+    siteMeta.theme = theme;
+    this.updateSiteMeta(siteMeta);
   }
 
   render() {
@@ -308,6 +311,7 @@ class MainFrame extends React.Component {
             currentComponentId={currentComponentId}
             sendPageMetaToFrame={this.sendPageMetaToFrame}
             updateComponentOnPage={this.updateComponentOnPage}
+            updateTheme={this.updateTheme}
           />
           <Iframe
             craftId={match.params.craftId}

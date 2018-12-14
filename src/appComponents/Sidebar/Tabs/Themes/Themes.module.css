@@ -13,3 +13,34 @@
 .color:hover {
   cursor: pointer;
 }
+.colorPicker {
+  position: absolute !important;
+  z-index: 10;
+}
+.hidden {
+  display: none;
+}
+.posBackground {
+  top: 145px;
+}
+.posPrimary {
+  top: 190px;
+}
+.posSecondary {
+  top: 235px;
+}
+.posTertiary {
+  top: 280px;
+}
+.posQuaternary {
+  top: 325px;
+}
+.posLightFont {
+  top: 370px;
+}
+.posDarkFont {
+  top: 415px;
+}
+.fontSelector {
+  z-index: 1;
+}

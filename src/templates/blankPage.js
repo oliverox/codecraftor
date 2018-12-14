@@ -10,8 +10,8 @@ export default {
       quaternary: '#C44536',
       light: '#FFF',
       dark: '#283D3B',
-      font: 'Times New Roman'
-    }
+    },
+    font: 'Times New Roman'
   },
   globalCss: {},
   pages: {
