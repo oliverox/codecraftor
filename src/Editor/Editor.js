@@ -73,11 +73,14 @@ class Editor extends Component {
       const rootIndex = this.getComponentIndex(rootModuleName);
       const { module, defaultProps } = importedComponents[rootIndex].default;
       const { children, ...props } = defaultProps;
-      const newProps = Object.assign(props, JSON.parse(root.props));
+      if (this.siteMeta.theme.colors.background) {
+        props.style = {
+          ...props.style,
+          backgroundColor: this.siteMeta.theme.colors.background
+        }
+      }
+      const newProps = Object.assign({}, props, JSON.parse(root.props));
       const childrenComponents = root.childrenComponents;
-      // if (!newProps.style.backgroundColor && this.siteMeta.globalCss.backgroundColor) {
-      //   newProps.style.backgroundColor = this.siteMeta.globalCss.backgroundColor;
-      // }
       this.components.root = {
         Module: module,
         props: newProps,
@@ -97,7 +100,7 @@ class Editor extends Component {
           typeof nonRootComponent.props === 'string'
             ? JSON.parse(nonRootComponent.props)
             : nonRootComponent.props;
-        const newProps = Object.assign(props, currentProps);
+        const newProps = Object.assign({}, props, currentProps);
         this.components[nonRootComponent.id] = {
           Module: module,
           props: newProps,

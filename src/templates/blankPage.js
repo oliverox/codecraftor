@@ -3,11 +3,14 @@ export default {
   ui: 'default',
   theme: {
     colors: {
-      background: '#E2DBBE',
+      background: '#FFF',
       primary: '#188FA7',
       secondary: '#283D3B',
       tertiary: '#197278',
-      quaternary: '#C44536'
+      quaternary: '#C44536',
+      light: '#FFF',
+      dark: '#283D3B',
+      font: 'Times New Roman'
     }
   },
   globalCss: {},

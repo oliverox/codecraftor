@@ -6,22 +6,24 @@ body {
   background-color: #fff;
 }
 :global(.root) {
+  display: flex;
+  flex-direction: column;
   background-color: #e8eaed;
   position: absolute;
   width: 100%;
   top: 0;
-  bottom: 162px;
   min-height: 100%;
 }
 .app {
   display: flex;
-  height: 100%;
+  flex: 1;
   flex-direction: column;
   justify-content: space-between;
 }
 .editor {
+  display: flex;
+  flex-direction: column;
   background-color: #fff;
   border: 5px solid #e8eaed;
   border-top: 20px solid #e8eaed;
-  min-height: 96%;
 }

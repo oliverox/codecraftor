@@ -93,7 +93,7 @@ class ComponentWrapper extends React.Component {
     const elementCn = `${styles.actionsContainer} ${
       isMouseOver ? styles.show : ''
     }`;
-    const wrapperCn = `${scoot ? styles.scoot : ''}`;
+    // const wrapperCn = `${scoot ? styles.scoot : ''}`;
     const editButtonOffset = this.getEditButtonPosition();
     return (
       <div>
@@ -112,7 +112,7 @@ class ComponentWrapper extends React.Component {
           onClick={this.handleClick}
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseOut}
-          className={`${styles.configurator} ${wrapperCn}`}
+          className={styles.configurator}
           ref={this.moduleRef}
         >
           <div className={elementCn} style={editButtonOffset}>

@@ -1,16 +1,23 @@
 .dropContainer {
   display: flex;
-  flex: 1;
+  position: absolute;
+  bottom: 20px;
+  right: 6px;
+  left: 6px;
+  color: #888;
+  height: 100px;
   align-items: center;
   justify-content: center;
-  margin: 10px 20px 40px 20px;
-  min-height: 102px;
-  color: #007fa9;
-  border: 1px dashed lightblue;
+  border: 2px dashed #888;
+  mix-blend-mode: difference;
   font-family: 'Montserrat', sans-serif;
 }
 .inline {
-  margin-bottom: 10px;
+  position: relative;
+  flex: 1 1;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
 .isDragOver {
   border: 1px dashed #33449e;
