@@ -8,6 +8,7 @@ class ThemesPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentColor: '#FFF',
       colorPickerFor: '',
       showColorPicker: false,
       positionClassName: false
@@ -17,37 +18,46 @@ class ThemesPanel extends React.Component {
   }
 
   toggleColorPicker(colorFor) {
+    const { theme } = this.props;
     const { colorPickerFor } = this.state;
     let positionClassName = false;
     let showColorPicker = true;
+    let currentColor;
 
     switch (colorFor) {
       case 'BACKGROUND':
         positionClassName = styles.posBackground;
+        currentColor = theme.colors.background;
         break;
 
       case 'PRIMARY':
         positionClassName = styles.posPrimary;
+        currentColor = theme.colors.primary;
         break;
 
       case 'SECONDARY':
         positionClassName = styles.posSecondary;
+        currentColor = theme.colors.secondary;
         break;
 
       case 'TERTIARY':
         positionClassName = styles.posTertiary;
+        currentColor = theme.colors.tertiary;
         break;
 
       case 'QUATERNARY':
         positionClassName = styles.posQuaternary;
+        currentColor = theme.colors.quaternary;
         break;
 
       case 'LIGHT':
         positionClassName = styles.posLightFont;
+        currentColor = theme.colors.light;
         break;
 
       case 'DARK':
         positionClassName = styles.posDarkFont;
+        currentColor = theme.colors.dark;
         break;
 
       default:
@@ -58,6 +68,7 @@ class ThemesPanel extends React.Component {
     }
 
     this.setState({
+      currentColor,
       showColorPicker,
       positionClassName,
       colorPickerFor: colorFor
@@ -70,12 +81,15 @@ class ThemesPanel extends React.Component {
     const colors = theme.colors;
     colors[colorPickerFor.toLowerCase()] = color.hex;
     const newTheme = Object.assign({}, theme, { colors });
+    this.setState({
+      currentColor: color
+    });
     updateTheme(newTheme);
   }
 
   render() {
     const { theme } = this.props;
-    const { showColorPicker, positionClassName } = this.state;
+    const { currentColor, showColorPicker, positionClassName } = this.state;
     let colorPickerClassName = `${styles.colorPicker}`;
     if (showColorPicker) {
       colorPickerClassName = `${colorPickerClassName} ${positionClassName}`;
@@ -88,6 +102,7 @@ class ThemesPanel extends React.Component {
         <Divider />
         <TwitterPicker
           triangle="top-right"
+          color={currentColor}
           className={colorPickerClassName}
           onChangeComplete={this.handleColorChange}
         />

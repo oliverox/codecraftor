@@ -14,7 +14,6 @@
 }
 .configurator {
   box-sizing: border-box;
-  padding: 1px;
 }
 .configurator:hover {
   outline: 2px solid darkgoldenrod;
