@@ -11,7 +11,7 @@ export default {
       light: '#FFF',
       dark: '#283D3B',
     },
-    font: 'Times New Roman'
+    font: 'Lora'
   },
   globalCss: {},
   pages: {

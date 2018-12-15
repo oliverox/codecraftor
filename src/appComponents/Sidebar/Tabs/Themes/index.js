@@ -1,6 +1,7 @@
 import React from 'react';
 import { H6, Divider, HTMLSelect } from '@blueprintjs/core';
 import { TwitterPicker } from 'react-color';
+import getFonts from './fonts';
 
 import styles from './Themes.module.css';
 
@@ -13,6 +14,7 @@ class ThemesPanel extends React.Component {
       showColorPicker: false,
       positionClassName: false
     };
+    this.handleFontChange = this.handleFontChange.bind(this);
     this.toggleColorPicker = this.toggleColorPicker.bind(this);
     this.handleColorChange = this.handleColorChange.bind(this);
   }
@@ -80,11 +82,17 @@ class ThemesPanel extends React.Component {
     const { colorPickerFor } = this.state;
     const colors = theme.colors;
     colors[colorPickerFor.toLowerCase()] = color.hex;
-    const newTheme = Object.assign({}, theme, { colors });
+    theme.colors[colorPickerFor.toLowerCase()] = color.hex;
     this.setState({
       currentColor: color
     });
-    updateTheme(newTheme);
+    updateTheme(theme);
+  }
+
+  handleFontChange(event) {
+    const { theme, updateTheme } = this.props;
+    theme.font = event.currentTarget.value;
+    updateTheme(theme);
   }
 
   render() {
@@ -178,10 +186,13 @@ class ThemesPanel extends React.Component {
         </div>
         <div className={styles.colorContainer}>
           <span>Font</span>
-          <HTMLSelect minimal className={styles.fontSelector}>
-            <option>Times New Roman</option>
-            <option>Montserrat</option>
-          </HTMLSelect>
+          <HTMLSelect
+            minimal
+            onChange={this.handleFontChange}
+            className={styles.fontSelector}
+            options={getFonts()}
+            value={theme.font}
+          />
         </div>
       </div>
     );

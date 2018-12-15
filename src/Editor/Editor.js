@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import WebFontLoader from 'webfontloader';
 import ComponentDrop from '../appComponents/ComponentDrop/ComponentDrop';
 import ComponentWrapper from '../appComponents/ComponentWrapper/ComponentWrapper';
 
@@ -26,17 +27,23 @@ class Editor extends Component {
     this.getComponentAndChildren = this.getComponentAndChildren.bind(this);
   }
   componentDidMount() {
-    if (process.env.NODE_ENV === 'development') {
-      import('typeface-montserrat').then(() => {
-        console.log('Montserrat typeface loaded');
-      });
-      window.addEventListener('message', this.handleMsgRcvd);
-    }
+    window.addEventListener('message', this.handleMsgRcvd);
     this.refreshPage();
   }
 
   componentWillUnmount() {
     window.removeEventListener('message', this.handleMsgRcvd);
+  }
+
+  componentDidUpdate() {
+    if (this.siteMeta.theme) {
+      console.log('Importing font:', this.siteMeta.theme.font);
+      WebFontLoader.load({
+        google: {
+          families: [this.siteMeta.theme.font]
+        }
+      });
+    }
   }
 
   refreshPage() {
@@ -76,7 +83,8 @@ class Editor extends Component {
       if (this.siteMeta.theme.colors.background) {
         props.style = {
           ...props.style,
-          backgroundColor: this.siteMeta.theme.colors.background
+          backgroundColor: this.siteMeta.theme.colors.background,
+          fontFamily: this.siteMeta.theme.font
         }
       }
       const newProps = Object.assign({}, props, JSON.parse(root.props));
