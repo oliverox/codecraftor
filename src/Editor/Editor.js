@@ -81,6 +81,7 @@ class Editor extends Component {
       const { module, defaultProps } = importedComponents[rootIndex].default;
       const { children, ...props } = defaultProps;
       if (this.siteMeta.theme.colors.background) {
+        // Update styling for root component
         props.style = {
           ...props.style,
           backgroundColor: this.siteMeta.theme.colors.background,
@@ -136,7 +137,7 @@ class Editor extends Component {
       );
     }
     const componentToRender = (
-      <Module {...props}>
+      <Module {...props} theme={this.siteMeta.theme}>
         {newChildrenComponents.length > 0 ? newChildrenComponents : null}
       </Module>
     );

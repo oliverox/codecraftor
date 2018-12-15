@@ -23,7 +23,7 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
     case 'string':
       propConfigElement = (
         <div key={key} className={styles.container}>
-          <div className={Classes.INLINE}>
+          <div className={`${Classes.INLINE} ${styles.lineItemContainer}`}>
             <div className={styles.label}>{propObj.label}</div>
             <EditableText
               className={styles.value}
@@ -68,7 +68,7 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
     case 'list':
       propConfigElement = (
         <div key={key} className={styles.container}>
-          <div className={Classes.INLINE}>
+          <div className={`${Classes.INLINE} ${styles.lineItemContainer}`}>
             <span className={styles.label}>{propObj.label}</span>
             <div
               className={`${Classes.SELECT} ${Classes.MINIMAL} ${
@@ -76,7 +76,7 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
               }`}
             >
               <select
-                className={styles.value}
+                className={`${styles.value}`}
                 defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
                 onChange={event => {
                   onPropUpdate({

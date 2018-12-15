@@ -4,6 +4,11 @@
   flex-direction: column;
   justify-content: center;
 }
+.lineItemContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .switchContainer {
   margin-top: 5px;
 }
