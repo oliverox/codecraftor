@@ -5,6 +5,9 @@ const getComponentObj = (siteMeta, page, componentId) => {
   for (let i = 0; i < nonRootComponents.length; i++) {
     if (nonRootComponents[i].id === componentId) {
       componentObj = nonRootComponents[i];
+      if (typeof(componentObj.props) === 'string') {
+        componentObj.props = JSON.parse(componentObj.props);
+      }
       index = i;
       break;
     }

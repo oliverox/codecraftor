@@ -4,18 +4,17 @@ import getPropConfigElement from '../../../../utils/getPropConfigElement';
 import componentList from '../../../../components';
 
 const ConfiguratorTab = ({ componentObj, index, updateComponentOnPage }) => {
-  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> index:', index);
   if (!componentObj) {
     return <div />;
   }
   const { id, componentType, props = {} } = componentObj;
   const allProps = props;
   console.log(
-    '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',
     id,
     componentType,
     props
   );
+
   const componentConfig = componentList[componentType].config;
   const onPropUpdate = ({ prop, value }) => {
     console.log(`updating prop "${prop}" to ${value}`);
