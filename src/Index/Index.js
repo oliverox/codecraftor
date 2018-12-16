@@ -57,7 +57,7 @@ class Index extends React.Component {
             </div>
           </div>
           <p className="app-made">
-            Made with <span className="app-made-heart">❤</span> in{' '}
+            Built with <span className="app-made-heart">❤</span> in{' '}
             <a
               href="https://goo.gl/fvEda5"
               rel="noopener noreferrer"
@@ -143,12 +143,12 @@ class Index extends React.Component {
             <div className="index-main-content-section">
               <h2>How do I get started?</h2>
               <p>
-                Codecraftor is still a work in progress. I tried to build a very
-                basic prototype to convey the idea. Bear in mind that for
-                Codecraftor to really be successful, this prototype will need
-                evolve greatly. But stay tuned as I am working hard on it and
-                listening to all the feedback I'm getting from other Pioneer
-                participants!
+                Codecraftor is currently a work in progress still at a
+                prototypal stage. For Codecraftor to be really useful, this
+                prototype will need evolve. But stay tuned as hard work is being
+                put into it while listening to all the feedback from other
+                Pioneer participants! Feel free to click on the button below to
+                get started on a new web craft.
               </p>
             </div>
             <div className="index-main-content-section cta">
