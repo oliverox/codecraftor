@@ -3,7 +3,9 @@ import {
   Alignment,
   EditableText,
   Switch,
-  Classes
+  Classes,
+  Slider,
+  NumericInput
 } from '@blueprintjs/core';
 
 import styles from './styles.module.css';
@@ -13,7 +15,6 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
   const defaultValue = propObj.value;
   console.log('allProps=', allProps);
   console.log(
-    '******************************************!!!',
     propObj,
     'value:',
     allProps[prop] ? allProps[prop] : propObj.value
@@ -23,23 +24,21 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
     case 'string':
       propConfigElement = (
         <div key={key} className={styles.container}>
-          <div className={`${Classes.INLINE} ${styles.lineItemContainer}`}>
-            <div className={styles.label}>{propObj.label}</div>
-            <EditableText
-              className={styles.value}
-              multiline={false}
-              placeholder={propObj.placeholder}
-              selectAllOnFocus={true}
-              confirmOnEnterKey={true}
-              defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
-              onConfirm={value => {
-                onPropUpdate({
-                  prop,
-                  value
-                });
-              }}
-            />
-          </div>
+          <div className={styles.label}>{propObj.label}</div>
+          <EditableText
+            className={styles.value}
+            multiline={false}
+            placeholder={propObj.placeholder}
+            selectAllOnFocus={true}
+            confirmOnEnterKey={true}
+            defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
+            onConfirm={value => {
+              onPropUpdate({
+                prop,
+                value
+              });
+            }}
+          />
         </div>
       );
       break;
@@ -51,6 +50,7 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
           className={`${styles.container} ${styles.switchContainer}`}
         >
           <Switch
+            style={{ width: '100%' }}
             alignIndicator={Alignment.RIGHT}
             defaultChecked={allProps[prop] ? allProps[prop] : defaultValue}
             labelElement={<span className={styles.label}>{propObj.label}</span>}
@@ -68,31 +68,76 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
     case 'list':
       propConfigElement = (
         <div key={key} className={styles.container}>
-          <div className={`${Classes.INLINE} ${styles.lineItemContainer}`}>
-            <span className={styles.label}>{propObj.label}</span>
-            <div
-              className={`${Classes.SELECT} ${Classes.MINIMAL} ${
-                Classes.INLINE
-              }`}
+          <span className={styles.label}>{propObj.label}</span>
+          <div
+            className={`${Classes.SELECT} ${Classes.MINIMAL} ${Classes.INLINE}`}
+          >
+            <select
+              className={`${styles.value}`}
+              defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
+              onChange={event => {
+                onPropUpdate({
+                  prop,
+                  value: event.target.value
+                });
+              }}
             >
-              <select
-                className={`${styles.value}`}
-                defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
-                onChange={event => {
-                  onPropUpdate({
-                    prop,
-                    value: event.target.value
-                  });
-                }}
-              >
-                {propObj.list.map((item, i) => (
-                  <option key={`${key}-${i}`} value={propObj.list[i].value}>
-                    {propObj.list[i].name}
-                  </option>
-                ))}
-              </select>
-            </div>
+              {propObj.list.map((item, i) => (
+                <option key={`${key}-${i}`} value={propObj.list[i].value}>
+                  {propObj.list[i].name}
+                </option>
+              ))}
+            </select>
           </div>
+        </div>
+      );
+      break;
+
+    case 'numeric':
+      propConfigElement = (
+        <div key={key} className={styles.container}>
+          <div className={styles.label}>{propObj.label}</div>
+          <div className={styles.numericContainer}>
+            <NumericInput
+              min={propObj.min}
+              max={propObj.max}
+              allowNumericCharactersOnly={true}
+              placeholder="Type a number"
+              fill={true}
+              value={allProps[prop] ? allProps[prop] : defaultValue}
+              onValueChange={value => {
+                onPropUpdate({
+                  prop,
+                  value
+                });
+              }}
+            />
+          </div>
+        </div>
+      );
+      break;
+
+    case 'slider':
+      propConfigElement = (
+        <div
+          key={key}
+          className={`${styles.container} ${styles.sliderContainer}`}
+        >
+          <div className={`${styles.label} ${styles.sliderLabel}`}>
+            {propObj.label}
+          </div>
+          <Slider
+            min={propObj.range[0]}
+            max={propObj.range[1]}
+            labelRenderer={value => propObj.tmpl.replace('{{value}}', value)}
+            onChange={value => {
+              onPropUpdate({
+                prop,
+                value
+              });
+            }}
+            value={allProps[prop] ? allProps[prop] : defaultValue}
+          />
         </div>
       );
       break;

@@ -1,12 +1,8 @@
 .container {
   display: flex;
   min-height: 50px;
-  flex-direction: column;
-  justify-content: center;
-}
-.lineItemContainer {
-  display: flex;
   align-items: center;
+  flex-direction: row;
   justify-content: space-between;
 }
 .switchContainer {
@@ -19,6 +15,19 @@
   padding-right: 5px;
   align-items: center;
 }
+.sliderLabel {
+  padding-right: 20px;
+}
 .value {
   color: #137cbd !important;
+}
+.numericContainer {
+  width: 100px;
+}
+.sliderContainer {
+  padding-top: 20px;
+  align-items: flex-start;
+}
+:global(.bp3-slider-axis) {
+  display: none;
 }
