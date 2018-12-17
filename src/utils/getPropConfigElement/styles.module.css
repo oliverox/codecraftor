@@ -5,6 +5,11 @@
   flex-direction: row;
   justify-content: space-between;
 }
+.container:hover {
+  padding: 0 20px;
+  margin: 0px -20px;
+  background-color: #d8d8d8;
+}
 .switchContainer {
   margin-top: 5px;
 }
