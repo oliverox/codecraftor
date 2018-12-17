@@ -8,6 +8,8 @@ import {
   NumericInput
 } from '@blueprintjs/core';
 
+import ColorPicker from './ColorPicker';
+
 import styles from './styles.module.css';
 
 const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
@@ -137,6 +139,19 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
               });
             }}
             value={allProps[prop] ? allProps[prop] : defaultValue}
+          />
+        </div>
+      );
+      break;
+
+    case 'color':
+      propConfigElement = (
+        <div key={key} className={styles.container}>
+          <div className={styles.label}>{propObj.label}</div>
+          <ColorPicker
+            prop={prop}
+            onPropUpdate={onPropUpdate}
+            color={allProps[prop] ? allProps[prop] : defaultValue}
           />
         </div>
       );

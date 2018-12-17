@@ -1,0 +1,14 @@
+.colorPicker {
+  position: absolute;
+  left: 56px;
+  margin-top: 5px;
+}
+.currentBackgroundColor {
+  width: 80px;
+  height: 35px;
+  user-select: none;
+  border: 2px solid #fff;
+}
+.currentBackgroundColor:hover {
+  cursor: pointer;
+}
