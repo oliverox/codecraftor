@@ -73,7 +73,7 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
             className={`${Classes.SELECT} ${Classes.MINIMAL} ${Classes.INLINE}`}
           >
             <select
-              className={`${styles.value}`}
+              className={`${styles.value} ${styles.selectContainer}`}
               defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
               onChange={event => {
                 onPropUpdate({

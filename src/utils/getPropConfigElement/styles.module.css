@@ -8,6 +8,16 @@
 .switchContainer {
   margin-top: 5px;
 }
+.selectContainer {
+  min-width: 100px;
+}
+.numericContainer {
+  width: 80px;
+}
+.sliderContainer {
+  padding-top: 20px;
+  align-items: flex-start;
+}
 .label {
   display: inline;
   color: #555;
@@ -20,13 +30,6 @@
 }
 .value {
   color: #137cbd !important;
-}
-.numericContainer {
-  width: 80px;
-}
-.sliderContainer {
-  padding-top: 20px;
-  align-items: flex-start;
 }
 :global(.bp3-slider-axis) {
   display: none;
