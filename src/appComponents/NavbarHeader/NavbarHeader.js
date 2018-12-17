@@ -65,11 +65,13 @@ class NavbarHeader extends React.Component {
           </NavbarGroup>
           <NavbarGroup align={Alignment.RIGHT}>
             <Button
+              disabled
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="cloud-upload" />}
               text="Deploy"
             />
             <Button
+              disabled
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="download" />}
               text="Source Code"
