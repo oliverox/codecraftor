@@ -4,6 +4,8 @@ import ComponentDrop from '../ComponentDrop/ComponentDrop';
 
 import styles from './ComponentWrapper.module.css';
 
+const ICONS_TOP = 20;
+
 class ComponentWrapper extends React.Component {
   constructor(props) {
     super(props);
@@ -50,11 +52,18 @@ class ComponentWrapper extends React.Component {
         marginTop: 0
       };
     }
-    const moduleWidth = this.moduleRef.current.offsetWidth;
-    const moduleHeight = this.moduleRef.current.offsetHeight;
+    const moduleRef = this.moduleRef.current;
+    const moduleWidth = moduleRef.offsetWidth;
+    const moduleHeight = moduleRef.offsetHeight;
+    const moduleTop = moduleRef.offsetTop;
+    let offsetIconsTop = -ICONS_TOP;
+    if (moduleTop < ICONS_TOP) {
+      offsetIconsTop = offsetIconsTop + (ICONS_TOP + 2 - moduleTop);
+    }
     return {
       width: moduleWidth - 2,
       height: moduleHeight,
+      offsetIconsTop,
       marginLeft: 0,
       marginTop: 0
     };
@@ -93,8 +102,10 @@ class ComponentWrapper extends React.Component {
     const elementCn = `${styles.actionsContainer} ${
       isMouseOver ? styles.show : ''
     }`;
-    // const wrapperCn = `${scoot ? styles.scoot : ''}`;
-    const editButtonOffset = this.getEditButtonPosition();
+    const {
+      offsetIconsTop,
+      ...editButtonOffset
+    } = this.getEditButtonPosition();
     return (
       <div>
         <div
@@ -116,7 +127,10 @@ class ComponentWrapper extends React.Component {
           ref={this.moduleRef}
         >
           <div className={elementCn} style={editButtonOffset}>
-            <div className={styles.iconContainer}>
+            <div
+              className={styles.iconContainer}
+              style={{ top: offsetIconsTop }}
+            >
               <Icon
                 className={`${styles.icon} ${styles.editIcon}`}
                 icon="edit"
