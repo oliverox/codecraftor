@@ -1,17 +1,17 @@
 import React from 'react';
-import { H6 } from '@blueprintjs/core';
+import { H5 } from '@blueprintjs/core';
 
 const HomePanel = ({ sendPageMetaToFrame }) => {
   return (
     <div>
-      <H6>Welcome to Codecraftor!</H6>
-      <button
+      <H5>Hello!</H5>
+      {/* <button
         onClick={() => {
           sendPageMetaToFrame();
         }}
       >
         Send page meta to frame
-      </button>
+      </button> */}
     </div>
   );
 };

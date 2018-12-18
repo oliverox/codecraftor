@@ -52,7 +52,7 @@ class NavbarHeader extends React.Component {
               active={selected === 'components'}
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="code-block" />}
-              text="Components"
+              text="Component Library"
               onClick={() => handleTabChange('components') }
             />
             <Button
