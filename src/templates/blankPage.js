@@ -17,19 +17,23 @@ export default {
   pages: {
     index: {
       pageTitle: 'Page One',
-      imports: ['RootContainer', 'GenericContainer', 'Text'],
+      imports: ['RootContainer', 'Heading', 'GenericContainer', 'Text'],
       root: {
         componentType: 'RootContainer',
         props: '{}',
         editable: false,
-        childrenComponents: ['generic-container001'],
+        childrenComponents: ['heading001', 'generic-container001'],
       },
       nonRootComponents: [
         {
+          id: 'heading001',
+          componentType: 'Heading',
+          props: '{"text": "Welcome to Codecraftor.", "type": "h1"}'
+        },
+        {
           id: 'generic-container001',
           componentType: 'GenericContainer',
-          props:
-            '{"style":{"backgroundColor":"lightblue", "display":"flex","justifyContent":"center","alignItems":"center"}}',
+          props: '{"backgroundColor": "lightblue"}',
           childrenComponents: ['text001']
         },
         {
