@@ -30,6 +30,9 @@
   padding-right: 5px;
   align-items: center;
 }
+.editableText {
+  max-width: 200px !important;
+}
 .sliderLabel {
   padding-right: 20px;
 }

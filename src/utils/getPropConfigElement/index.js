@@ -28,7 +28,7 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
         <div key={key} className={styles.container}>
           <div className={styles.label}>{propObj.label}</div>
           <EditableText
-            className={styles.value}
+            className={`${styles.value} ${styles.editableText}`}
             multiline={false}
             placeholder={propObj.placeholder}
             selectAllOnFocus={true}
