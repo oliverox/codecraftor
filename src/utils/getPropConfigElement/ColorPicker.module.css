@@ -4,10 +4,11 @@
   margin-top: 5px;
 }
 .currentBackgroundColor {
-  width: 80px;
-  height: 35px;
+  border: 0;
+  width: 60px;
+  height: 25px;
   user-select: none;
-  border: 2px solid #fff;
+  border-radius: 3px;
 }
 .currentBackgroundColor:hover {
   cursor: pointer;
