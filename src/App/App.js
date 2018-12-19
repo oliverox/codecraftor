@@ -27,6 +27,7 @@ class MainFrame extends React.Component {
     };
     this.iframeRef = false;
     this.initialRender = true;
+    this.download = this.download.bind(this);
     this.updateSite = this.updateSite.bind(this);
     this.updateTheme = this.updateTheme.bind(this);
     this.setIframeRef = this.setIframeRef.bind(this);
@@ -280,6 +281,15 @@ class MainFrame extends React.Component {
     this.updateSiteMeta(siteMeta);
   }
 
+  download() {
+    const { siteMeta } = this.state;
+    console.log('Downloading source code...');
+    import('../utils/downloadSource').then(module => {
+      const downloadSource = module.default;
+      downloadSource(siteMeta);
+    });
+  }
+
   render() {
     const { match } = this.props;
     const {
@@ -301,6 +311,7 @@ class MainFrame extends React.Component {
       <>
         <NavbarHeader
           selected={currentTab}
+          download={this.download}
           handleTabChange={this.handleTabChange}
         />
         <main className={styles.mainframe}>

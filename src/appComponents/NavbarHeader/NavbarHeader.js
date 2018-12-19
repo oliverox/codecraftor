@@ -15,7 +15,7 @@ import logo from '../../images/logo.png';
 
 class NavbarHeader extends React.Component {
   render() {
-    const { selected, handleTabChange } = this.props;
+    const { selected, handleTabChange, download } = this.props;
     return (
       <header className="app-header">
         <Navbar
@@ -68,13 +68,13 @@ class NavbarHeader extends React.Component {
               disabled
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="cloud-upload" />}
-              text="Deploy"
+              text="Publish"
             />
             <Button
-              disabled
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="download" />}
-              text="Source Code"
+              onClick={download}
+              text="Download"
             />
           </NavbarGroup>
         </Navbar>
