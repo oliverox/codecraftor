@@ -36,9 +36,9 @@ class ComponentDrop extends React.Component {
     });
   }
 
-  handleOnDragOver(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  handleOnDragOver(event) {
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   handleOnDragEnter() {
