@@ -154,7 +154,7 @@ class Index extends React.Component {
             <div className="index-main-content-section cta">
               <Button
                 large
-                disabled={process.env.NODE_ENV === 'production'}
+                // disabled={process.env.NODE_ENV === 'production'}
                 intent={Intent.PRIMARY}
                 onClick={this.handleRedirect}
               >

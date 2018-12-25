@@ -86,7 +86,7 @@ class Editor extends Component {
           ...props.style,
           backgroundColor: this.siteMeta.theme.colors.background,
           fontFamily: this.siteMeta.theme.font
-        }
+        };
       }
       const newProps = Object.assign({}, props, JSON.parse(root.props));
       const childrenComponents = root.childrenComponents;
@@ -121,7 +121,7 @@ class Editor extends Component {
   }
 
   getComponentAndChildren(id) {
-    if (typeof(this.components[id]) === 'undefined') {
+    if (typeof this.components[id] === 'undefined') {
       return null;
     }
     const {
@@ -183,7 +183,7 @@ class Editor extends Component {
     window.parent.postMessage(data, '*');
   }
 
-  handleComponentClick({ componentId, page}) {
+  handleComponentClick({ componentId, page }) {
     this.handlePostMessage({
       action: 'SELECT',
       componentId,

@@ -71,6 +71,7 @@ class NavbarHeader extends React.Component {
               text="Publish"
             />
             <Button
+              disabled
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="download" />}
               onClick={download}

@@ -4,7 +4,11 @@ import { H5 } from '@blueprintjs/core';
 const HomePanel = ({ sendPageMetaToFrame }) => {
   return (
     <div>
-      <H5>Hello!</H5>
+      <H5>Welcome to Codecraftor!</H5>
+      <p>
+        Feel free to poke around, but keep in mind that this is a product still
+        under active development. Apologies for any issues you might encounter.
+      </p>
       {/* <button
         onClick={() => {
           sendPageMetaToFrame();
