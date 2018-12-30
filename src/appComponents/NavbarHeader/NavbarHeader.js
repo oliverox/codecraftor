@@ -56,11 +56,11 @@ class NavbarHeader extends React.Component {
               onClick={() => handleTabChange('components') }
             />
             <Button
-              active={selected === 'themes'}
+              active={selected === 'theme'}
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="style" />}
-              text="Themes"
-              onClick={() => handleTabChange('themes') }
+              text="Theme"
+              onClick={() => handleTabChange('theme') }
             />
           </NavbarGroup>
           <NavbarGroup align={Alignment.RIGHT}>
@@ -71,7 +71,6 @@ class NavbarHeader extends React.Component {
               text="Publish"
             />
             <Button
-              disabled
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="download" />}
               onClick={download}
