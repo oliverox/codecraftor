@@ -15,12 +15,15 @@ import styles from './styles.module.css';
 const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
   const { prop, type } = propObj;
   const defaultValue = propObj.value;
-  console.log('allProps=', allProps);
-  console.log(
-    propObj,
-    'value:',
-    allProps[prop] ? allProps[prop] : propObj.value
-  );
+  // if (type === 'yesno') {
+  //   debugger;
+  // }
+  // console.log('allProps=', allProps);
+  // console.log(
+  //   propObj,
+  //   'value:',
+  //   typeof allProps[prop] !== 'undefined' ? allProps[prop] : propObj.value
+  // );
   let propConfigElement;
   switch (type) {
     case 'string':
@@ -54,7 +57,7 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
           <Switch
             style={{ width: '100%' }}
             alignIndicator={Alignment.RIGHT}
-            defaultChecked={allProps[prop] ? allProps[prop] : defaultValue}
+            defaultChecked={typeof allProps[prop] !== 'undefined' ? allProps[prop] : defaultValue}
             labelElement={<span className={styles.label}>{propObj.label}</span>}
             onChange={event => {
               onPropUpdate({

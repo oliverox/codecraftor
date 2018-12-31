@@ -1,6 +1,7 @@
 .iframeContainer {
   flex: 1;
   z-index: 10;
+  max-width: 1300px;
   will-change: transform;
   transform: translate(0, 0);
   margin-right: 20px;
