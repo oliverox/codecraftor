@@ -32,7 +32,8 @@ const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
           <div className={styles.label}>{propObj.label}</div>
           <EditableText
             className={`${styles.value} ${styles.editableText}`}
-            multiline={false}
+            multiline={propObj.multiline || false}
+            maxLines={10}
             placeholder={propObj.placeholder}
             selectAllOnFocus={true}
             confirmOnEnterKey={true}

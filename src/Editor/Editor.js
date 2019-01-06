@@ -37,10 +37,10 @@ class Editor extends Component {
 
   componentDidUpdate() {
     if (this.siteMeta.theme) {
-      console.log('Importing font:', this.siteMeta.theme.font);
+      console.log('Importing font:', this.siteMeta.theme.font.family);
       WebFontLoader.load({
         google: {
-          families: [this.siteMeta.theme.font]
+          families: this.siteMeta.theme.font.family
         }
       });
     }
@@ -85,7 +85,7 @@ class Editor extends Component {
         props.style = {
           ...props.style,
           backgroundColor: this.siteMeta.theme.colors.background,
-          fontFamily: this.siteMeta.theme.font
+          fontFamily: this.siteMeta.theme.font.family[0]
         };
       }
       const newProps = Object.assign({}, props, JSON.parse(root.props));

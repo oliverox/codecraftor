@@ -91,7 +91,7 @@ class ThemesPanel extends React.Component {
 
   handleFontChange(event) {
     const { theme, updateTheme } = this.props;
-    theme.font = event.currentTarget.value;
+    theme.font.family = [event.currentTarget.value];
     updateTheme(theme);
   }
 
@@ -191,7 +191,7 @@ class ThemesPanel extends React.Component {
             onChange={this.handleFontChange}
             className={styles.fontSelector}
             options={getFonts()}
-            value={theme.font}
+            value={theme.font.family[0]}
           />
         </div>
       </div>
