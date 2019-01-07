@@ -28,7 +28,7 @@ class Editor extends Component {
   }
   componentDidMount() {
     window.addEventListener('message', this.handleMsgRcvd);
-    this.refreshPage();
+    this.handlePostMessage({ action: 'READY' }); // inform parent frame that Editor is ready
   }
 
   componentWillUnmount() {
@@ -47,7 +47,7 @@ class Editor extends Component {
   }
 
   refreshPage() {
-    if (this.state.siteMeta.updated === -1) {
+    if (this.state.siteMeta === false || this.state.siteMeta.updated === -1) {
       return;
     }
     this.components = {};

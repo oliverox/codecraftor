@@ -51,12 +51,15 @@ class MainFrame extends React.Component {
       .collection(process.env.REACT_APP_CRAFTS_COLLECTION)
       .doc(match.params.craftId);
     this.docRef.get().then(doc => {
+      console.log('will check if doc exists in firestore...');
       if (doc.exists) {
+        console.log('doc exists in firestore');
         const { siteMeta = BlankPage } = doc.data();
         this.setState({
           siteMeta
         });
       } else {
+        console.log('doc does not exist in firestore');
         this.setState({
           siteMeta: BlankPage
         });
@@ -104,6 +107,8 @@ class MainFrame extends React.Component {
       this.deleteComponentOnPage(data);
     } else if (data && data.action === 'INSERT') {
       this.updateSite('INSERT', data);
+    } else if (data && data.action === 'READY') {
+      this.sendPageMetaToFrame();
     }
   }
 
@@ -257,7 +262,7 @@ class MainFrame extends React.Component {
   }
 
   sendPageMetaToFrame() {
-    console.log('sendPageMetaToFrame...');
+    console.log('sendPageMetaToFrame...', this.iframeRef);
     if (this.iframeRef) {
       this.iframeRef.contentWindow.postMessage(
         {
