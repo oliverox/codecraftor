@@ -22,21 +22,27 @@ export default {
     index: {
       pageTitle: 'Index Page',
       imports: [
-        'RootContainer',
-        'NavigationBar'
+        'Root',
+        'NavigationBar',
+        'Hero'
       ],
       root: {
-        componentType: 'RootContainer',
+        componentType: 'Root',
         props: '{}',
         editable: false,
         childrenComponents: [
-          'zKx-xptnr'
+          'zKx-xptnr',
+          'aiwmhgat'
         ]
       },
       nonRootComponents: [
         {
           id: 'zKx-xptnr',
           componentType: 'NavigationBar',
+          props: '{}'
+        }, {
+          id: 'aiwmhgat',
+          componentType: 'Hero',
           props: '{}'
         }
       ]

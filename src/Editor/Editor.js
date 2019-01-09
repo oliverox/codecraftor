@@ -3,24 +3,23 @@ import WebFontLoader from 'webfontloader';
 import ComponentDrop from '../appComponents/ComponentDrop/ComponentDrop';
 import ComponentWrapper from '../appComponents/ComponentWrapper/ComponentWrapper';
 
-const importComponent = componentType =>
-  import(`../components/${componentType}`);
-
 class Editor extends Component {
   constructor() {
     super();
     this.state = {
       loading: true,
       page: false,
-      siteMeta: { updated: -1 }
+      siteMeta: { updated: -1 },
+      components: {
+        block: [],
+        base: []
+      }
     };
     this.key = 0;
-    this.siteMeta = {};
     this.components = {};
     this.refreshPage = this.refreshPage.bind(this);
     this.buildDomTree = this.buildDomTree.bind(this);
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
-    this.importComponents = this.importComponents.bind(this);
     this.getComponentIndex = this.getComponentIndex.bind(this);
     this.handlePostMessage = this.handlePostMessage.bind(this);
     this.handleComponentClick = this.handleComponentClick.bind(this);
@@ -36,88 +35,94 @@ class Editor extends Component {
   }
 
   componentDidUpdate() {
-    if (this.siteMeta.theme) {
-      console.log('Importing font:', this.siteMeta.theme.font.family);
+    const { theme } = this.state.siteMeta;
+    if (theme) {
+      console.log('Importing font:', theme.font.family);
       WebFontLoader.load({
         google: {
-          families: this.siteMeta.theme.font.family
+          families: theme.font.family
         }
       });
     }
   }
 
-  refreshPage() {
-    if (this.state.siteMeta === false || this.state.siteMeta.updated === -1) {
+  extractComponentConfigs(components) {
+    const componentConfigs = [];
+    Object.keys(components).forEach(name => {
+      if (components[name].config) {
+        componentConfigs.push(components[name].config);
+      }
+    });
+    this.handlePostMessage({
+      action: 'UPDATE_COMPONENT_LIST',
+      componentConfigs
+    });
+  }
+
+  importComponentsFromTemplate = async template => {
+    switch (template) {
+      case 'pioneer':
+        return import('@codecraftor/pioneer/dist/main');
+
+      default:
+        break;
+    }
+  };
+
+  async refreshPage() {
+    const { page, siteMeta } = this.state;
+    if (siteMeta === false || siteMeta.updated === -1) {
       return;
     }
     this.components = {};
-    this.importComponents().then(() => {
-      this.buildDomTree();
-      this.setState({
-        loading: false
-      });
+    await this.importComponentsFromTemplate(siteMeta.template).then(
+      componentList => {
+        console.log('#####', componentList);
+        this.extractComponentConfigs(componentList.default.block);
+        const rootComponent = siteMeta.pages[page].root;
+        const rootModuleName = rootComponent.componentType;
+        const { module } = componentList.default.block[rootModuleName];
+        let props = {
+          backgroundColor: siteMeta.theme.colors.background,
+          fontFamily: siteMeta.theme.font.family[0],
+          fontSize: siteMeta.theme.font.size
+        };
+        const childrenComponents = rootComponent.childrenComponents;
+        this.components.root = {
+          Module: module,
+          props,
+          editable: false, // root component is not editable
+          childrenComponents
+        };
+        const nonRootComponents = siteMeta.pages[page].nonRootComponents;
+        for (let i = 0; i < nonRootComponents.length; i++) {
+          let nonRootComponent = nonRootComponents[i];
+          let componentTypeName = nonRootComponent.componentType;
+          console.log('updating component:', componentTypeName);
+          const { module } = componentList.default.block[componentTypeName];
+          const currentProps =
+            nonRootComponent.props === 'string'
+              ? JSON.parse(nonRootComponent.props)
+              : nonRootComponent.props;
+          this.components[nonRootComponent.id] = {
+            Module: module,
+            props: currentProps,
+            editable: true,
+            childrenComponents: nonRootComponent.childrenComponents
+          };
+        }
+      }
+    );
+    this.buildDomTree();
+    this.setState({
+      loading: false
     });
   }
 
   getComponentIndex(componentType) {
-    const { page } = this.state;
-    return this.siteMeta.pages[page].imports.indexOf(componentType);
-  }
-
-  importComponents() {
-    console.log('Importing components needed to render page...');
-    this.siteMeta = this.state.siteMeta;
-    const { page } = this.state;
-    const componentImportArray = this.siteMeta.pages[page].imports.map(
-      componentType => {
-        console.log(`>> importing ${componentType}...`);
-        return importComponent(componentType);
-      }
-    );
-    return Promise.all(componentImportArray).then(importedComponents => {
-      const root = this.siteMeta.pages[page].root;
-      const rootModuleName = root.componentType;
-      const rootIndex = this.getComponentIndex(rootModuleName);
-      const { module, defaultProps } = importedComponents[rootIndex].default;
-      const { children, ...props } = defaultProps;
-      if (this.siteMeta.theme.colors.background) {
-        // Update styling for root component
-        props.style = {
-          ...props.style,
-          backgroundColor: this.siteMeta.theme.colors.background,
-          fontFamily: this.siteMeta.theme.font.family[0]
-        };
-      }
-      const newProps = Object.assign({}, props, JSON.parse(root.props));
-      const childrenComponents = root.childrenComponents;
-      this.components.root = {
-        Module: module,
-        props: newProps,
-        editable: false, // root component is not editable
-        childrenComponents
-      };
-      const nonRootComponents = this.siteMeta.pages[page].nonRootComponents;
-      for (let i = 0; i < nonRootComponents.length; i++) {
-        let nonRootComponent = nonRootComponents[i];
-        let componentTypeName = nonRootComponent.componentType;
-        console.log('updating component:', componentTypeName);
-        let componentIndex = this.getComponentIndex(componentTypeName);
-        const importedComponent = importedComponents[componentIndex];
-        const { module, defaultProps } = importedComponent.default;
-        const { children, ...props } = defaultProps;
-        const currentProps =
-          typeof nonRootComponent.props === 'string'
-            ? JSON.parse(nonRootComponent.props)
-            : nonRootComponent.props;
-        const newProps = Object.assign({}, props, currentProps);
-        this.components[nonRootComponent.id] = {
-          Module: module,
-          props: newProps,
-          editable: true,
-          childrenComponents: nonRootComponent.childrenComponents
-        };
-      }
-    });
+    const { page, siteMeta } = this.state;
+    debugger;
+    return siteMeta.pages[page].imports.indexOf(componentType);
   }
 
   getComponentAndChildren(id) {
@@ -137,7 +142,7 @@ class Editor extends Component {
       );
     }
     const componentToRender = (
-      <Module {...props} theme={this.siteMeta.theme}>
+      <Module {...props} theme={this.state.siteMeta.theme}>
         {newChildrenComponents.length > 0 ? newChildrenComponents : null}
       </Module>
     );
@@ -160,11 +165,12 @@ class Editor extends Component {
 
   buildDomTree() {
     console.log('buildDomTree()...');
-    this.rootComponent = this.getComponentAndChildren('root', 0);
+    this.rootComponent = this.getComponentAndChildren('root');
     console.log('rootComponent=', this.rootComponent);
   }
 
   handleMsgRcvd(msg) {
+    console.log(msg.origin, process.env.REACT_APP_URL);
     if (msg.origin !== process.env.REACT_APP_URL) {
       return;
     }
@@ -201,7 +207,7 @@ class Editor extends Component {
           <>
             {this.rootComponent}
             <ComponentDrop
-              page={this.siteMeta.name}
+              page={this.state.siteMeta.name}
               postMessage={this.handlePostMessage}
             />
           </>

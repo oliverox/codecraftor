@@ -29,7 +29,8 @@ class SideBar extends React.Component {
       currentComponentId,
       currentTab = 'home',
       sendPageMetaToFrame,
-      updateComponentOnPage
+      updateComponentOnPage,
+      componentList
     } = this.props;
     let componentObj = false;
     let index = -1;
@@ -55,7 +56,10 @@ class SideBar extends React.Component {
             id="pages"
             panel={<PagesTab siteMeta={siteMeta} currentPage={currentPage} />}
           />
-          <Tab id="components" panel={<ComponentsTab />} />
+          <Tab
+            id="components"
+            panel={<ComponentsTab componentList={componentList} />}
+          />
           <Tab
             id="theme"
             panel={
