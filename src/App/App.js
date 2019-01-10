@@ -361,6 +361,7 @@ class MainFrame extends React.Component {
             sendPageMetaToFrame={this.sendPageMetaToFrame}
             componentList={this.state.componentList}
             updateTheme={this.updateTheme}
+            updateComponentOnPage={this.updateComponentOnPage}
           />
           <Iframe
             craftId={match.params.craftId}

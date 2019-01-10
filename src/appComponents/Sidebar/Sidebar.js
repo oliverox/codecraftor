@@ -58,7 +58,12 @@ class SideBar extends React.Component {
           />
           <Tab
             id="components"
-            panel={<ComponentsTab componentList={componentList} />}
+            panel={
+              <ComponentsTab
+                componentList={componentList}
+                siteMeta={siteMeta}
+              />
+            }
           />
           <Tab
             id="theme"
@@ -72,6 +77,7 @@ class SideBar extends React.Component {
               <ConfiguratorTab
                 index={index}
                 componentObj={componentObj}
+                componentList={componentList}
                 updateComponentOnPage={updateComponentOnPage}
               />
             }

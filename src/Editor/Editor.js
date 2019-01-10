@@ -121,7 +121,6 @@ class Editor extends Component {
 
   getComponentIndex(componentType) {
     const { page, siteMeta } = this.state;
-    debugger;
     return siteMeta.pages[page].imports.indexOf(componentType);
   }
 

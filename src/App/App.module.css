@@ -3,4 +3,5 @@
   flex: 1;
   overflow: hidden;
   background-color: #cacaca;
+  max-height: calc(100vh - 50px);
 }

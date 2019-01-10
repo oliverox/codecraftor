@@ -1,21 +1,22 @@
 import React from 'react';
-import { H6, Divider } from '@blueprintjs/core';
+import { H5, Divider } from '@blueprintjs/core';
+import getComponentFromComponentList from '../../../../utils/getComponentFromComponentList';
 import getPropConfigElement from '../../../../utils/getPropConfigElement';
-import componentList from '../../../../components';
 
-const ConfiguratorTab = ({ componentObj, index, updateComponentOnPage }) => {
+import styles from './Configurator.module.css';
+
+const ConfiguratorTab = ({
+  componentObj,
+  componentList,
+  updateComponentOnPage
+}) => {
   if (!componentObj) {
     return <div />;
   }
   const { id, componentType, props = {} } = componentObj;
   const allProps = props;
-  console.log(
-    id,
-    componentType,
-    props
-  );
-
-  const componentConfig = componentList[componentType].config;
+  console.log(id, componentType, props);
+  const component = getComponentFromComponentList(componentList, componentType);
   const onPropUpdate = ({ prop, value }) => {
     console.log(`updating prop "${prop}" to ${value}`);
     console.log(id, props);
@@ -24,18 +25,15 @@ const ConfiguratorTab = ({ componentObj, index, updateComponentOnPage }) => {
     updateComponentOnPage({ id, props });
   };
   return (
-    <div>
-      <H6>Component properties</H6>
+    <div className={styles.tabHeader}>
+      <H5>{component.name} <span className={styles.componentHeader}>section</span></H5>
+      <p className={styles.tabDescription}>
+        Tweak the following properties to customize the selected section.
+      </p>
       <Divider />
-      {componentConfig &&
-        componentConfig.map((propObj, key) => {
-          return getPropConfigElement(
-            propObj,
-            `${id}-${key}`,
-            onPropUpdate,
-            allProps
-          );
-        })}
+      {component.config.map((propObj, key) =>
+        getPropConfigElement(propObj, `${id}-${key}`, onPropUpdate, allProps)
+      )}
     </div>
   );
 };

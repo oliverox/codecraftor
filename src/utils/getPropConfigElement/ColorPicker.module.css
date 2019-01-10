@@ -1,7 +1,6 @@
 .colorPicker {
-  position: absolute;
+  position: relative;
   left: 56px;
-  margin-top: 5px;
   z-index: 10;
 }
 .currentBackgroundColor {

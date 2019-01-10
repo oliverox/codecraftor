@@ -1,0 +1,13 @@
+.tabHeader {
+  padding-bottom: 10px;
+}
+.tabDescription {
+  line-height: 22px;
+  color: transparent;
+  background-clip: text;
+  background-color: #3c3c3c;
+  text-shadow: 2px 2px 3px rgba(255,255,255,0.5);
+}
+.componentHeader {
+  color: #828282;
+}
