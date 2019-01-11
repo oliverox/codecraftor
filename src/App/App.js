@@ -60,11 +60,15 @@ class MainFrame extends React.Component {
       if (doc.exists) {
         console.log('doc exists in firestore');
         const { siteMeta } = doc.data();
+        // Manually add 'transparent' color to the theme
+        siteMeta.theme.colors.transparent = 'transparent';
         this.setState({
           siteMeta
         });
       } else {
         console.log('doc does not exist in firestore => create a new template');
+        // Manually add 'transparent' color to the theme
+        template.theme.colors.transparent = 'transparent';
         this.setState({
           siteMeta: template
         });

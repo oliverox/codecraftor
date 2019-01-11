@@ -1,170 +1,79 @@
 import React from 'react';
-import {
-  Alignment,
-  EditableText,
-  Switch,
-  Classes,
-  Slider,
-  NumericInput
-} from '@blueprintjs/core';
-
-import ColorPicker from './ColorPicker';
+import PropConfigString from './PropConfigString';
+import PropConfigYesNo from './PropConfigYesNo';
+import PropConfigList from './PropConfigList';
+import PropConfigNumeric from './PropConfigNumeric';
+import PropConfigSlider from './PropConfigSlider';
+import PropConfigColor from './PropConfigColor';
 
 import styles from './styles.module.css';
 
-const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
-  const { prop, type } = propObj;
-  const defaultValue = propObj.value;
-  // if (type === 'yesno') {
-  //   debugger;
-  // }
-  // console.log('allProps=', allProps);
-  // console.log(
-  //   propObj,
-  //   'value:',
-  //   typeof allProps[prop] !== 'undefined' ? allProps[prop] : propObj.value
-  // );
-  let propConfigElement;
+const getPropConfigElement = (propObj, onPropUpdate, allProps) => {
+  const { type } = propObj;
   switch (type) {
     case 'string':
-      propConfigElement = (
-        <div key={key} className={styles.container}>
-          <div className={styles.label}>{propObj.label}</div>
-          <EditableText
-            className={`${styles.value} ${styles.editableText}`}
-            multiline={propObj.multiline || false}
-            maxLines={10}
-            placeholder={propObj.placeholder}
-            selectAllOnFocus={true}
-            confirmOnEnterKey={true}
-            defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
-            onConfirm={value => {
-              onPropUpdate({
-                prop,
-                value
-              });
-            }}
-          />
-        </div>
+      return (
+        <PropConfigString
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
     case 'yesno':
-      propConfigElement = (
-        <div
-          key={key}
-          className={`${styles.container} ${styles.switchContainer}`}
-        >
-          <Switch
-            style={{ width: '100%' }}
-            alignIndicator={Alignment.RIGHT}
-            defaultChecked={typeof allProps[prop] !== 'undefined' ? allProps[prop] : defaultValue}
-            labelElement={<span className={styles.label}>{propObj.label}</span>}
-            onChange={event => {
-              onPropUpdate({
-                prop,
-                value: event.target.checked
-              });
-            }}
-          />
-        </div>
+      return (
+        <PropConfigYesNo
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
     case 'list':
-      propConfigElement = (
-        <div key={key} className={styles.container}>
-          <span className={styles.label}>{propObj.label}</span>
-          <div
-            className={`${Classes.SELECT} ${Classes.MINIMAL} ${Classes.INLINE}`}
-          >
-            <select
-              className={`${styles.value} ${styles.selectContainer}`}
-              defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
-              onChange={event => {
-                onPropUpdate({
-                  prop,
-                  value: event.target.value
-                });
-              }}
-            >
-              {propObj.list.map((item, i) => (
-                <option key={`${key}-${i}`} value={propObj.list[i].value}>
-                  {propObj.list[i].name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+      return (
+        <PropConfigList
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
     case 'numeric':
-      propConfigElement = (
-        <div key={key} className={styles.container}>
-          <div className={styles.label}>{propObj.label}</div>
-          <div className={styles.numericContainer}>
-            <NumericInput
-              min={propObj.min}
-              max={propObj.max}
-              allowNumericCharactersOnly={true}
-              placeholder="Type a number"
-              fill={true}
-              value={allProps[prop] ? allProps[prop] : defaultValue}
-              onValueChange={value => {
-                onPropUpdate({
-                  prop,
-                  value
-                });
-              }}
-            />
-          </div>
-        </div>
+      return (
+        <PropConfigNumeric
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
     case 'slider':
-      propConfigElement = (
-        <div
-          key={key}
-          className={`${styles.container} ${styles.sliderContainer}`}
-        >
-          <div className={`${styles.label} ${styles.sliderLabel}`}>
-            {propObj.label}
-          </div>
-          <Slider
-            min={propObj.range[0]}
-            max={propObj.range[1]}
-            labelRenderer={value => propObj.tmpl.replace('{{value}}', value)}
-            onChange={value => {
-              onPropUpdate({
-                prop,
-                value
-              });
-            }}
-            value={allProps[prop] ? allProps[prop] : defaultValue}
-          />
-        </div>
+      return (
+        <PropConfigSlider
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
     case 'color':
-      propConfigElement = (
-        <div key={key} className={styles.container}>
-          <div className={styles.label}>{propObj.label}</div>
-          <ColorPicker
-            prop={prop}
-            onPropUpdate={onPropUpdate}
-            color={allProps[prop] ? allProps[prop] : defaultValue}
-          />
-        </div>
+      return (
+        <PropConfigColor
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
     default:
       break;
   }
-  return propConfigElement;
 };
 
 export default getPropConfigElement;

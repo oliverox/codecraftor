@@ -28,7 +28,7 @@ const ConfiguratorTab = ({
     <div className={styles.tabHeader}>
       <H5>{component.name} <span className={styles.componentHeader}>section</span></H5>
       <p className={styles.tabDescription}>
-        Tweak the following properties to customize the selected section.
+        Tweak the following properties to customize this section.
       </p>
       <Divider />
       {component.config.map((propObj, key) =>

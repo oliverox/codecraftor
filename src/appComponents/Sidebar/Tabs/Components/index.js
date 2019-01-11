@@ -15,9 +15,9 @@ const ComponentsPanel = ({ componentList = [], siteMeta }) => {
       <div className={styles.tabHeader}>
         <H5>Block Components</H5>
         <p className={styles.tabDescription}>
-          The following block components are provided by your selected template.
-          To add them to your canvas, simply drag and drop your desired
-          component to the drop area on the right.
+          The components below are provided by your selected template.
+          To add them to your canvas, simply drag and drop the desired
+          component to the drop container area on the right.
         </p>
         <Divider />
       </div>
