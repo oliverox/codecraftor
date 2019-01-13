@@ -2,7 +2,6 @@ import React from 'react';
 import { EditableText } from '@blueprintjs/core';
 
 const PropConfigString = ({
-  key,
   styles,
   propObj,
   allProps,
@@ -11,7 +10,7 @@ const PropConfigString = ({
   const { prop } = propObj;
   const defaultValue = propObj.value;
   return (
-    <div key={key} className={styles.container}>
+    <div className={styles.container}>
       <div className={styles.label}>{propObj.label}</div>
       <EditableText
         className={`${styles.value} ${styles.editableText}`}

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Alignment, Switch } from '@blueprintjs/core';
 
-const PropConfigYesNo = ({ key, styles, propObj, allProps, onPropUpdate }) => {
+const PropConfigYesNo = ({ styles, propObj, allProps, onPropUpdate }) => {
   const { prop } = propObj;
   const defaultValue = propObj.value;
   return (
-    <div key={key} className={`${styles.container} ${styles.switchContainer}`}>
+    <div className={`${styles.container} ${styles.switchContainer}`}>
       <Switch
         style={{ width: '100%' }}
         alignIndicator={Alignment.RIGHT}

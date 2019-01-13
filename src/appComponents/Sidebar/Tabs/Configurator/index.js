@@ -26,13 +26,21 @@ const ConfiguratorTab = ({
   };
   return (
     <div className={styles.tabHeader}>
-      <H5>{component.name} <span className={styles.componentHeader}>section</span></H5>
+      <H5>
+        {component.name} <span className={styles.componentHeader}>section</span>
+      </H5>
       <p className={styles.tabDescription}>
         Tweak the following properties to customize this section.
       </p>
       <Divider />
       {component.config.map((propObj, key) =>
-        getPropConfigElement(propObj, `${id}-${key}`, onPropUpdate, allProps)
+        getPropConfigElement({
+          propObj,
+          key: `${id}-${key}`,
+          keyIndex: `${id}-${key}`,
+          onPropUpdate,
+          allProps
+        })
       )}
     </div>
   );

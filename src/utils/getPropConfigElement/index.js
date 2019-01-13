@@ -1,19 +1,23 @@
 import React from 'react';
 import PropConfigString from './PropConfigString';
 import PropConfigYesNo from './PropConfigYesNo';
-import PropConfigList from './PropConfigList';
+import PropConfigDropDown from './PropConfigDropDown';
 import PropConfigNumeric from './PropConfigNumeric';
 import PropConfigSlider from './PropConfigSlider';
 import PropConfigColor from './PropConfigColor';
+import PropConfigList from './PropConfigList';
 
 import styles from './styles.module.css';
 
-const getPropConfigElement = (propObj, onPropUpdate, allProps) => {
+const getPropConfigElement = ({ propObj, key, onPropUpdate, allProps }) => {
+  console.log('********************************* keyIndex=', key);
   const { type } = propObj;
   switch (type) {
     case 'string':
       return (
         <PropConfigString
+          key={key}
+          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -24,6 +28,8 @@ const getPropConfigElement = (propObj, onPropUpdate, allProps) => {
     case 'yesno':
       return (
         <PropConfigYesNo
+          key={key}
+          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -31,9 +37,11 @@ const getPropConfigElement = (propObj, onPropUpdate, allProps) => {
         />
       );
 
-    case 'list':
+    case 'dropdown':
       return (
-        <PropConfigList
+        <PropConfigDropDown
+          key={key}
+          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -44,6 +52,8 @@ const getPropConfigElement = (propObj, onPropUpdate, allProps) => {
     case 'numeric':
       return (
         <PropConfigNumeric
+          key={key}
+          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -54,6 +64,8 @@ const getPropConfigElement = (propObj, onPropUpdate, allProps) => {
     case 'slider':
       return (
         <PropConfigSlider
+          key={key}
+          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -64,6 +76,20 @@ const getPropConfigElement = (propObj, onPropUpdate, allProps) => {
     case 'color':
       return (
         <PropConfigColor
+          key={key}
+          // keyIndex={key}
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
+      );
+
+    case 'list':
+      return (
+        <PropConfigList
+          key={key}
+          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -89,7 +115,7 @@ config = [{
   {
     prop: 'intent',
     label: 'Intent',
-    type: 'list',
+    type: 'dropdown',
     value: 'none',
     list: [{
       name: 'none',
@@ -142,7 +168,74 @@ config = [{
     label: 'Button group',
     type: 'custom',
     value: <custom value>
+  },
+  {
+    prop: 'menuLinks',
+    label: 'Footer Menu links',
+    type: 'list',
+    schema: [
+      {
+        prop: 'menu',
+        label: 'Menu',
+        type: 'string'
+      }, 
+      {
+        prop: 'linkTo',
+        label: 'Link To',
+        type: 'string'
+      }
+    ],
+    value: [
+      {
+        menu: 'Home',
+        linkTo: '/'
+      },
+      {
+        menu: 'Contact us',
+        linkTo: '/contact'
+      },
+      {
+        menu: 'FAQ',
+        linkTo: '/faq'
+      }
+    ]
+  },
+  {
+    prop: 'teamList',
+    label: 'List of team members',
+    type: 'list',
+    schema: [
+      {
+        prop: 'name',
+        label: 'Full Name',
+        type: 'string'
+      }, 
+      {
+        prop: 'dept',
+        label: 'Department',
+        type: 'string'
+      }, 
+      {
+        prop: 'role',
+        label: 'Role',
+        type: 'string'
+      }, 
+      {
+        prop: 'photoUrl',
+        label: 'Photo url',
+        type: 'string'
+      }
+    ],
+    value: [
+      {
+        name: 'Sam Smith',
+        dept: 'Music',
+        role: 'Singer',
+        photoUrl: 'http://...'
+      }
+    ]
   }
+
 }]
 
 */

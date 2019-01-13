@@ -1,11 +1,11 @@
 import React from 'react';
 import { Slider } from '@blueprintjs/core';
 
-const PropConfigSlider = ({ key, styles, propObj, allProps, onPropUpdate }) => {
+const PropConfigSlider = ({ styles, propObj, allProps, onPropUpdate }) => {
   const { prop } = propObj;
   const defaultValue = propObj.value;
   return (
-    <div key={key} className={`${styles.container} ${styles.sliderContainer}`}>
+    <div className={`${styles.container} ${styles.sliderContainer}`}>
       <div className={`${styles.label} ${styles.sliderLabel}`}>
         {propObj.label}
       </div>

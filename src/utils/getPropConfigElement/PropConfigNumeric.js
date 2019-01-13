@@ -2,7 +2,6 @@ import React from 'react';
 import { NumericInput } from '@blueprintjs/core';
 
 const PropConfigNumeric = ({
-  key,
   styles,
   propObj,
   allProps,
@@ -11,7 +10,7 @@ const PropConfigNumeric = ({
   const { prop } = propObj;
   const defaultValue = propObj.value;
   return (
-    <div key={key} className={styles.container}>
+    <div className={styles.container}>
       <div className={styles.label}>{propObj.label}</div>
       <div className={styles.numericContainer}>
         <NumericInput
