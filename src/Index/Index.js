@@ -83,10 +83,11 @@ class Index extends React.Component {
             </div>
             <h2>How to build the Pioneer website with Codecraftor?</h2>
             <iframe
+              style={{ border: '1px solid #000' }}
               title="Rebuilding Pioneer site with Codecraftor"
               width="900"
               height="506"
-              src="https://www.youtube.com/embed/6FKX7CeFPZ8?controls=0"
+              src="https://www.youtube.com/embed/6FKX7CeFPZ8?controls=1"
               frameBorder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
