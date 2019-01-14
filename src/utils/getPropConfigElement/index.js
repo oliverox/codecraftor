@@ -1,170 +1,105 @@
 import React from 'react';
-import {
-  Alignment,
-  EditableText,
-  Switch,
-  Classes,
-  Slider,
-  NumericInput
-} from '@blueprintjs/core';
-
-import ColorPicker from './ColorPicker';
+import PropConfigString from './PropConfigString';
+import PropConfigYesNo from './PropConfigYesNo';
+import PropConfigDropDown from './PropConfigDropDown';
+import PropConfigNumeric from './PropConfigNumeric';
+import PropConfigSlider from './PropConfigSlider';
+import PropConfigColor from './PropConfigColor';
+import PropConfigList from './PropConfigList';
 
 import styles from './styles.module.css';
 
-const getPropConfigElement = (propObj, key, onPropUpdate, allProps) => {
-  const { prop, type } = propObj;
-  const defaultValue = propObj.value;
-  // if (type === 'yesno') {
-  //   debugger;
-  // }
-  // console.log('allProps=', allProps);
-  // console.log(
-  //   propObj,
-  //   'value:',
-  //   typeof allProps[prop] !== 'undefined' ? allProps[prop] : propObj.value
-  // );
-  let propConfigElement;
+const getPropConfigElement = ({ propObj, key, onPropUpdate, allProps }) => {
+  console.log('********************************* keyIndex=', key);
+  const { type } = propObj;
   switch (type) {
     case 'string':
-      propConfigElement = (
-        <div key={key} className={styles.container}>
-          <div className={styles.label}>{propObj.label}</div>
-          <EditableText
-            className={`${styles.value} ${styles.editableText}`}
-            multiline={propObj.multiline || false}
-            maxLines={10}
-            placeholder={propObj.placeholder}
-            selectAllOnFocus={true}
-            confirmOnEnterKey={true}
-            defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
-            onConfirm={value => {
-              onPropUpdate({
-                prop,
-                value
-              });
-            }}
-          />
-        </div>
+      return (
+        <PropConfigString
+          key={key}
+          // keyIndex={key}
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
     case 'yesno':
-      propConfigElement = (
-        <div
+      return (
+        <PropConfigYesNo
           key={key}
-          className={`${styles.container} ${styles.switchContainer}`}
-        >
-          <Switch
-            style={{ width: '100%' }}
-            alignIndicator={Alignment.RIGHT}
-            defaultChecked={typeof allProps[prop] !== 'undefined' ? allProps[prop] : defaultValue}
-            labelElement={<span className={styles.label}>{propObj.label}</span>}
-            onChange={event => {
-              onPropUpdate({
-                prop,
-                value: event.target.checked
-              });
-            }}
-          />
-        </div>
+          // keyIndex={key}
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
-    case 'list':
-      propConfigElement = (
-        <div key={key} className={styles.container}>
-          <span className={styles.label}>{propObj.label}</span>
-          <div
-            className={`${Classes.SELECT} ${Classes.MINIMAL} ${Classes.INLINE}`}
-          >
-            <select
-              className={`${styles.value} ${styles.selectContainer}`}
-              defaultValue={allProps[prop] ? allProps[prop] : defaultValue}
-              onChange={event => {
-                onPropUpdate({
-                  prop,
-                  value: event.target.value
-                });
-              }}
-            >
-              {propObj.list.map((item, i) => (
-                <option key={`${key}-${i}`} value={propObj.list[i].value}>
-                  {propObj.list[i].name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+    case 'dropdown':
+      return (
+        <PropConfigDropDown
+          key={key}
+          // keyIndex={key}
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
     case 'numeric':
-      propConfigElement = (
-        <div key={key} className={styles.container}>
-          <div className={styles.label}>{propObj.label}</div>
-          <div className={styles.numericContainer}>
-            <NumericInput
-              min={propObj.min}
-              max={propObj.max}
-              allowNumericCharactersOnly={true}
-              placeholder="Type a number"
-              fill={true}
-              value={allProps[prop] ? allProps[prop] : defaultValue}
-              onValueChange={value => {
-                onPropUpdate({
-                  prop,
-                  value
-                });
-              }}
-            />
-          </div>
-        </div>
+      return (
+        <PropConfigNumeric
+          key={key}
+          // keyIndex={key}
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
     case 'slider':
-      propConfigElement = (
-        <div
+      return (
+        <PropConfigSlider
           key={key}
-          className={`${styles.container} ${styles.sliderContainer}`}
-        >
-          <div className={`${styles.label} ${styles.sliderLabel}`}>
-            {propObj.label}
-          </div>
-          <Slider
-            min={propObj.range[0]}
-            max={propObj.range[1]}
-            labelRenderer={value => propObj.tmpl.replace('{{value}}', value)}
-            onChange={value => {
-              onPropUpdate({
-                prop,
-                value
-              });
-            }}
-            value={allProps[prop] ? allProps[prop] : defaultValue}
-          />
-        </div>
+          // keyIndex={key}
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
 
     case 'color':
-      propConfigElement = (
-        <div key={key} className={styles.container}>
-          <div className={styles.label}>{propObj.label}</div>
-          <ColorPicker
-            prop={prop}
-            onPropUpdate={onPropUpdate}
-            color={allProps[prop] ? allProps[prop] : defaultValue}
-          />
-        </div>
+      return (
+        <PropConfigColor
+          key={key}
+          // keyIndex={key}
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
       );
-      break;
+
+    case 'list':
+      return (
+        <PropConfigList
+          key={key}
+          // keyIndex={key}
+          propObj={propObj}
+          onPropUpdate={onPropUpdate}
+          allProps={allProps}
+          styles={styles}
+        />
+      );
 
     default:
       break;
   }
-  return propConfigElement;
 };
 
 export default getPropConfigElement;
@@ -180,7 +115,7 @@ config = [{
   {
     prop: 'intent',
     label: 'Intent',
-    type: 'list',
+    type: 'dropdown',
     value: 'none',
     list: [{
       name: 'none',
@@ -233,7 +168,74 @@ config = [{
     label: 'Button group',
     type: 'custom',
     value: <custom value>
+  },
+  {
+    prop: 'menuLinks',
+    label: 'Footer Menu links',
+    type: 'list',
+    schema: [
+      {
+        prop: 'menu',
+        label: 'Menu',
+        type: 'string'
+      }, 
+      {
+        prop: 'linkTo',
+        label: 'Link To',
+        type: 'string'
+      }
+    ],
+    value: [
+      {
+        menu: 'Home',
+        linkTo: '/'
+      },
+      {
+        menu: 'Contact us',
+        linkTo: '/contact'
+      },
+      {
+        menu: 'FAQ',
+        linkTo: '/faq'
+      }
+    ]
+  },
+  {
+    prop: 'teamList',
+    label: 'List of team members',
+    type: 'list',
+    schema: [
+      {
+        prop: 'name',
+        label: 'Full Name',
+        type: 'string'
+      }, 
+      {
+        prop: 'dept',
+        label: 'Department',
+        type: 'string'
+      }, 
+      {
+        prop: 'role',
+        label: 'Role',
+        type: 'string'
+      }, 
+      {
+        prop: 'photoUrl',
+        label: 'Photo url',
+        type: 'string'
+      }
+    ],
+    value: [
+      {
+        name: 'Sam Smith',
+        dept: 'Music',
+        role: 'Singer',
+        photoUrl: 'http://...'
+      }
+    ]
   }
+
 }]
 
 */

@@ -23,6 +23,7 @@ class MainFrame extends React.Component {
       siteMeta: false,
       currentTab: 'home',
       currentPage: 'index',
+      componentList: false,
       currentComponentId: false
     };
     this.iframeRef = false;
@@ -35,17 +36,21 @@ class MainFrame extends React.Component {
     this.updateSiteMeta = this.updateSiteMeta.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.getImportsForPage = this.getImportsForPage.bind(this);
+    this.updateComponentList = this.updateComponentList.bind(this);
     this.sendPageMetaToFrame = this.sendPageMetaToFrame.bind(this);
     this.appendComponentToPage = this.appendComponentToPage.bind(this);
     this.updateComponentOnPage = this.updateComponentOnPage.bind(this);
     this.deleteComponentOnPage = this.deleteComponentOnPage.bind(this);
     this.insertComponentInPage = this.insertComponentInPage.bind(this);
-    this.sanitizeChildrenComponents = this.sanitizeChildrenComponents.bind(this);
+    this.sanitizeChildrenComponents = this.sanitizeChildrenComponents.bind(
+      this
+    );
   }
 
   componentDidMount() {
     const { match } = this.props;
     const db = firebase.firestore();
+    let template = BlankPage;
     db.settings({ timestampsInSnapshots: true });
     this.docRef = db
       .collection(process.env.REACT_APP_CRAFTS_COLLECTION)
@@ -54,14 +59,18 @@ class MainFrame extends React.Component {
       console.log('will check if doc exists in firestore...');
       if (doc.exists) {
         console.log('doc exists in firestore');
-        const { siteMeta = BlankPage } = doc.data();
+        const { siteMeta } = doc.data();
+        // Manually add 'transparent' color to the theme
+        siteMeta.theme.colors.transparent = 'transparent';
         this.setState({
           siteMeta
         });
       } else {
-        console.log('doc does not exist in firestore');
+        console.log('doc does not exist in firestore => create a new template');
+        // Manually add 'transparent' color to the theme
+        template.theme.colors.transparent = 'transparent';
         this.setState({
-          siteMeta: BlankPage
+          siteMeta: template
         });
       }
     });
@@ -109,6 +118,8 @@ class MainFrame extends React.Component {
       this.updateSite('INSERT', data);
     } else if (data && data.action === 'READY') {
       this.sendPageMetaToFrame();
+    } else if (data && data.action === 'UPDATE_COMPONENT_LIST') {
+      this.updateComponentList(data.componentConfigs);
     }
   }
 
@@ -118,7 +129,7 @@ class MainFrame extends React.Component {
         this.appendComponentToPage(params);
         break;
 
-      case 'INSERT': 
+      case 'INSERT':
         this.insertComponentInPage(params);
         break;
 
@@ -134,6 +145,15 @@ class MainFrame extends React.Component {
     this.docRef.set({
       siteMeta
     });
+  }
+
+  updateComponentList(componentList) {
+    if (!this.state.componentList) {
+      console.log('Updating component list with:', componentList);
+      this.setState({
+        componentList
+      });
+    }
   }
 
   appendComponentToPage(params) {
@@ -164,13 +184,19 @@ class MainFrame extends React.Component {
         siteMeta.pages[page].imports.push(componentType);
       }
       const newCC = [];
-      for (let i=0; i<siteMeta.pages[page].root.childrenComponents.length; i++) {
-        if (siteMeta.pages[page].root.childrenComponents[i] === insertBeforeId) {
+      for (
+        let i = 0;
+        i < siteMeta.pages[page].root.childrenComponents.length;
+        i++
+      ) {
+        if (
+          siteMeta.pages[page].root.childrenComponents[i] === insertBeforeId
+        ) {
           newCC.push(id, insertBeforeId);
         } else {
           newCC.push(siteMeta.pages[page].root.childrenComponents[i]);
         }
-      }      
+      }
       siteMeta.pages[page].root.childrenComponents = newCC;
       siteMeta.pages[page].nonRootComponents.push(newComponent);
     }
@@ -183,7 +209,7 @@ class MainFrame extends React.Component {
     const { siteMeta } = this.state;
     const nonRootComponents = siteMeta.pages[page].nonRootComponents.slice();
     let componentIndexToRemove = -1;
-    for (let i=0; i<nonRootComponents.length; i++) {
+    for (let i = 0; i < nonRootComponents.length; i++) {
       if (nonRootComponents[i].id === componentId) {
         componentIndexToRemove = i;
         break;
@@ -205,7 +231,7 @@ class MainFrame extends React.Component {
     const { siteMeta } = this.state;
     const { nonRootComponents } = siteMeta.pages[page];
     let currentComponent;
-    for (let i=0; i<nonRootComponents.length; i++) {
+    for (let i = 0; i < nonRootComponents.length; i++) {
       currentComponent = nonRootComponents[i];
       if (updatedImports.indexOf(currentComponent.componentType) < 0) {
         updatedImports.push(currentComponent.componentType);
@@ -220,22 +246,33 @@ class MainFrame extends React.Component {
     const rootChildrenComponents = siteMeta.pages[page].root.childrenComponents;
     const nonRootComponents = {};
     const newRootChildrenComponents = [];
-    for (let i=0; i<siteMeta.pages[page].nonRootComponents.length; i++) {
+    for (let i = 0; i < siteMeta.pages[page].nonRootComponents.length; i++) {
       nonRootComponents[siteMeta.pages[page].nonRootComponents[i].id] = true;
     }
     if (rootChildrenComponents && rootChildrenComponents.length > 0) {
-      for (let i=0; i<rootChildrenComponents.length; i++) {
+      for (let i = 0; i < rootChildrenComponents.length; i++) {
         if (nonRootComponents[rootChildrenComponents[i]]) {
           newRootChildrenComponents.push(rootChildrenComponents[i]);
         }
       }
     }
-    for (let i=0; i<siteMeta.pages[page].nonRootComponents.length; i++) {
+    for (let i = 0; i < siteMeta.pages[page].nonRootComponents.length; i++) {
       if (siteMeta.pages[page].nonRootComponents[i].childrenComponents) {
         let newCC = [];
-        for (let j=0; j<siteMeta.pages[page].nonRootComponents[i].childrenComponents.length; j++) {
-          if (nonRootComponents[siteMeta.pages[page].nonRootComponents[i].childrenComponents[j]]) {
-            newCC.push(siteMeta.pages[page].nonRootComponents[i].childrenComponents[j]);
+        for (
+          let j = 0;
+          j <
+          siteMeta.pages[page].nonRootComponents[i].childrenComponents.length;
+          j++
+        ) {
+          if (
+            nonRootComponents[
+              siteMeta.pages[page].nonRootComponents[i].childrenComponents[j]
+            ]
+          ) {
+            newCC.push(
+              siteMeta.pages[page].nonRootComponents[i].childrenComponents[j]
+            );
           }
         }
         siteMeta.pages[page].nonRootComponents[i].childrenComponents = newCC;
@@ -262,7 +299,7 @@ class MainFrame extends React.Component {
   }
 
   sendPageMetaToFrame() {
-    console.log('sendPageMetaToFrame...', this.iframeRef);
+    console.log('sending PageMeta To Frame...', this.state.siteMeta);
     if (this.iframeRef) {
       this.iframeRef.contentWindow.postMessage(
         {
@@ -326,8 +363,9 @@ class MainFrame extends React.Component {
             currentPage={currentPage}
             currentComponentId={currentComponentId}
             sendPageMetaToFrame={this.sendPageMetaToFrame}
-            updateComponentOnPage={this.updateComponentOnPage}
+            componentList={this.state.componentList}
             updateTheme={this.updateTheme}
+            updateComponentOnPage={this.updateComponentOnPage}
           />
           <Iframe
             craftId={match.params.craftId}

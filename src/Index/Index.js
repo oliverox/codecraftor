@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
 import { H1, H6 } from '@blueprintjs/core';
 import SpinnerOverlay from '../appComponents/SpinnerOverlay/SpinnerOverlay';
-import { BlankPage } from '../templates';
+import { BlankPage, Pioneer } from '../templates';
 
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -35,7 +35,7 @@ class Index extends React.Component {
     db.collection(process.env.REACT_APP_CRAFTS_COLLECTION)
       .add({
         created: Date.now(),
-        siteMeta: BlankPage
+        siteMeta: Pioneer // TODO: Pick a theme here
       })
       .then(docRef => {
         history.push(`/craft/${docRef.id}`);
@@ -81,6 +81,17 @@ class Index extends React.Component {
                 scratch.
               </p>
             </div>
+            <h2>How to build the Pioneer website with Codecraftor?</h2>
+            <iframe
+              title="Rebuilding Pioneer site with Codecraftor"
+              width="900"
+              height="506"
+              src="https://www.youtube.com/embed/6FKX7CeFPZ8?controls=0"
+              frameBorder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+
             <div className="index-main-content-section">
               <h2>Why Codecraftor?</h2>
               <p>
@@ -95,10 +106,10 @@ class Index extends React.Component {
               <h2>How do I get started?</h2>
               <p>
                 Codecraftor is currently a work in progress at a
-                proof-of-concept stage. Stay tuned as hard work is being
-                put into it while listening to all the feedback from other
-                Pioneer participants! Feel free to click on the button below to
-                get started on a new web craft.
+                proof-of-concept stage. Stay tuned as hard work is being put
+                into it while listening to all the feedback from other Pioneer
+                participants! Feel free to click on the button below to get
+                started on a new web craft.
               </p>
             </div>
             <div className="index-main-content-section cta">

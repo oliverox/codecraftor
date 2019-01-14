@@ -20,23 +20,43 @@ export default {
   globalCss: {},
   pages: {
     index: {
-      pageTitle: 'Index Page',
-      imports: [
-        'RootContainer',
-        'NavigationBar'
-      ],
+      pageTitle: 'The Pioneer template',
+      imports: ['Root', 'NavigationBar', 'Hero', 'Features', 'Mission', 'Team', 'Footer'],
       root: {
-        componentType: 'RootContainer',
+        componentType: 'Root',
         props: '{}',
         editable: false,
-        childrenComponents: [
-          'zKx-xptnr'
-        ]
+        childrenComponents: ['zKx-xptnr', 'hero001', 'features001', 'mission001', 'team001', 'footer001']
       },
       nonRootComponents: [
         {
           id: 'zKx-xptnr',
           componentType: 'NavigationBar',
+          props: '{}'
+        },
+        {
+          id: 'hero001',
+          componentType: 'Hero',
+          props: '{}'
+        },
+        {
+          id: 'features001',
+          componentType: 'Features',
+          props: '{}'
+        },
+        {
+          id: 'mission001',
+          componentType: 'Mission',
+          props: '{}'
+        },
+        {
+          id: 'team001',
+          componentType: 'Team',
+          props: '{}'
+        },
+        {
+          id: 'footer001',
+          componentType: 'Footer',
           props: '{}'
         }
       ]

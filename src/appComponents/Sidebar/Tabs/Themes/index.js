@@ -1,5 +1,5 @@
 import React from 'react';
-import { H6, Divider, HTMLSelect } from '@blueprintjs/core';
+import { H5, Divider, HTMLSelect } from '@blueprintjs/core';
 import { TwitterPicker } from 'react-color';
 import getFonts from './fonts';
 
@@ -106,8 +106,14 @@ class ThemesPanel extends React.Component {
     }
     return (
       <div>
-        <H6>Color scheme</H6>
-        <Divider />
+        <div className={styles.tabHeader}>
+          <H5>Apply a custom theme</H5>
+          <p className={styles.tabDescription}>
+            Update this theme with you desired color scheme and font to see the
+            changes on the right.
+          </p>
+          <Divider />
+        </div>
         <TwitterPicker
           triangle="top-right"
           color={currentColor}

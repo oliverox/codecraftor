@@ -1,40 +1,43 @@
 import React from 'react';
-import { Card, Elevation, Icon } from '@blueprintjs/core';
-import componentList from '../../../../components';
+import { Card, Divider, Elevation, Icon, H5 } from '@blueprintjs/core';
 
 import styles from './Components.module.css';
 
-const ComponentsPanel = () => {
+const ComponentsPanel = ({ componentList = [], siteMeta }) => {
   const onDragStart = e => {
     e.dataTransfer.setData(
       'componentType',
-      e.target.getAttribute('data-componentmodule')
+      e.target.getAttribute('data-component')
     );
   };
   return (
     <div>
-      {Object.keys(componentList).map((component, key) => {
-        const componentMeta = componentList[component];
-        return (
-          <Card
-            key={key}
-            data-componentmodule={component}
-            interactive={true}
-            elevation={Elevation.ONE}
-            className={styles.componentContainer}
-            draggable={true}
-            onDragStart={onDragStart}
-          >
-            <span className={styles.componentItem}>
-              <Icon
-                className={styles.componentItemIcon}
-                icon={componentMeta.icon}
-              />
-              {componentMeta.name}
-            </span>
-          </Card>
-        );
-      })}
+      <div className={styles.tabHeader}>
+        <H5>Block Components</H5>
+        <p className={styles.tabDescription}>
+          The components below are provided by your selected template.
+          To add them to your canvas, simply drag and drop the desired
+          component to the drop container area on the right.
+        </p>
+        <Divider />
+      </div>
+      {componentList.map((component, key) => (
+        <Card
+          key={key}
+          data-component={component.type}
+          interactive={true}
+          elevation={Elevation.ONE}
+          className={styles.componentContainer}
+          draggable={true}
+          onDragStart={onDragStart}
+        >
+          <span className={styles.componentItem}>
+            <Icon className={styles.componentItemIcon} icon={component.icon} />
+            {component.name}
+          </span>
+          <p className={styles.componentDescription}>{component.desc}</p>
+        </Card>
+      ))}
     </div>
   );
 };
