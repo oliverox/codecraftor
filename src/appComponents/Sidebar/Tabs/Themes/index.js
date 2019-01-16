@@ -89,9 +89,9 @@ class ThemesPanel extends React.Component {
     updateTheme(theme);
   }
 
-  handleFontChange(event) {
+  handleFontChange(fontIndex, value) {
     const { theme, updateTheme } = this.props;
-    theme.font.family = [event.currentTarget.value];
+    theme.font.family[fontIndex] = value;
     updateTheme(theme);
   }
 
@@ -190,16 +190,20 @@ class ThemesPanel extends React.Component {
             }}
           />
         </div>
-        <div className={styles.colorContainer}>
-          <span>Font</span>
-          <HTMLSelect
-            minimal
-            onChange={this.handleFontChange}
-            className={styles.fontSelector}
-            options={getFonts()}
-            value={theme.font.family[0]}
-          />
-        </div>
+        {theme.font.family.map((fontName, index) => (
+          <div key={`font-${index}`} className={styles.colorContainer}>
+            <span>Font #{index + 1}</span>
+            <HTMLSelect
+              minimal
+              onChange={e =>
+                this.handleFontChange(index, e.currentTarget.value)
+              }
+              className={styles.fontSelector}
+              options={getFonts()}
+              value={theme.font.family[index]}
+            />
+          </div>
+        ))}
       </div>
     );
   }
