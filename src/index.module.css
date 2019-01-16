@@ -8,7 +8,6 @@ body {
 :global(.root) {
   display: flex;
   flex-direction: column;
-  background-color: #e8eaed;
   position: absolute;
   width: 100%;
   top: 0;
@@ -23,6 +22,5 @@ body {
 .editor {
   display: flex;
   flex-direction: column;
-  background-color: #fff;
   border: 5px solid #e8eaed;
 }

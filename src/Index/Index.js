@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
 import { H1, H6 } from '@blueprintjs/core';
 import SpinnerOverlay from '../appComponents/SpinnerOverlay/SpinnerOverlay';
-import { BlankPage } from '../templates';
+import { BlankPage, Pioneer } from '../templates';
 
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -35,7 +35,7 @@ class Index extends React.Component {
     db.collection(process.env.REACT_APP_CRAFTS_COLLECTION)
       .add({
         created: Date.now(),
-        siteMeta: BlankPage
+        siteMeta: Pioneer // TODO: Pick a theme here
       })
       .then(docRef => {
         history.push(`/craft/${docRef.id}`);
@@ -81,6 +81,18 @@ class Index extends React.Component {
                 scratch.
               </p>
             </div>
+            <h2>How to build the Pioneer website with Codecraftor?</h2>
+            <iframe
+              style={{ border: '1px solid #000' }}
+              title="Rebuilding Pioneer site with Codecraftor"
+              width="900"
+              height="506"
+              src="https://www.youtube.com/embed/6FKX7CeFPZ8?controls=1"
+              frameBorder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+
             <div className="index-main-content-section">
               <h2>Why Codecraftor?</h2>
               <p>
@@ -88,67 +100,17 @@ class Index extends React.Component {
                 lock-ins with Codecraftor. You can download your website,
                 customize and deploy it wherever you want. On top of that, you
                 get to use community-built components in your apps which
-                developers can publish on the platform.
+                developers can publish on the platform in the form of templates.
               </p>
             </div>
-            {/* <div className="index-main-content-section">
-              <h2>
-                How is it different from other web site builders out there?
-              </h2>
-              <p>
-                There isn't really a good middle-ground tool between visual
-                design and code. Codecraftor aims to become that tool. With
-                Codecraftor, users will not only be able to visually compose
-                their site, but also pick their web framework of choice (React,
-                Angular, etc), choose a UI toolkit, and eventually pushed the
-                site to a domain or even download the complete source code. The
-                idea is that all this should be able to be done via an easy
-                conversational user interface.
-              </p>
-            </div>
-            <div className="index-main-content-section">
-              <h2>
-                What are some encouraging feedback received from other Pioneer
-                participants?
-              </h2>
-              <Blockquote>
-                "could be useful for developers." - arstore
-              </Blockquote>
-              <Blockquote>"I like the practicality. - merlin</Blockquote>
-              <Blockquote>
-                "It would be amazing to have a product on the middle ground of
-                wysiwyg and real code - it's amazing you have the necessary
-                background and expierence to build such product" - tbs
-              </Blockquote>
-              <Blockquote>
-                "I would use the heck out of this" - sunshowerlisa
-              </Blockquote>
-              <Blockquote>
-                "I love it and can see it transforming the world. " - King
-              </Blockquote>
-              <Blockquote>
-                "This is a great idea. I have done html coding for about 14
-                years and a bit of wix that is an in between for the developer
-                and the amateur would be great. Up against a tough one... :-/" -
-                hermione-204981
-              </Blockquote>
-              <Blockquote>
-                "i like its applicability" - engithumbihjames123-3577
-              </Blockquote>
-              <Blockquote>
-                "Now this is great. It will go a long way to help even Young
-                Minds in achieving an easy way of coding. Weldone " - MidasTORCH
-              </Blockquote>
-            </div> */}
             <div className="index-main-content-section">
               <h2>How do I get started?</h2>
               <p>
-                Codecraftor is currently a work in progress still at a
-                prototypal stage. For Codecraftor to be really useful, this
-                prototype will need evolve. But stay tuned as hard work is being
-                put into it while listening to all the feedback from other
-                Pioneer participants! Feel free to click on the button below to
-                get started on a new web craft.
+                Codecraftor is currently a work in progress at a
+                proof-of-concept stage. Stay tuned as hard work is being put
+                into it while listening to all the feedback from other Pioneer
+                participants! Feel free to click on the button below to get
+                started on a new web craft.
               </p>
             </div>
             <div className="index-main-content-section cta">

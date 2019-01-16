@@ -11,7 +11,10 @@ export default {
       light: '#FFF',
       dark: '#283D3B'
     },
-    font: 'Montserrat'
+    font: {
+      family: ['Montserrat'],
+      size: '16px'
+    }
   },
   globalCss: {},
   pages: {
@@ -26,7 +29,9 @@ export default {
           'pageheader001',
           'splash001',
           'heading001',
-          'txt001'
+          'txt001',
+          'heading002',
+          'txt002'
         ]
       },
       nonRootComponents: [
@@ -44,13 +49,24 @@ export default {
         {
           id: 'heading001',
           componentType: 'Heading',
-          props: '{"text": "This is the base template", "type": "h3"}'
+          props: '{"text": "The Template Marketplace", "type": "h3"}'
         },
         {
           id: 'txt001',
           componentType: 'Text',
           props:
-            '{"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}'
+            '{"content": "This is currently the only template available. In the next few weeks, you will be able to choose from a selection of templates."}'
+        },
+        {
+          id: 'heading002',
+          componentType: 'Heading',
+          props: '{"text": "Monetization Strategy", "type": "h3"}'
+        },
+        {
+          id: 'txt002',
+          componentType: 'Text',
+          props:
+            '{"content": "Any React developer will be able to create templates using the Codecraftor Template Creator tool (still a WIP). Templates can be sold on the Codecraftor Marketplace. Users of Codecraftor can select the desired template, compose and customize the website and pay a download / publish fee. Template creators get paid for every user who downloads their templates."}'
         }
       ]
     }
