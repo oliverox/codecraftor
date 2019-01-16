@@ -7,6 +7,7 @@
   width: 140px;
   height: 160px;
   display: flex;
+  text-align: center;
   align-items: center;
   justify-content: center;
 }
