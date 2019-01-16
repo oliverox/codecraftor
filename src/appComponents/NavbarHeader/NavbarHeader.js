@@ -7,15 +7,36 @@ import {
   NavbarGroup,
   NavbarHeading,
   Button,
-  Classes
+  Classes,
+  Popover,
+  ProgressBar,
+  InputGroup
 } from '@blueprintjs/core';
 
 import styles from './NavbarHeader.module.css';
 import logo from '../../images/logo.png';
 
 class NavbarHeader extends React.Component {
+  constructor(props) {
+    super(props);
+    this.openWindow = this.openWindow.bind(this);
+  }
+
+  openWindow() {
+    const { publishUrl } = this.props;
+    window.open(publishUrl, '_blank');
+  }
+
   render() {
-    const { selected, handleTabChange, download } = this.props;
+    const {
+      selected,
+      handleTabChange,
+      publish,
+      download,
+      publishUrl,
+      publishInProgress,
+      isPublishPopoverOpen
+    } = this.props;
     return (
       <header className="app-header">
         <Navbar
@@ -39,37 +60,60 @@ class NavbarHeader extends React.Component {
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="home" />}
               text="Home"
-              onClick={() => handleTabChange('home') }
+              onClick={() => handleTabChange('home')}
             />
             <Button
               active={selected === 'pages'}
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="document" />}
               text="Pages"
-              onClick={() => handleTabChange('pages') }
+              onClick={() => handleTabChange('pages')}
             />
             <Button
               active={selected === 'components'}
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="code-block" />}
               text="Component Library"
-              onClick={() => handleTabChange('components') }
+              onClick={() => handleTabChange('components')}
             />
             <Button
               active={selected === 'theme'}
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="style" />}
               text="Theme"
-              onClick={() => handleTabChange('theme') }
+              onClick={() => handleTabChange('theme')}
             />
           </NavbarGroup>
           <NavbarGroup align={Alignment.RIGHT}>
-            <Button
-              disabled
-              className={`${Classes.MINIMAL} ${styles.navbarButton}`}
-              icon={<Icon style={{ color: '#fff' }} icon="cloud-upload" />}
-              text="Publish"
-            />
+            <Popover isOpen={isPublishPopoverOpen}>
+              <Button
+                className={`${Classes.MINIMAL} ${styles.navbarButton}`}
+                icon={<Icon style={{ color: '#fff' }} icon="cloud-upload" />}
+                onClick={publish}
+                text="Publish"
+              />
+              <div className={styles.publishPopover}>
+                {publishInProgress && (
+                  <div className={styles.publishPopoverContentCol}>
+                    <span className={styles.publishText}>
+                      Publishing your website...
+                    </span>
+                    <ProgressBar intent="none" />
+                  </div>
+                )}
+                {!publishInProgress && (
+                  <div className={styles.publishPopoverContentRow}>
+                    <InputGroup readOnly value={publishUrl} />
+                    <Button
+                      onClick={this.openWindow}
+                      icon="arrow-right"
+                      intent="success"
+                      text="Open"
+                    />
+                  </div>
+                )}
+              </div>
+            </Popover>
             <Button
               className={`${Classes.MINIMAL} ${styles.navbarButton}`}
               icon={<Icon style={{ color: '#fff' }} icon="download" />}
@@ -82,5 +126,10 @@ class NavbarHeader extends React.Component {
     );
   }
 }
+
+NavbarHeader.defaultProps = {
+  publishInProgress: false,
+  isPublishPopoverOpen: false
+};
 
 export default NavbarHeader;

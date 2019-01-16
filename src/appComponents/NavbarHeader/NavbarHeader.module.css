@@ -11,3 +11,22 @@
 .navbarButton:disabled > span {
   color: rgba(92, 112, 128, 0.8);
 }
+.publishPopover {
+  display: flex;
+  padding: 30px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.publishPopoverContentCol {
+  display: flex;
+  flex-direction: column;
+}
+.publishPopoverContentRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.publishText {
+  margin-bottom: 10px;
+}
