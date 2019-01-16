@@ -6,6 +6,7 @@ import { FocusStyleManager } from '@blueprintjs/core';
 import NavbarHeader from '../appComponents/NavbarHeader/NavbarHeader';
 import Sidebar from '../appComponents/Sidebar/Sidebar';
 import Iframe from '../appComponents/Iframe/Iframe';
+import PreviewWindow from '../appComponents/PreviewWindow/PreviewWindow';
 import { BlankPage } from '../templates';
 import getComponentObj from '../utils/getComponentObj';
 
@@ -21,13 +22,17 @@ class MainFrame extends React.Component {
     super(props);
     this.state = {
       siteMeta: false,
+      publishUrl: false,
       currentTab: 'home',
       currentPage: 'index',
       componentList: false,
-      currentComponentId: false
+      publishInProgress: false,
+      currentComponentId: false,
+      isPublishPopoverOpen: false
     };
     this.iframeRef = false;
     this.initialRender = true;
+    this.publish = this.publish.bind(this);
     this.download = this.download.bind(this);
     this.updateSite = this.updateSite.bind(this);
     this.updateTheme = this.updateTheme.bind(this);
@@ -332,13 +337,41 @@ class MainFrame extends React.Component {
     });
   }
 
+  publish() {
+    const { isPublishPopoverOpen } = this.state;
+    if (isPublishPopoverOpen) {
+      // close popover
+      this.setState({
+        isPublishPopoverOpen: false
+      });
+    } else {
+      this.setState({
+        isPublishPopoverOpen: true,
+        publishInProgress: true
+      });
+      import('../utils/publishApp').then(module => {
+        const publishApp = module.default;
+        publishApp().then(vm => {
+          this.setState({
+            publishInProgress: false,
+            publishUrl: vm.preview.origin
+          });
+          vm = null;
+        });
+      });  
+    }
+  }
+
   render() {
     const { match } = this.props;
     const {
-      currentTab,
       siteMeta,
+      currentTab,
+      publishUrl,
       currentPage,
-      currentComponentId
+      publishInProgress,
+      currentComponentId,
+      isPublishPopoverOpen
     } = this.state;
     const currentPageTitle = siteMeta
       ? siteMeta.pages[currentPage].pageTitle
@@ -353,8 +386,12 @@ class MainFrame extends React.Component {
       <>
         <NavbarHeader
           selected={currentTab}
+          publish={this.publish}
           download={this.download}
+          publishUrl={publishUrl}
           handleTabChange={this.handleTabChange}
+          publishInProgress={publishInProgress}
+          isPublishPopoverOpen={isPublishPopoverOpen}
         />
         <main className={styles.mainframe}>
           <Sidebar
@@ -372,6 +409,7 @@ class MainFrame extends React.Component {
             setIframeRef={this.setIframeRef}
             currentPageTitle={currentPageTitle}
           />
+          <PreviewWindow />
         </main>
       </>
     );
