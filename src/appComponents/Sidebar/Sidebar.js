@@ -24,18 +24,24 @@ class SideBar extends React.Component {
   render() {
     const {
       siteMeta,
-      currentPage,
+      handleNewPage,
+      currentPageIndex,
       updateTheme,
       currentComponentId,
       currentTab = 'home',
       sendPageMetaToFrame,
       updateComponentOnPage,
+      updateCurrentPageIndex,
       componentList
     } = this.props;
     let componentObj = false;
     let index = -1;
     if (siteMeta) {
-      const data = getComponentObj(siteMeta, currentPage, currentComponentId);
+      const data = getComponentObj(
+        siteMeta,
+        currentPageIndex,
+        currentComponentId
+      );
       componentObj = data.componentObj;
       index = data.index;
     }
@@ -54,7 +60,14 @@ class SideBar extends React.Component {
           />
           <Tab
             id="pages"
-            panel={<PagesTab siteMeta={siteMeta} currentPage={currentPage} />}
+            panel={
+              <PagesTab
+                siteMeta={siteMeta}
+                currentPageIndex={currentPageIndex}
+                handleNewPage={handleNewPage}
+                updateCurrentPageIndex={updateCurrentPageIndex}
+              />
+            }
           />
           <Tab
             id="components"

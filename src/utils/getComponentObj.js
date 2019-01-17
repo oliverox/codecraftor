@@ -1,5 +1,5 @@
-const getComponentObj = (siteMeta, page, componentId) => {
-  const { nonRootComponents } = siteMeta.pages[page];
+const getComponentObj = (siteMeta, pageIndex, componentId) => {
+  const { nonRootComponents } = siteMeta.pages[pageIndex];
   let componentObj = false;
   let index = -1;
   for (let i = 0; i < nonRootComponents.length; i++) {

@@ -1,21 +1,42 @@
 import React from 'react';
-import { Card } from '@blueprintjs/core';
+import { Button, Card, Divider } from '@blueprintjs/core';
 
 import styles from './Pages.module.css';
 
-const PagesPanel = ({ siteMeta, currentPage }) => {
+const PagesPanel = ({
+  siteMeta,
+  handleRemovePage,
+  handleNewPage,
+  currentPageIndex,
+  updateCurrentPageIndex
+}) => {
   if (!siteMeta) {
     return <div />;
   }
-  const pages = Object.keys(siteMeta.pages);
-  let cn = styles.pageOutline;
+  const { pages } = siteMeta;
+  let cn;
   return (
     <div className={styles.pageOutlineContainer}>
+      <div className={styles.pageActions}>
+        <Button minimal icon="document" onClick={handleNewPage}>
+          New page
+        </Button>
+        <Button minimal icon="trash" onClick={handleRemovePage}>
+          Remove page
+        </Button>
+      </div>
+      <Divider className={styles.divider} />
       {pages.map((page, key) => {
-        cn += (currentPage === page) ? ` ${styles.selected}` : ''; 
+        cn = styles.pageOutline;
+        cn += currentPageIndex === key ? ` ${styles.selected}` : '';
         return (
-          <Card key={key} interactive={true} className={cn}>
-            {siteMeta.pages[page].pageTitle}
+          <Card
+            key={`page-${key}`}
+            interactive={true}
+            className={cn}
+            onClick={() => updateCurrentPageIndex(key)}
+          >
+            <div className={styles.cardContent}>{page.pageTitle}</div>
           </Card>
         );
       })}
