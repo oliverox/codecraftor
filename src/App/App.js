@@ -42,6 +42,7 @@ class MainFrame extends React.Component {
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
     this.updateSiteMeta = this.updateSiteMeta.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
+    this.sanitizeChildren = this.sanitizeChildren.bind(this);
     this.handleRemovePage = this.handleRemovePage.bind(this);
     this.getImportsForPage = this.getImportsForPage.bind(this);
     this.updateComponentList = this.updateComponentList.bind(this);
@@ -51,9 +52,6 @@ class MainFrame extends React.Component {
     this.deleteComponentOnPage = this.deleteComponentOnPage.bind(this);
     this.insertComponentInPage = this.insertComponentInPage.bind(this);
     this.updateCurrentPageIndex = this.updateCurrentPageIndex.bind(this);
-    this.sanitizeChildrenComponents = this.sanitizeChildrenComponents.bind(
-      this
-    );
   }
 
   componentDidMount() {
@@ -279,7 +277,7 @@ class MainFrame extends React.Component {
     siteMeta.pages[pageIndex].nonRootComponents = nonRootComponents;
     console.log('updated siteMeta=', siteMeta);
     siteMeta.pages[pageIndex].imports = this.getImportsForPage(pageIndex);
-    const newSiteMeta = this.sanitizeChildrenComponents(pageIndex);
+    const newSiteMeta = this.sanitizeChildren(pageIndex);
     this.updateSiteMeta(newSiteMeta);
   }
 
@@ -298,20 +296,14 @@ class MainFrame extends React.Component {
     return updatedImports;
   }
 
-  sanitizeChildrenComponents(pageIndex) {
+  sanitizeChildren(pageIndex) {
     const { siteMeta } = this.state;
-    const rootChildrenComponents =
-      siteMeta.pages[pageIndex].root.childrenComponents;
+    const currentPage = siteMeta.pages[pageIndex];
+    const rootChildrenComponents = currentPage.root.childrenComponents;
     const nonRootComponents = {};
     const newRootChildrenComponents = [];
-    for (
-      let i = 0;
-      i < siteMeta.pages[pageIndex].nonRootComponents.length;
-      i++
-    ) {
-      nonRootComponents[
-        siteMeta.pages[pageIndex].nonRootComponents[i].id
-      ] = true;
+    for (let i = 0; i < currentPage.nonRootComponents.length; i++) {
+      nonRootComponents[currentPage.nonRootComponents[i].id] = true;
     }
     if (rootChildrenComponents && rootChildrenComponents.length > 0) {
       for (let i = 0; i < rootChildrenComponents.length; i++) {
@@ -320,37 +312,16 @@ class MainFrame extends React.Component {
         }
       }
     }
-    for (
-      let i = 0;
-      i < siteMeta.pages[pageIndex].nonRootComponents.length;
-      i++
-    ) {
-      if (siteMeta.pages[pageIndex].nonRootComponents[i].childrenComponents) {
+    for (let i = 0; i < currentPage.nonRootComponents.length; i++) {
+      let childComponents = currentPage.nonRootComponents[i].childrenComponents;
+      if (childComponents) {
         let newCC = [];
-        for (
-          let j = 0;
-          j <
-          siteMeta.pages[pageIndex].nonRootComponents[i].childrenComponents
-            .length;
-          j++
-        ) {
-          if (
-            nonRootComponents[
-              siteMeta.pages[pageIndex].nonRootComponents[i].childrenComponents[
-                j
-              ]
-            ]
-          ) {
-            newCC.push(
-              siteMeta.pages[pageIndex].nonRootComponents[i].childrenComponents[
-                j
-              ]
-            );
+        for (let j = 0; j < childComponents.length; j++) {
+          if (nonRootComponents[childComponents[j]]) {
+            newCC.push(childComponents[j]);
           }
         }
-        siteMeta.pages[pageIndex].nonRootComponents[
-          i
-        ].childrenComponents = newCC;
+        childComponents = newCC;
       }
     }
     console.log('new site meta after sanitization:', siteMeta);
