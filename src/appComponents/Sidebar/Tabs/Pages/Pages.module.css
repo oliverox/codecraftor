@@ -7,6 +7,9 @@
   display: flex;
   width: 100%;
 }
+.pageActions button {
+  font-size: 12px;
+}
 .iconContainer {
   display: flex;
   width: 100%;
@@ -20,6 +23,7 @@
   margin-bottom: 10px;
   flex-direction: column; 
   justify-content: flex-start;
+  background-color: #e8e8e8 !important;
 }
 .cardContent {
   flex: 1;
@@ -28,7 +32,8 @@
   text-align: center;
 }
 .selected {
-  box-shadow: 0 0 3pt 3pt lightblue !important;
+  border: 3px solid #ffcb00;
+  background-color: #fff !important;
 }
 .divider {
   width: 100%;

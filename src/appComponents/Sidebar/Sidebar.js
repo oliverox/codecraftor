@@ -25,6 +25,7 @@ class SideBar extends React.Component {
     const {
       siteMeta,
       handleNewPage,
+      handleRemovePage,
       currentPageIndex,
       updateTheme,
       currentComponentId,
@@ -65,6 +66,7 @@ class SideBar extends React.Component {
                 siteMeta={siteMeta}
                 currentPageIndex={currentPageIndex}
                 handleNewPage={handleNewPage}
+                handleRemovePage={handleRemovePage}
                 updateCurrentPageIndex={updateCurrentPageIndex}
               />
             }

@@ -38,11 +38,12 @@ class MainFrame extends React.Component {
     this.updateSite = this.updateSite.bind(this);
     this.updateTheme = this.updateTheme.bind(this);
     this.setIframeRef = this.setIframeRef.bind(this);
+    this.handleNewPage = this.handleNewPage.bind(this);
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
     this.updateSiteMeta = this.updateSiteMeta.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
+    this.handleRemovePage = this.handleRemovePage.bind(this);
     this.getImportsForPage = this.getImportsForPage.bind(this);
-    this.handleNewPage = this.handleNewPage.bind(this);
     this.updateComponentList = this.updateComponentList.bind(this);
     this.sendPageMetaToFrame = this.sendPageMetaToFrame.bind(this);
     this.appendComponentToPage = this.appendComponentToPage.bind(this);
@@ -150,15 +151,15 @@ class MainFrame extends React.Component {
     }
   }
 
-  updateSiteMeta(siteMeta, gotoLastPage) {
+  updateSiteMeta(siteMeta, newPageIndex) {
     this.setState({
       siteMeta
     });
     this.docRef.update({
       siteMeta
     });
-    if (gotoLastPage) {
-      this.updateCurrentPageIndex(siteMeta.pages.length - 1);
+    if (typeof newPageIndex !== 'undefined') {
+      this.updateCurrentPageIndex(newPageIndex);
     }
   }
 
@@ -175,8 +176,22 @@ class MainFrame extends React.Component {
     const { siteMeta } = this.state;
     const newPageMeta = JSON.parse(JSON.stringify(this.newPageMeta));
     siteMeta.pages.push(newPageMeta); // make a new copy of newPageMeta
-    const gotoLastPage = true;
-    this.updateSiteMeta(siteMeta, gotoLastPage);
+    const lastPageIndex = siteMeta.pages.length - 1;
+    this.updateSiteMeta(siteMeta, lastPageIndex);
+  }
+
+  handleRemovePage(pageIndex) {
+    const { siteMeta } = this.state;
+    if (siteMeta.pages.length < 2) {
+      return;
+    }
+    if (pageIndex < 0 || pageIndex > siteMeta.pages.length - 1) {
+      return;
+    }
+    siteMeta.pages.splice(pageIndex, 1);
+    const gotoPageIndex =
+      pageIndex >= siteMeta.pages.length ? siteMeta.pages.length - 1 : 0;
+    this.updateSiteMeta(siteMeta, gotoPageIndex);
   }
 
   updateCurrentPageIndex(pageIndex) {
@@ -350,11 +365,15 @@ class MainFrame extends React.Component {
     if (componentId === 'root') {
       // Update root
     } else {
-      const { index } = getComponentObj(
+      const componentObj = getComponentObj(
         siteMeta,
         currentPageIndex,
         componentId
       );
+      if (!componentId) {
+        return;
+      }
+      const { index } = componentObj;
       siteMeta.pages[currentPageIndex].nonRootComponents[
         index
       ].props = componentProps;
@@ -432,9 +451,10 @@ class MainFrame extends React.Component {
       currentComponentId,
       isPublishPopoverOpen
     } = this.state;
-    const currentPageTitle = siteMeta
-      ? siteMeta.pages[currentPageIndex].pageTitle
-      : '';
+    const currentPageTitle =
+      siteMeta && siteMeta.pages[currentPageIndex]
+        ? siteMeta.pages[currentPageIndex].pageTitle
+        : '';
     if (siteMeta && this.initialRender) {
       this.initialRender = false;
       this.sendPageMetaToFrame();
@@ -461,6 +481,7 @@ class MainFrame extends React.Component {
             currentComponentId={currentComponentId}
             componentList={this.state.componentList}
             handleNewPage={this.handleNewPage}
+            handleRemovePage={this.handleRemovePage}
             sendPageMetaToFrame={this.sendPageMetaToFrame}
             updateComponentOnPage={this.updateComponentOnPage}
             updateCurrentPageIndex={this.updateCurrentPageIndex}

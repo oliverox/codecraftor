@@ -19,10 +19,10 @@ const PagesPanel = ({
     <div className={styles.pageOutlineContainer}>
       <div className={styles.pageActions}>
         <Button minimal icon="document" onClick={handleNewPage}>
-          New page
+          Add new page
         </Button>
-        <Button minimal icon="trash" onClick={handleRemovePage}>
-          Remove page
+        <Button minimal icon="trash" onClick={() => handleRemovePage(currentPageIndex)}>
+          Remove selected page
         </Button>
       </div>
       <Divider className={styles.divider} />
