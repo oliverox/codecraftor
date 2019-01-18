@@ -8,11 +8,11 @@ const HomePanel = () => {
     <div>
       <H5>Welcome to Codecraftor!</H5>
       <p className={styles.tabDescription}>
-        What you see on the right is our first template which we named{' '}
-        "<strong>Pioneer</strong>". It is obviously based off the Pioneer
-        website and contains similar building blocks. Feel free to try out
-        various blocks and customize them to your taste to get a completely 
-        new site. Most importantly, have fun! <br />
+        What you see on the right is our first template named{' '}
+        <strong>Pioneer</strong>. It is based inspired by the Pioneer website
+        and contains similar building blocks. You can build a new website by
+        reusing and customizing these building blocks. Feel free to try it out!
+        <br />
         <br />
         PS: Codecraftor is still under active development. Apologies for any
         issues you may encounter.

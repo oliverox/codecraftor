@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
 import { H1, H6 } from '@blueprintjs/core';
 import SpinnerOverlay from '../appComponents/SpinnerOverlay/SpinnerOverlay';
-import { BlankPage, Pioneer } from '../templates';
+import { Default, Pioneer } from '../templates';
 
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -23,6 +23,7 @@ class Index extends React.Component {
   handleRedirect() {
     const db = firebase.firestore();
     const { history } = this.props;
+    const { siteMeta , newPageMeta } = Pioneer;
     this.setState({
       isRedirecting: true
     });
@@ -35,7 +36,8 @@ class Index extends React.Component {
     db.collection(process.env.REACT_APP_CRAFTS_COLLECTION)
       .add({
         created: Date.now(),
-        siteMeta: Pioneer // TODO: Pick a theme here
+        siteMeta,
+        newPageMeta
       })
       .then(docRef => {
         history.push(`/craft/${docRef.id}`);

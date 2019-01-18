@@ -26,9 +26,9 @@ class ComponentWrapper extends React.Component {
   handleClick(event) {
     event.stopPropagation();
     event.preventDefault();
-    const { page, componentId, onComponentClick } = this.props;
-    console.log('You clicked on component id:', componentId, page);
-    onComponentClick({ componentId, page });
+    const { pageIndex, componentId, onComponentClick } = this.props;
+    console.log('You clicked on component id:', componentId, pageIndex);
+    onComponentClick({ componentId, pageIndex });
   }
 
   handleMouseOver(event) {
@@ -88,16 +88,16 @@ class ComponentWrapper extends React.Component {
   removeComponent(event) {
     event.preventDefault();
     event.stopPropagation();
-    const { page, componentId, postMessage } = this.props;
+    const { pageIndex, componentId, postMessage } = this.props;
     postMessage({
-      page,
+      pageIndex,
       componentId,
       action: 'DELETE'
     });
   }
 
   render() {
-    const { children, postMessage, page, componentId } = this.props;
+    const { children, postMessage, pageIndex, componentId } = this.props;
     const { isMouseOver, scoot } = this.state;
     const elementCn = `${styles.actionsContainer} ${
       isMouseOver ? styles.show : ''
@@ -112,8 +112,8 @@ class ComponentWrapper extends React.Component {
           className={`${styles.componentDrop} ${!scoot ? styles.hidden : ''}`}
         >
           <ComponentDrop
-            page={page}
             inline={true}
+            pageIndex={pageIndex}
             postMessage={postMessage}
             insertBeforeId={componentId}
             dropText="Drop a component here"

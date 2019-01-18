@@ -7,7 +7,7 @@ import NavbarHeader from '../appComponents/NavbarHeader/NavbarHeader';
 import Sidebar from '../appComponents/Sidebar/Sidebar';
 import Iframe from '../appComponents/Iframe/Iframe';
 import PreviewWindow from '../appComponents/PreviewWindow/PreviewWindow';
-import { BlankPage } from '../templates';
+import { Default } from '../templates';
 import getComponentObj from '../utils/getComponentObj';
 
 import 'typeface-montserrat';
@@ -24,12 +24,13 @@ class MainFrame extends React.Component {
       siteMeta: false,
       publishUrl: false,
       currentTab: 'home',
-      currentPage: 'index',
+      currentPageIndex: 0,
       componentList: false,
       publishInProgress: false,
       currentComponentId: false,
       isPublishPopoverOpen: false
     };
+    this.newPageMeta = {};
     this.iframeRef = false;
     this.initialRender = true;
     this.publish = this.publish.bind(this);
@@ -37,9 +38,12 @@ class MainFrame extends React.Component {
     this.updateSite = this.updateSite.bind(this);
     this.updateTheme = this.updateTheme.bind(this);
     this.setIframeRef = this.setIframeRef.bind(this);
+    this.handleNewPage = this.handleNewPage.bind(this);
     this.handleMsgRcvd = this.handleMsgRcvd.bind(this);
     this.updateSiteMeta = this.updateSiteMeta.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
+    this.sanitizeChildren = this.sanitizeChildren.bind(this);
+    this.handleRemovePage = this.handleRemovePage.bind(this);
     this.getImportsForPage = this.getImportsForPage.bind(this);
     this.updateComponentList = this.updateComponentList.bind(this);
     this.sendPageMetaToFrame = this.sendPageMetaToFrame.bind(this);
@@ -47,15 +51,13 @@ class MainFrame extends React.Component {
     this.updateComponentOnPage = this.updateComponentOnPage.bind(this);
     this.deleteComponentOnPage = this.deleteComponentOnPage.bind(this);
     this.insertComponentInPage = this.insertComponentInPage.bind(this);
-    this.sanitizeChildrenComponents = this.sanitizeChildrenComponents.bind(
-      this
-    );
+    this.updateCurrentPageIndex = this.updateCurrentPageIndex.bind(this);
   }
 
   componentDidMount() {
     const { match } = this.props;
     const db = firebase.firestore();
-    let template = BlankPage;
+    let defaultTmpl = Default;
     db.settings({ timestampsInSnapshots: true });
     this.docRef = db
       .collection(process.env.REACT_APP_CRAFTS_COLLECTION)
@@ -64,18 +66,22 @@ class MainFrame extends React.Component {
       console.log('will check if doc exists in firestore...');
       if (doc.exists) {
         console.log('doc exists in firestore');
-        const { siteMeta } = doc.data();
+        const { siteMeta, newPageMeta } = doc.data();
         // Manually add 'transparent' color to the theme
         siteMeta.theme.colors.transparent = 'transparent';
+        this.newPageMeta = newPageMeta;
         this.setState({
           siteMeta
         });
       } else {
-        console.log('doc does not exist in firestore => create a new template');
+        console.log(
+          'doc does not exist in firestore => create a new defaultTmpl'
+        );
         // Manually add 'transparent' color to the theme
-        template.theme.colors.transparent = 'transparent';
+        defaultTmpl.theme.colors.transparent = 'transparent';
+        this.newPageMeta = defaultTmpl.newPageMeta;
         this.setState({
-          siteMeta: template
+          siteMeta: defaultTmpl.siteMeta
         });
       }
     });
@@ -113,7 +119,7 @@ class MainFrame extends React.Component {
       // therefore switch to Configurator tab
       this.setState({
         currentComponentId: data.componentId,
-        currentPage: data.page,
+        currentPageIndex: data.pageIndex,
         currentTab: 'configurator'
       });
     } else if (data && data.action === 'DELETE') {
@@ -143,13 +149,16 @@ class MainFrame extends React.Component {
     }
   }
 
-  updateSiteMeta(siteMeta) {
+  updateSiteMeta(siteMeta, newPageIndex) {
     this.setState({
       siteMeta
     });
-    this.docRef.set({
+    this.docRef.update({
       siteMeta
     });
+    if (typeof newPageIndex !== 'undefined') {
+      this.updateCurrentPageIndex(newPageIndex);
+    }
   }
 
   updateComponentList(componentList) {
@@ -161,58 +170,94 @@ class MainFrame extends React.Component {
     }
   }
 
+  handleNewPage() {
+    const { siteMeta } = this.state;
+    const newPageMeta = JSON.parse(JSON.stringify(this.newPageMeta));
+    siteMeta.pages.push(newPageMeta); // make a new copy of newPageMeta
+    const lastPageIndex = siteMeta.pages.length - 1;
+    this.updateSiteMeta(siteMeta, lastPageIndex);
+  }
+
+  handleRemovePage(pageIndex) {
+    const { siteMeta } = this.state;
+    if (siteMeta.pages.length < 2) {
+      return;
+    }
+    if (pageIndex < 0 || pageIndex > siteMeta.pages.length - 1) {
+      return;
+    }
+    siteMeta.pages.splice(pageIndex, 1);
+    const gotoPageIndex =
+      pageIndex >= siteMeta.pages.length ? siteMeta.pages.length - 1 : 0;
+    this.updateSiteMeta(siteMeta, gotoPageIndex);
+  }
+
+  updateCurrentPageIndex(pageIndex) {
+    const { siteMeta } = this.state;
+    const updatedSiteMeta = {
+      ...siteMeta,
+      updated: Date.now()
+    };
+    if (pageIndex < siteMeta.pages.length) {
+      this.setState({
+        siteMeta: updatedSiteMeta,
+        currentPageIndex: pageIndex
+      });
+    } else {
+      // TODO: report error trying to set invalid page index
+    }
+  }
+
   appendComponentToPage(params) {
-    const { page, target, componentType } = params;
+    const { pageIndex, target, componentType } = params;
     const { siteMeta } = this.state;
     const id = shortid.generate();
     const newComponent = { id, componentType };
+    const currentPage = siteMeta.pages[pageIndex];
     siteMeta.updated = Date.now();
     if (target === 'root') {
-      if (siteMeta.pages[page].imports.indexOf(componentType) < 0) {
-        siteMeta.pages[page].imports.push(componentType);
+      if (currentPage.imports.indexOf(componentType) < 0) {
+        currentPage.imports.push(componentType);
       }
-      siteMeta.pages[page].root.childrenComponents.push(id);
-      siteMeta.pages[page].nonRootComponents.push(newComponent);
+      currentPage.root.childrenComponents.push(id);
+      currentPage.nonRootComponents.push(newComponent);
     }
     console.log('updated siteMeta=', siteMeta);
     this.updateSiteMeta(siteMeta);
   }
 
   insertComponentInPage(params) {
-    const { page, target, componentType, insertBeforeId } = params;
+    const { pageIndex, target, componentType, insertBeforeId } = params;
     const { siteMeta } = this.state;
     const id = shortid.generate();
     const newComponent = { id, componentType };
+    const currentPage = siteMeta.pages[pageIndex];
     siteMeta.updated = Date.now();
     if (target === 'root') {
-      if (siteMeta.pages[page].imports.indexOf(componentType) < 0) {
-        siteMeta.pages[page].imports.push(componentType);
+      if (currentPage.imports.indexOf(componentType) < 0) {
+        currentPage.imports.push(componentType);
       }
       const newCC = [];
-      for (
-        let i = 0;
-        i < siteMeta.pages[page].root.childrenComponents.length;
-        i++
-      ) {
-        if (
-          siteMeta.pages[page].root.childrenComponents[i] === insertBeforeId
-        ) {
+      for (let i = 0; i < currentPage.root.childrenComponents.length; i++) {
+        if (currentPage.root.childrenComponents[i] === insertBeforeId) {
           newCC.push(id, insertBeforeId);
         } else {
-          newCC.push(siteMeta.pages[page].root.childrenComponents[i]);
+          newCC.push(currentPage.root.childrenComponents[i]);
         }
       }
-      siteMeta.pages[page].root.childrenComponents = newCC;
-      siteMeta.pages[page].nonRootComponents.push(newComponent);
+      currentPage.root.childrenComponents = newCC;
+      currentPage.nonRootComponents.push(newComponent);
     }
     console.log('updated siteMeta=', siteMeta);
     this.updateSiteMeta(siteMeta);
   }
 
   deleteComponentOnPage(params) {
-    const { page, componentId } = params;
+    const { pageIndex, componentId } = params;
     const { siteMeta } = this.state;
-    const nonRootComponents = siteMeta.pages[page].nonRootComponents.slice();
+    const nonRootComponents = siteMeta.pages[
+      pageIndex
+    ].nonRootComponents.slice();
     let componentIndexToRemove = -1;
     for (let i = 0; i < nonRootComponents.length; i++) {
       if (nonRootComponents[i].id === componentId) {
@@ -224,17 +269,17 @@ class MainFrame extends React.Component {
       nonRootComponents.splice(componentIndexToRemove, 1);
     }
     siteMeta.updated = Date.now();
-    siteMeta.pages[page].nonRootComponents = nonRootComponents;
+    siteMeta.pages[pageIndex].nonRootComponents = nonRootComponents;
     console.log('updated siteMeta=', siteMeta);
-    siteMeta.pages[page].imports = this.getImportsForPage(page);
-    const newSiteMeta = this.sanitizeChildrenComponents(page);
+    siteMeta.pages[pageIndex].imports = this.getImportsForPage(pageIndex);
+    const newSiteMeta = this.sanitizeChildren(pageIndex);
     this.updateSiteMeta(newSiteMeta);
   }
 
-  getImportsForPage(page) {
+  getImportsForPage(pageIndex) {
     const updatedImports = ['RootContainer'];
     const { siteMeta } = this.state;
-    const { nonRootComponents } = siteMeta.pages[page];
+    const { nonRootComponents } = siteMeta.pages[pageIndex];
     let currentComponent;
     for (let i = 0; i < nonRootComponents.length; i++) {
       currentComponent = nonRootComponents[i];
@@ -246,13 +291,14 @@ class MainFrame extends React.Component {
     return updatedImports;
   }
 
-  sanitizeChildrenComponents(page) {
+  sanitizeChildren(pageIndex) {
     const { siteMeta } = this.state;
-    const rootChildrenComponents = siteMeta.pages[page].root.childrenComponents;
+    const currentPage = siteMeta.pages[pageIndex];
+    const rootChildrenComponents = currentPage.root.childrenComponents;
     const nonRootComponents = {};
     const newRootChildrenComponents = [];
-    for (let i = 0; i < siteMeta.pages[page].nonRootComponents.length; i++) {
-      nonRootComponents[siteMeta.pages[page].nonRootComponents[i].id] = true;
+    for (let i = 0; i < currentPage.nonRootComponents.length; i++) {
+      nonRootComponents[currentPage.nonRootComponents[i].id] = true;
     }
     if (rootChildrenComponents && rootChildrenComponents.length > 0) {
       for (let i = 0; i < rootChildrenComponents.length; i++) {
@@ -261,26 +307,16 @@ class MainFrame extends React.Component {
         }
       }
     }
-    for (let i = 0; i < siteMeta.pages[page].nonRootComponents.length; i++) {
-      if (siteMeta.pages[page].nonRootComponents[i].childrenComponents) {
+    for (let i = 0; i < currentPage.nonRootComponents.length; i++) {
+      let childComponents = currentPage.nonRootComponents[i].childrenComponents;
+      if (childComponents) {
         let newCC = [];
-        for (
-          let j = 0;
-          j <
-          siteMeta.pages[page].nonRootComponents[i].childrenComponents.length;
-          j++
-        ) {
-          if (
-            nonRootComponents[
-              siteMeta.pages[page].nonRootComponents[i].childrenComponents[j]
-            ]
-          ) {
-            newCC.push(
-              siteMeta.pages[page].nonRootComponents[i].childrenComponents[j]
-            );
+        for (let j = 0; j < childComponents.length; j++) {
+          if (nonRootComponents[childComponents[j]]) {
+            newCC.push(childComponents[j]);
           }
         }
-        siteMeta.pages[page].nonRootComponents[i].childrenComponents = newCC;
+        childComponents = newCC;
       }
     }
     console.log('new site meta after sanitization:', siteMeta);
@@ -290,13 +326,21 @@ class MainFrame extends React.Component {
   updateComponentOnPage(params) {
     const componentId = params.id;
     const componentProps = params.props;
-    const { siteMeta, currentPage } = this.state;
+    const { siteMeta, currentPageIndex } = this.state;
     siteMeta.updated = Date.now();
     if (componentId === 'root') {
       // Update root
     } else {
-      const { index } = getComponentObj(siteMeta, currentPage, componentId);
-      siteMeta.pages[currentPage].nonRootComponents[
+      const componentObj = getComponentObj(
+        siteMeta,
+        currentPageIndex,
+        componentId
+      );
+      if (!componentId) {
+        return;
+      }
+      const { index } = componentObj;
+      siteMeta.pages[currentPageIndex].nonRootComponents[
         index
       ].props = componentProps;
       this.updateSiteMeta(siteMeta);
@@ -308,7 +352,7 @@ class MainFrame extends React.Component {
     if (this.iframeRef) {
       this.iframeRef.contentWindow.postMessage(
         {
-          page: 'index',
+          pageIndex: this.state.currentPageIndex,
           siteMeta: this.state.siteMeta
         },
         '*'
@@ -358,7 +402,7 @@ class MainFrame extends React.Component {
           });
           vm = null;
         });
-      });  
+      });
     }
   }
 
@@ -368,14 +412,15 @@ class MainFrame extends React.Component {
       siteMeta,
       currentTab,
       publishUrl,
-      currentPage,
+      currentPageIndex,
       publishInProgress,
       currentComponentId,
       isPublishPopoverOpen
     } = this.state;
-    const currentPageTitle = siteMeta
-      ? siteMeta.pages[currentPage].pageTitle
-      : '';
+    const currentPageTitle =
+      siteMeta && siteMeta.pages[currentPageIndex]
+        ? siteMeta.pages[currentPageIndex].pageTitle
+        : '';
     if (siteMeta && this.initialRender) {
       this.initialRender = false;
       this.sendPageMetaToFrame();
@@ -395,14 +440,17 @@ class MainFrame extends React.Component {
         />
         <main className={styles.mainframe}>
           <Sidebar
-            currentTab={currentTab}
             siteMeta={siteMeta}
-            currentPage={currentPage}
-            currentComponentId={currentComponentId}
-            sendPageMetaToFrame={this.sendPageMetaToFrame}
-            componentList={this.state.componentList}
+            currentTab={currentTab}
             updateTheme={this.updateTheme}
+            currentPageIndex={currentPageIndex}
+            currentComponentId={currentComponentId}
+            componentList={this.state.componentList}
+            handleNewPage={this.handleNewPage}
+            handleRemovePage={this.handleRemovePage}
+            sendPageMetaToFrame={this.sendPageMetaToFrame}
             updateComponentOnPage={this.updateComponentOnPage}
+            updateCurrentPageIndex={this.updateCurrentPageIndex}
           />
           <Iframe
             craftId={match.params.craftId}
