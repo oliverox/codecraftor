@@ -213,13 +213,14 @@ class MainFrame extends React.Component {
     const { siteMeta } = this.state;
     const id = shortid.generate();
     const newComponent = { id, componentType };
+    const currentPage = siteMeta.pages[pageIndex];
     siteMeta.updated = Date.now();
     if (target === 'root') {
-      if (siteMeta.pages[pageIndex].imports.indexOf(componentType) < 0) {
-        siteMeta.pages[pageIndex].imports.push(componentType);
+      if (currentPage.imports.indexOf(componentType) < 0) {
+        currentPage.imports.push(componentType);
       }
-      siteMeta.pages[pageIndex].root.childrenComponents.push(id);
-      siteMeta.pages[pageIndex].nonRootComponents.push(newComponent);
+      currentPage.root.childrenComponents.push(id);
+      currentPage.nonRootComponents.push(newComponent);
     }
     console.log('updated siteMeta=', siteMeta);
     this.updateSiteMeta(siteMeta);
@@ -230,28 +231,22 @@ class MainFrame extends React.Component {
     const { siteMeta } = this.state;
     const id = shortid.generate();
     const newComponent = { id, componentType };
+    const currentPage = siteMeta.pages[pageIndex];
     siteMeta.updated = Date.now();
     if (target === 'root') {
-      if (siteMeta.pages[pageIndex].imports.indexOf(componentType) < 0) {
-        siteMeta.pages[pageIndex].imports.push(componentType);
+      if (currentPage.imports.indexOf(componentType) < 0) {
+        currentPage.imports.push(componentType);
       }
       const newCC = [];
-      for (
-        let i = 0;
-        i < siteMeta.pages[pageIndex].root.childrenComponents.length;
-        i++
-      ) {
-        if (
-          siteMeta.pages[pageIndex].root.childrenComponents[i] ===
-          insertBeforeId
-        ) {
+      for (let i = 0; i < currentPage.root.childrenComponents.length; i++) {
+        if (currentPage.root.childrenComponents[i] === insertBeforeId) {
           newCC.push(id, insertBeforeId);
         } else {
-          newCC.push(siteMeta.pages[pageIndex].root.childrenComponents[i]);
+          newCC.push(currentPage.root.childrenComponents[i]);
         }
       }
-      siteMeta.pages[pageIndex].root.childrenComponents = newCC;
-      siteMeta.pages[pageIndex].nonRootComponents.push(newComponent);
+      currentPage.root.childrenComponents = newCC;
+      currentPage.nonRootComponents.push(newComponent);
     }
     console.log('updated siteMeta=', siteMeta);
     this.updateSiteMeta(siteMeta);
