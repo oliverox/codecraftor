@@ -33,7 +33,7 @@
 }
 .selected {
   border: 3px solid #ffcb00;
-  background-color: #fff !important;
+  background-color: #f5f5f5 !important;
 }
 .divider {
   width: 100%;
