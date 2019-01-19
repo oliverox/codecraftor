@@ -1,6 +1,6 @@
 import sdk from '@stackblitz/sdk';
-import getApp from '../getFiles/getApp';
-import getIndex from '../getFiles/getIndex';
+import getIndexJs from '../getFiles/getIndexJs';
+import getIndexPage from '../getFiles/getIndexPage';
 import getServiceWorker from '../getFiles/getServiceWorker';
 import getIndexHtml from '../getFiles/getIndexHtml';
 
@@ -9,8 +9,8 @@ const publishApp = () => {
     'preview',
     {
       files: {
-        'src/index.js': getIndex(),
-        'src/App.js': getApp(),
+        'src/index.js': getIndexJs(),
+        'src/pages/Index/Index.js': getIndexPage(),
         'src/serviceWorker.js': getServiceWorker(),
         'public/index.html': getIndexHtml({
           projectTitle: 'Hello Codecraftor'

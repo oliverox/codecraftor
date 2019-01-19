@@ -60,7 +60,7 @@ class Editor extends Component {
   }
 
   importComponentsFromTemplate = async template => {
-    switch (template) {
+    switch (template.name) {
       case 'pioneer':
         return import('@codecraftor/pioneer/dist/main');
 
