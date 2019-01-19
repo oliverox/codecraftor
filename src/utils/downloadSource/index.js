@@ -8,8 +8,6 @@ import getGitIgnore from '../getFiles/getGitIgnore';
 import getIndexHtml from '../getFiles/getIndexHtml';
 import getFavicon from '../getFiles/getFavicon';
 import getManifest from '../getFiles/getManifest';
-// import getIndex from '../getFiles/getIndex';
-// import getApp from '../getFiles/getApp';
 import getServiceWorker from '../getFiles/getServiceWorker';
 
 const downloadSource = siteMeta => {

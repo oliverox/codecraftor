@@ -26,6 +26,7 @@ class MainFrame extends React.Component {
       currentTab: 'home',
       currentPageIndex: 0,
       componentList: false,
+      publishError: false,
       publishInProgress: false,
       currentComponentId: false,
       isPublishPopoverOpen: false
@@ -45,6 +46,7 @@ class MainFrame extends React.Component {
     this.sanitizeChildren = this.sanitizeChildren.bind(this);
     this.handleRemovePage = this.handleRemovePage.bind(this);
     this.getImportsForPage = this.getImportsForPage.bind(this);
+    this.resetPublishError = this.resetPublishError.bind(this);
     this.updateComponentList = this.updateComponentList.bind(this);
     this.sendPageMetaToFrame = this.sendPageMetaToFrame.bind(this);
     this.appendComponentToPage = this.appendComponentToPage.bind(this);
@@ -383,8 +385,14 @@ class MainFrame extends React.Component {
     });
   }
 
+  resetPublishError() {
+    this.setState({
+      publishError: false
+    });
+  }
+
   publish() {
-    const { isPublishPopoverOpen } = this.state;
+    const { isPublishPopoverOpen, siteMeta } = this.state;
     if (isPublishPopoverOpen) {
       // close popover
       this.setState({
@@ -397,12 +405,17 @@ class MainFrame extends React.Component {
       });
       import('../utils/publishApp').then(module => {
         const publishApp = module.default;
-        publishApp().then(vm => {
+        publishApp(siteMeta).then(vm => {
           this.setState({
             publishInProgress: false,
             publishUrl: vm.preview.origin
           });
           vm = null;
+        }).catch(error => {
+          this.setState({
+            publishInProgress: false,
+            publishError: true
+          });
         });
       });
     }
@@ -414,7 +427,9 @@ class MainFrame extends React.Component {
       siteMeta,
       currentTab,
       publishUrl,
+      publishError,
       currentPageIndex,
+      resetPublishError,
       publishInProgress,
       currentComponentId,
       isPublishPopoverOpen
@@ -436,6 +451,7 @@ class MainFrame extends React.Component {
           publish={this.publish}
           download={this.download}
           publishUrl={publishUrl}
+          publishError={publishError}
           handleTabChange={this.handleTabChange}
           publishInProgress={publishInProgress}
           isPublishPopoverOpen={isPublishPopoverOpen}
