@@ -3,7 +3,7 @@ import saveAs from 'file-saver';
 import getPackageJson from '../getFiles/getPackageJson';
 import getReadme from '../getFiles/getReadme';
 import getIndexJs from '../getFiles/getIndexJs';
-import getIndexPage from '../getFiles/getIndexPage';
+import getPage from '../getFiles/getPage';
 import getGitIgnore from '../getFiles/getGitIgnore';
 import getIndexHtml from '../getFiles/getIndexHtml';
 import getFavicon from '../getFiles/getFavicon';
@@ -29,7 +29,13 @@ const downloadSource = siteMeta => {
   });
   zip.file(`${directoryName}/public/manifest.json`, getManifest(siteMeta));
   zip.file(`${directoryName}/src/index.js`, getIndexJs(siteMeta));
-  zip.file(`${directoryName}/src/pages/Index/Index.js`, getIndexPage(siteMeta));
+  siteMeta.pages.forEach((page, index) => {
+    if (index === 0) {
+      zip.file(`${directoryName}/src/pages/Index/Index.js`, getPage(siteMeta, 0));  
+    } else {
+      zip.file(`${directoryName}/src/pages/Page${index}/Page${index}.js`, getPage(siteMeta, index));  
+    }
+  })
   zip.file(`${directoryName}/src/serviceWorker.js`, getServiceWorker());
 
   zip.generateAsync({ type: 'blob', platform: 'UNIX' }).then(

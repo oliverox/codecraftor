@@ -208,11 +208,13 @@ class MainFrame extends React.Component {
     }
   }
 
+  // TODO: Turn appendComponentToPage and insertComponentInPage
+  // into one function
   appendComponentToPage(params) {
     const { pageIndex, target, componentType } = params;
     const { siteMeta } = this.state;
     const id = shortid.generate();
-    const newComponent = { id, componentType };
+    const newComponent = { id, componentType, props: {} };
     const currentPage = siteMeta.pages[pageIndex];
     siteMeta.updated = Date.now();
     if (target === 'root') {
@@ -230,7 +232,7 @@ class MainFrame extends React.Component {
     const { pageIndex, target, componentType, insertBeforeId } = params;
     const { siteMeta } = this.state;
     const id = shortid.generate();
-    const newComponent = { id, componentType };
+    const newComponent = { id, componentType, props: {} };
     const currentPage = siteMeta.pages[pageIndex];
     siteMeta.updated = Date.now();
     if (target === 'root') {
@@ -277,7 +279,7 @@ class MainFrame extends React.Component {
   }
 
   getImportsForPage(pageIndex) {
-    const updatedImports = ['RootContainer'];
+    const updatedImports = ['Root'];
     const { siteMeta } = this.state;
     const { nonRootComponents } = siteMeta.pages[pageIndex];
     let currentComponent;

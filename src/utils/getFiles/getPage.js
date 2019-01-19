@@ -1,5 +1,5 @@
-export default siteMeta => {
-  const pageMeta = siteMeta.pages[0];
+export default (siteMeta, pageIndex) => {
+  const pageMeta = siteMeta.pages[pageIndex];
 
   const getComponentMeta = id => {
     let componentMeta = false;
@@ -19,9 +19,7 @@ export default siteMeta => {
     const keys = Object.keys(propsObj);
     keys.forEach(key => {
       const value = propsObj[key];
-      propsStr += ` ${key}=${
-        typeof value === 'string' ? `"${value}"` : `{${value}}`
-      }`;
+      propsStr += ` ${key}=${typeof value === 'string' ? `"${value}"` : `{${JSON.stringify(value)}}`}`;
     });
     return propsStr;
   };
@@ -31,9 +29,9 @@ export default siteMeta => {
     let componentMeta;
     pageMeta.root.childrenComponents.forEach(id => {
       componentMeta = getComponentMeta(id);
-      outputStr += `<${componentMeta.componentType}${getPropsStr(
-        componentMeta.props
-      )}></${componentMeta.componentType}>`;
+      if (componentMeta) {
+        outputStr += `<${componentMeta.componentType}${getPropsStr(componentMeta.props)}></${componentMeta.componentType}>`;
+      }
     });
     return outputStr;
   };
