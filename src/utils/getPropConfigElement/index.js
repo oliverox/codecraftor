@@ -10,7 +10,6 @@ import PropConfigList from './PropConfigList';
 import styles from './styles.module.css';
 
 const getPropConfigElement = ({ propObj, key, onPropUpdate, allProps }) => {
-  console.log('********************************* keyIndex=', key);
   const { type } = propObj;
   switch (type) {
     case 'string':

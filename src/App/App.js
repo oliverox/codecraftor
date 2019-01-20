@@ -429,7 +429,6 @@ class MainFrame extends React.Component {
       publishUrl,
       publishError,
       currentPageIndex,
-      resetPublishError,
       publishInProgress,
       currentComponentId,
       isPublishPopoverOpen
@@ -452,8 +451,9 @@ class MainFrame extends React.Component {
           download={this.download}
           publishUrl={publishUrl}
           publishError={publishError}
-          handleTabChange={this.handleTabChange}
           publishInProgress={publishInProgress}
+          handleTabChange={this.handleTabChange}
+          resetPublishError={this.resetPublishError}
           isPublishPopoverOpen={isPublishPopoverOpen}
         />
         <main className={styles.mainframe}>
