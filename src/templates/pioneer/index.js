@@ -5,7 +5,10 @@ export default {
   siteMeta: {
     updated: 0,
     ui: 'default',
-    template: 'pioneer',
+    template: {
+      name: 'pioneer',
+      version: '0.1.8'
+    },
     theme: {
       colors: {
         background: '#FFF', // white

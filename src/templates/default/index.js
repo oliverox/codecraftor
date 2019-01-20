@@ -25,9 +25,9 @@ export default {
       {
         index: true,
         pageTitle: 'Page One',
-        imports: ['RootContainer', 'PageHeader', 'Splash', 'Heading', 'Text'],
+        imports: ['Root', 'PageHeader', 'Splash', 'Heading', 'Text'],
         root: {
-          componentType: 'RootContainer',
+          componentType: 'Root',
           props: '{}',
           editable: false,
           childrenComponents: [

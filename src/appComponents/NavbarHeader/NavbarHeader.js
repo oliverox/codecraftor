@@ -10,7 +10,9 @@ import {
   Classes,
   Popover,
   ProgressBar,
-  InputGroup
+  InputGroup,
+  Toaster,
+  Intent
 } from '@blueprintjs/core';
 
 import styles from './NavbarHeader.module.css';
@@ -34,7 +36,9 @@ class NavbarHeader extends React.Component {
       publish,
       download,
       publishUrl,
+      publishError,
       publishInProgress,
+      resetPublishError,
       isPublishPopoverOpen
     } = this.props;
     return (
@@ -101,7 +105,17 @@ class NavbarHeader extends React.Component {
                     <ProgressBar intent="none" />
                   </div>
                 )}
-                {!publishInProgress && (
+                {publishError && (
+                  <Toaster
+                    action={{
+                      onClick: () => resetPublishError(),
+                      text: "Dismiss",
+                    }}
+                    intent={Intent.DANGER}
+                    message="Sorry, an error was encountered while trying to publish you app."
+                  />
+                )}
+                {!publishInProgress && !publishError && (
                   <div className={styles.publishPopoverContentRow}>
                     <InputGroup readOnly value={publishUrl} />
                     <Button
