@@ -1,4 +1,4 @@
-export default ({ projectTitle = 'Made with Codecraftor' }) => `
+export default ({ projectTitle = 'App made with Codecraftor' }) => `
 <!DOCTYPE html>
 <html lang="en">
 

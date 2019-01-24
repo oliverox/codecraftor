@@ -1,0 +1,7 @@
+.previewWindowContainer {
+  display: none;
+}
+.previewWindowContent {
+  width: 100%;
+  height: 100%;
+}

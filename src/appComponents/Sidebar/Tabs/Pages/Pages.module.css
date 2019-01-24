@@ -1,15 +1,41 @@
 .pageOutlineContainer {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+}
+.pageActions {
+  display: flex;
+  width: 100%;
+}
+.pageActions button {
+  font-size: 12px;
+}
+.iconContainer {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
 }
 .pageOutline {
   width: 140px;
   height: 160px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  margin-bottom: 10px;
+  flex-direction: column; 
+  justify-content: flex-start;
+  background-color: #e8e8e8 !important;
+}
+.cardContent {
+  flex: 1;
+  display: flex;
+  padding-top: 20px;
+  text-align: center;
 }
 .selected {
-  box-shadow: 0 0 3pt 3pt lightblue;
+  border: 3px solid #ffcb00;
+  background-color: #f5f5f5 !important;
+}
+.divider {
+  width: 100%;
+  margin-bottom: 10px !important;
 }

@@ -2,6 +2,6 @@
   display: flex;
   flex: 1;
   overflow: hidden;
-  background-color: #cacaca;
+  background-color: #ffffff;
   max-height: calc(100vh - 50px);
 }

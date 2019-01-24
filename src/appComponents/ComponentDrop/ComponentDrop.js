@@ -18,7 +18,7 @@ class ComponentDrop extends React.Component {
   componentDidMount() {}
 
   handleDrop(e) {
-    const { target, page, postMessage, insertBeforeId } = this.props;
+    const { target, pageIndex, postMessage, insertBeforeId } = this.props;
     let action = 'APPEND';
     if (insertBeforeId) {
       action = 'INSERT';
@@ -29,7 +29,7 @@ class ComponentDrop extends React.Component {
       insertBeforeId,
       action,
       target,
-      page
+      pageIndex
     });
     this.setState({
       isDragOver: false
@@ -85,7 +85,7 @@ class ComponentDrop extends React.Component {
 export default ComponentDrop;
 
 ComponentDrop.defaultProps = {
-  page: 'index',
+  pageIndex: 0,
   inline: false,
   target: 'root',
   insertBeforeId: false,

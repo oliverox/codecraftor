@@ -10,14 +10,12 @@ import PropConfigList from './PropConfigList';
 import styles from './styles.module.css';
 
 const getPropConfigElement = ({ propObj, key, onPropUpdate, allProps }) => {
-  console.log('********************************* keyIndex=', key);
   const { type } = propObj;
   switch (type) {
     case 'string':
       return (
         <PropConfigString
           key={key}
-          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -29,7 +27,6 @@ const getPropConfigElement = ({ propObj, key, onPropUpdate, allProps }) => {
       return (
         <PropConfigYesNo
           key={key}
-          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -41,7 +38,6 @@ const getPropConfigElement = ({ propObj, key, onPropUpdate, allProps }) => {
       return (
         <PropConfigDropDown
           key={key}
-          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -53,7 +49,6 @@ const getPropConfigElement = ({ propObj, key, onPropUpdate, allProps }) => {
       return (
         <PropConfigNumeric
           key={key}
-          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -65,7 +60,6 @@ const getPropConfigElement = ({ propObj, key, onPropUpdate, allProps }) => {
       return (
         <PropConfigSlider
           key={key}
-          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -77,7 +71,6 @@ const getPropConfigElement = ({ propObj, key, onPropUpdate, allProps }) => {
       return (
         <PropConfigColor
           key={key}
-          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}
@@ -89,7 +82,6 @@ const getPropConfigElement = ({ propObj, key, onPropUpdate, allProps }) => {
       return (
         <PropConfigList
           key={key}
-          // keyIndex={key}
           propObj={propObj}
           onPropUpdate={onPropUpdate}
           allProps={allProps}

@@ -1,7 +1,7 @@
-import BlankPage from './blankPage';
+import Default from './default';
 import Pioneer from './pioneer';
 
 export {
-  BlankPage,
+  Default,
   Pioneer
 };

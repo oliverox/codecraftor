@@ -8,7 +8,7 @@ class Editor extends Component {
     super();
     this.state = {
       loading: true,
-      page: false,
+      pageIndex: false,
       siteMeta: { updated: -1 },
       components: {
         block: [],
@@ -60,7 +60,7 @@ class Editor extends Component {
   }
 
   importComponentsFromTemplate = async template => {
-    switch (template) {
+    switch (template.name) {
       case 'pioneer':
         return import('@codecraftor/pioneer/dist/main');
 
@@ -70,7 +70,7 @@ class Editor extends Component {
   };
 
   async refreshPage() {
-    const { page, siteMeta } = this.state;
+    const { pageIndex, siteMeta } = this.state;
     if (siteMeta === false || siteMeta.updated === -1) {
       return;
     }
@@ -79,7 +79,7 @@ class Editor extends Component {
       componentList => {
         console.log('#####', componentList);
         this.extractComponentConfigs(componentList.default.block);
-        const rootComponent = siteMeta.pages[page].root;
+        const rootComponent = siteMeta.pages[pageIndex].root;
         const rootModuleName = rootComponent.componentType;
         const { module } = componentList.default.block[rootModuleName];
         let props = {
@@ -94,7 +94,7 @@ class Editor extends Component {
           editable: false, // root component is not editable
           childrenComponents
         };
-        const nonRootComponents = siteMeta.pages[page].nonRootComponents;
+        const nonRootComponents = siteMeta.pages[pageIndex].nonRootComponents;
         for (let i = 0; i < nonRootComponents.length; i++) {
           let nonRootComponent = nonRootComponents[i];
           let componentTypeName = nonRootComponent.componentType;
@@ -120,8 +120,8 @@ class Editor extends Component {
   }
 
   getComponentIndex(componentType) {
-    const { page, siteMeta } = this.state;
-    return siteMeta.pages[page].imports.indexOf(componentType);
+    const { pageIndex, siteMeta } = this.state;
+    return siteMeta.pages[pageIndex].imports.indexOf(componentType);
   }
 
   getComponentAndChildren(id) {
@@ -150,7 +150,7 @@ class Editor extends Component {
         <ComponentWrapper
           key={this.key++}
           componentId={id}
-          page={this.state.page}
+          pageIndex={this.state.pageIndex}
           postMessage={this.handlePostMessage}
           onComponentClick={this.handleComponentClick}
         >
@@ -174,11 +174,11 @@ class Editor extends Component {
       return;
     }
     console.log('Craft msg rcvd:', msg.data);
-    const { siteMeta, page } = msg.data;
+    const { siteMeta, pageIndex } = msg.data;
     if (siteMeta.updated !== this.state.siteMeta.updated) {
       this.setState({
         siteMeta,
-        page
+        pageIndex
       });
       this.refreshPage();
     }
@@ -188,11 +188,11 @@ class Editor extends Component {
     window.parent.postMessage(data, '*');
   }
 
-  handleComponentClick({ componentId, page }) {
+  handleComponentClick({ componentId, pageIndex }) {
     this.handlePostMessage({
       action: 'SELECT',
       componentId,
-      page
+      pageIndex
     });
   }
 
@@ -206,7 +206,7 @@ class Editor extends Component {
           <>
             {this.rootComponent}
             <ComponentDrop
-              page={this.state.siteMeta.name}
+              pageIndex={this.state.siteMeta.name}
               postMessage={this.handlePostMessage}
             />
           </>
