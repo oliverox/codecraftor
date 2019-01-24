@@ -36,7 +36,7 @@ class NavbarHeader extends React.Component {
       publish,
       download,
       publishUrl,
-      publishError,
+      publishState,
       publishInProgress,
       resetPublishError,
       isPublishPopoverOpen
@@ -100,12 +100,12 @@ class NavbarHeader extends React.Component {
                 {publishInProgress && (
                   <div className={styles.publishPopoverContentCol}>
                     <span className={styles.publishText}>
-                      Publishing your website...
+                      Publishing your website: {publishState}
                     </span>
                     <ProgressBar intent="none" />
                   </div>
                 )}
-                {publishError && (
+                {publishState === 'ERROR' && (
                   <Toaster
                     action={{
                       onClick: () => resetPublishError(),
@@ -115,7 +115,7 @@ class NavbarHeader extends React.Component {
                     message="Sorry, an error was encountered while trying to publish you app."
                   />
                 )}
-                {!publishInProgress && !publishError && (
+                {!publishInProgress && !publishState !== 'ERROR' && (
                   <div className={styles.publishPopoverContentRow}>
                     <InputGroup readOnly value={publishUrl} />
                     <Button

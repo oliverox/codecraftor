@@ -26,7 +26,7 @@ class MainFrame extends React.Component {
       currentTab: 'home',
       currentPageIndex: 0,
       componentList: false,
-      publishError: false,
+      publishState: false,
       publishInProgress: false,
       currentComponentId: false,
       isPublishPopoverOpen: false
@@ -387,7 +387,7 @@ class MainFrame extends React.Component {
 
   resetPublishError() {
     this.setState({
-      publishError: false
+      publishState: false
     });
   }
 
@@ -405,18 +405,21 @@ class MainFrame extends React.Component {
       });
       import('../utils/publishApp').then(module => {
         const publishApp = module.default;
-        publishApp(siteMeta).then(vm => {
-          this.setState({
-            publishInProgress: false,
-            publishUrl: vm.preview.origin
+        publishApp(siteMeta)
+          .then(resp => {
+            resp.json().then(json => {
+              this.setState({
+                publishInProgress: false,
+                publishUrl: `https://${json.url}`
+              });
+            });
+          })
+          .catch(error => {
+            this.setState({
+              publishInProgress: false,
+              publishState: 'ERROR'
+            });
           });
-          vm = null;
-        }).catch(error => {
-          this.setState({
-            publishInProgress: false,
-            publishError: true
-          });
-        });
       });
     }
   }
@@ -427,7 +430,7 @@ class MainFrame extends React.Component {
       siteMeta,
       currentTab,
       publishUrl,
-      publishError,
+      publishState,
       currentPageIndex,
       publishInProgress,
       currentComponentId,
@@ -450,7 +453,7 @@ class MainFrame extends React.Component {
           publish={this.publish}
           download={this.download}
           publishUrl={publishUrl}
-          publishError={publishError}
+          publishState={publishState}
           publishInProgress={publishInProgress}
           handleTabChange={this.handleTabChange}
           resetPublishError={this.resetPublishError}

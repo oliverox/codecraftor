@@ -15,7 +15,8 @@ export default siteMeta => ({
     start: 'react-scripts start',
     build: 'react-scripts build',
     test: 'react-scripts test',
-    eject: 'react-scripts eject'
+    eject: 'react-scripts eject',
+    'now-build': 'react-scripts build && mv build dist'
   },
   eslintConfig: {
     extends: 'react-app'
