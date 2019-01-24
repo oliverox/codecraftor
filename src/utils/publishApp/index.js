@@ -1,58 +1,90 @@
-import sdk from '@stackblitz/sdk';
 import getPage from '../getFiles/getPage';
+import getNowJson from '../getFiles/getNowJson';
+import getGitIgnore from '../getFiles/getGitIgnore';
+import getReadMe from '../getFiles/getReadme';
+import getPackageJson from '../getFiles/getPackageJson';
 import getIndexJs from '../getFiles/getIndexJs';
 import getServiceWorker from '../getFiles/getServiceWorker';
 import getIndexHtml from '../getFiles/getIndexHtml';
+import getFavicon from '../getFiles/getFavicon';
+import getManifest from '../getFiles/getManifest';
 
-const publishApp = (siteMeta) => {
-  const pages = {};
+const publishApp = siteMeta => {
+  const files = [];
   siteMeta.pages.forEach((page, index) => {
     if (index === 0) {
-      pages['src/pages/Index/Index.js'] = getPage(siteMeta, 0);
+      files.push({
+        file: 'src/pages/Index/Index.js',
+        data: getPage(siteMeta, 0)
+      });
     } else {
-      pages[`src/pages/Page${index}/Page${index}.js`] = getPage(siteMeta, index);
+      files.push({
+        file: `src/pages/Page${index}/Page${index}.js`,
+        data: getPage(siteMeta, index)
+      });
     }
   });
-  return sdk.embedProject(
-    'preview',
+  files.push(
     {
-      files: {
-        ...pages,
-        'src/index.js': getIndexJs(siteMeta),
-        'src/serviceWorker.js': getServiceWorker(),
-        'public/index.html': getIndexHtml({
-          projectTitle: 'Hello Codecraftor'
-        })
-      },
-      title: 'Codecraftor app',
-      description: 'This app was built with codecraftor',
-      template: 'create-react-app',
-      dependencies: {
-        react: '^16.7.0',
-        'react-dom': '^16.7.0',
-        // 'react-scripts': '2.1.3',
-        'normalize.css': '^8.0.1',
-        'react-router-dom': '^4.3.1',
-        'styled-components': '^4.1.3',
-        webfontloader: '^1.6.28',
-        [`@codecraftor/${siteMeta.template.name}`]: `${siteMeta.template.version}`    
-      },
-      settings: {
-        compile: {
-          trigger: 'auto',
-          action: 'hmr',
-          clearConsole: false
-        }
-      }
+      file: 'package.json',
+      data: JSON.stringify(getPackageJson(siteMeta))
     },
     {
-      clickToLoad: false,
-      view: 'preview',
-      hideExplorer: false,
-      hideNavigation: false,
-      forceEmbedLayout: true
+      file: '.gitignore',
+      data: getGitIgnore()
+    },
+    {
+      file: 'README.md',
+      data: getReadMe()
+    },
+    {
+      file: 'src/serviceWorker.js',
+      data: getServiceWorker()
+    },
+    {
+      file: 'src/index.js',
+      data: getIndexJs(siteMeta)
+    },
+    {
+      file: 'public/index.html',
+      data: getIndexHtml(siteMeta)
+    },
+    {
+      file: 'public/favicon.png',
+      data: getFavicon()
+    },
+    {
+      file: 'public/manifest.json',
+      data: getManifest(siteMeta)
+    },
+    {
+      file: 'now.json',
+      data: getNowJson()
     }
   );
+  console.log('publishApp() - files=', files);
+  console.log('body=', JSON.stringify({
+    name: 'codecraftor-project',
+    public: true,
+    version: 2,
+    files,
+    builds: [{ src: 'package.json', use: '@now/static-build' }]
+  }));
+  return fetch('https://api.zeit.co/v6/now/deployments', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer FsCNErKLA4PUkoiPKPwbmPd2'
+    },
+    body: JSON.stringify({
+      name: 'codecraftor-project',
+      public: true,
+      version: 2,
+      files,
+      builds: [{ src: 'package.json', use: '@now/static-build' }]
+    })
+  });
 };
 
 export default publishApp;
