@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import WebFontLoader from 'webfontloader';
-import ComponentDrop from '../appComponents/ComponentDrop/ComponentDrop';
-import ComponentWrapper from '../appComponents/ComponentWrapper/ComponentWrapper';
+import ComponentDrop from '../components/ComponentDrop/ComponentDrop';
+import ComponentWrapper from '../components/ComponentWrapper/ComponentWrapper';
 
 class Editor extends Component {
   constructor() {

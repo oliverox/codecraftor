@@ -1,7 +1,7 @@
 import React from 'react';
 import { H5, Divider } from '@blueprintjs/core';
-import getComponentFromComponentList from '../../../../utils/getComponentFromComponentList';
-import getPropConfigElement from '../../../../utils/getPropConfigElement';
+import getComponentFromComponentList from '../../../utils/getComponentFromComponentList';
+import getPropConfigElement from '../../../utils/getPropConfigElement';
 
 import styles from './Configurator.module.css';
 
