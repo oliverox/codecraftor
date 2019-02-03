@@ -13,6 +13,7 @@ export default siteMeta => {
   return`import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import * as serviceWorker from './serviceWorker';
 import WebFontLoader from 'webfontloader';
 import 'normalize.css/normalize.css';
@@ -31,11 +32,13 @@ const App = () => {
   return (
     <Router>
       <React.Suspense fallback={<div>Loading...</div>}>
-        <div>
-          <Switch>
-            ${routes}
-          </Switch>
-        </div>
+        <ThemeProvider theme={theme}>
+          <div>
+            <Switch>
+              ${routes}
+            </Switch>
+          </div>
+        </ThemeProvider>
       </React.Suspense>
     </Router>
   );

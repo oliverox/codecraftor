@@ -14,7 +14,7 @@ export default (siteMeta, pageIndex) => {
   };
 
   const getPropsStr = props => {
-    let propsStr = ' theme={theme}';
+    let propsStr = '';
     const propsObj = typeof props === 'string' ? JSON.parse(props) : props;
     const keys = Object.keys(propsObj);
     keys.forEach(key => {
@@ -52,7 +52,7 @@ export default (siteMeta, pageIndex) => {
 import { ${moduleImports} } from '@codecraftor/${siteMeta.template.name}';
 class IndexPage extends Component {
   render() {
-    const { theme } = this.props; 
+    // const { theme } = this.props; 
     return (
       ${layoutStr}
     );
