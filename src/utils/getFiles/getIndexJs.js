@@ -4,10 +4,10 @@ export default siteMeta => {
   siteMeta.pages.forEach((page, index) => {
     if (index === 0) {
       pageImports += `const IndexPage = React.lazy(() => import('./pages/Index/Index'));`
-      routes += `<Route path="/" exact render={props => <IndexPage {...props} theme={theme} />} /> `
+      routes += `<Route path="/" exact render={props => <IndexPage {...props} />} /> `
     } else {
       pageImports += `\nconst Page${index} = React.lazy(() => import('./pages/Page${index}/Page${index}'));`
-      routes += `\n<Route path="/page${index}" exact render={props => <Page${index} {...props} theme={theme} />} /> `
+      routes += `\n<Route path="/page${index}" exact render={props => <Page${index} {...props} />} /> `
     }
   });
   return`import React from 'react';

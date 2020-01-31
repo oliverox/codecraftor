@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ThemeProvider } from 'styled-components';
 import WebFontLoader from 'webfontloader';
 import ComponentDrop from '../components/ComponentDrop/ComponentDrop';
 import ComponentWrapper from '../components/ComponentWrapper/ComponentWrapper';
@@ -141,7 +142,7 @@ class Editor extends Component {
       );
     }
     const componentToRender = (
-      <Module {...props} theme={this.state.siteMeta.theme}>
+      <Module {...props}>
         {newChildrenComponents.length > 0 ? newChildrenComponents : null}
       </Module>
     );
@@ -204,7 +205,9 @@ class Editor extends Component {
           'Loading...'
         ) : (
           <>
-            {this.rootComponent}
+            <ThemeProvider theme={this.state.siteMeta.theme}>
+              {this.rootComponent}
+            </ThemeProvider>
             <ComponentDrop
               pageIndex={this.state.siteMeta.name}
               postMessage={this.handlePostMessage}
