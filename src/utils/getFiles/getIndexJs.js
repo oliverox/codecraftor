@@ -4,15 +4,16 @@ export default siteMeta => {
   siteMeta.pages.forEach((page, index) => {
     if (index === 0) {
       pageImports += `const IndexPage = React.lazy(() => import('./pages/Index/Index'));`
-      routes += `<Route path="/" exact render={props => <IndexPage {...props} theme={theme} />} /> `
+      routes += `<Route path="/" exact render={props => <IndexPage {...props} />} /> `
     } else {
       pageImports += `\nconst Page${index} = React.lazy(() => import('./pages/Page${index}/Page${index}'));`
-      routes += `\n<Route path="/page${index}" exact render={props => <Page${index} {...props} theme={theme} />} /> `
+      routes += `\n<Route path="/page${index}" exact render={props => <Page${index} {...props} />} /> `
     }
   });
   return`import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import * as serviceWorker from './serviceWorker';
 import WebFontLoader from 'webfontloader';
 import 'normalize.css/normalize.css';
@@ -31,11 +32,13 @@ const App = () => {
   return (
     <Router>
       <React.Suspense fallback={<div>Loading...</div>}>
-        <div>
-          <Switch>
-            ${routes}
-          </Switch>
-        </div>
+        <ThemeProvider theme={theme}>
+          <div>
+            <Switch>
+              ${routes}
+            </Switch>
+          </div>
+        </ThemeProvider>
       </React.Suspense>
     </Router>
   );

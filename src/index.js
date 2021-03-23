@@ -13,14 +13,7 @@ const App = React.lazy(() => import('./App/App'));
 const Editor = React.lazy(() => import('./Editor/Editor'));
 const rootEl = document.getElementById('root');
 
-firebase.initializeApp({
-  apiKey: 'AIzaSyCZP85JmQhLbQG9GFoUFqbHApONOkoGZ5M',
-  authDomain: 'codecraftor-e8efe.firebaseapp.com',
-  databaseURL: 'https://codecraftor-e8efe.firebaseio.com',
-  projectId: 'codecraftor-e8efe',
-  storageBucket: 'codecraftor-e8efe.appspot.com',
-  messagingSenderId: '495590234980'
-});
+firebase.initializeApp();
 
 
 const CodecraftorApp = () => {

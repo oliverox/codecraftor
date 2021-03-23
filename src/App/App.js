@@ -3,10 +3,10 @@ import shortid from 'shortid';
 import firebase from 'firebase/app';
 import { FocusStyleManager } from '@blueprintjs/core';
 
-import NavbarHeader from '../appComponents/NavbarHeader/NavbarHeader';
-import Sidebar from '../appComponents/Sidebar/Sidebar';
-import Iframe from '../appComponents/Iframe/Iframe';
-import PreviewWindow from '../appComponents/PreviewWindow/PreviewWindow';
+import NavbarHeader from '../components/NavbarHeader/NavbarHeader';
+import Sidebar from '../components/Sidebar/Sidebar';
+import Iframe from '../components/Iframe/Iframe';
+import PreviewWindow from '../components/PreviewWindow/PreviewWindow';
 import { Default } from '../templates';
 import getComponentObj from '../utils/getComponentObj';
 
@@ -60,7 +60,6 @@ class MainFrame extends React.Component {
     const { match } = this.props;
     const db = firebase.firestore();
     let defaultTmpl = Default;
-    db.settings({ timestampsInSnapshots: true });
     this.docRef = db
       .collection(process.env.REACT_APP_CRAFTS_COLLECTION)
       .doc(match.params.craftId);

@@ -6,7 +6,7 @@ import {
   ThemesTab,
   ComponentsTab,
   ConfiguratorTab
-} from './Tabs';
+} from '../Tabs';
 import getComponentObj from '../../utils/getComponentObj';
 
 import styles from './Sidebar.module.css';

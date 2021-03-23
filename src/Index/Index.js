@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import { withRouter } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
 import { H1, H6 } from '@blueprintjs/core';
-import SpinnerOverlay from '../appComponents/SpinnerOverlay/SpinnerOverlay';
+import SpinnerOverlay from '../components/SpinnerOverlay/SpinnerOverlay';
 import { Default, Pioneer } from '../templates';
 
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
@@ -32,7 +32,6 @@ class Index extends React.Component {
       event_category: 'Button',
       event_label: 'New Craft'
     });
-    db.settings({ timestampsInSnapshots: true });
     db.collection(process.env.REACT_APP_CRAFTS_COLLECTION)
       .add({
         created: Date.now(),
